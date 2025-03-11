@@ -4,7 +4,7 @@ Team members:
 - Alexandra Bud     | D24130508
 - Eilish Paseos     | C22408466          
 - Mary Anne Flores  | C20461582 
-- Stepan Chernobaev | *add student no here when u can!*
+- Stepan Chernobaev | D20124623
 - Raiyan Mohd Farid | C21385263
 
 # ProfileMe
