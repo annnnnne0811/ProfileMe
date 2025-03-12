@@ -7,63 +7,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            position: fixed;
-            background: #e0e0e0;
-            padding-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .sidebar a {
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            color: black;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .sidebar a:hover {
-            background: #ccc;
-        }
-        .sidebar i {
-            margin-right: 10px;
-            font-size: 18px;
-        }
-        .dashboard-content {
-            margin-left: 260px;
-            padding: 20px;
-        }
-        .card-custom {
-            padding: 15px;
-            border-radius: 10px;
-        }
-        .hidden {
-            display: none;
-        }
-        .dark-mode {
-            background-color: #121212;
-            color: white;
-        }
-        .dark-mode .card {
-            background-color: #1e1e1e;
-            color: white;
-        }
-        .dark-mode .sidebar {
-            background-color: #333;
-        }
-        .dark-mode .sidebar a {
-            color: white;
-        }
-        .dark-mode .sidebar a:hover {
-            background-color: #555;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="sidebar">
@@ -74,7 +18,7 @@
         <a href="#" id="toggleDashboard"><i class="fas fa-home"></i> Dashboard</a>
         <a href="#" id="togglePostJob"><i class="fas fa-briefcase"></i> Post a Job</a>
         <a href="#" id="toggleSettings"><i class="fas fa-cog"></i> Settings</a>
-        <a href="#"><i class="fas fa-users"></i> Saved Applicants</a>
+        <a href="#" id="toggleSavedApplicants"><i class="fas fa-users"></i> Saved Applicants</a>
         <a href="#"><i class="fas fa-envelope"></i> Messages</a>
         <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
@@ -86,7 +30,7 @@
             <div class="card bg-success text-white text-center p-2">
                 <h4>Your Job Postings</h4>
             </div>
-            
+
             <table class="table mt-3">
                 <thead>
                     <tr>
@@ -116,28 +60,30 @@
             </table>
             
             <h4 class="mt-4">Saved Applicants</h4>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card bg-light card-custom mb-2">
-                        <p><strong>Eilish, V Paseos</strong></p>
-                        <p>Skills: UI/UX, Photoshop</p>
-                    </div>
-                    <div class="card bg-light card-custom">
-                        <p><strong>Raiyan, Mohd Farid</strong></p>
-                        <p>Skills: Python, Docker</p>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card bg-light card-custom mb-2">
-                        <p><strong>Alexandra, Bud</strong></p>
-                        <p>Skills: Figma, C++</p>
-                    </div>
-                    <div class="card bg-light card-custom">
-                        <p><strong>Mary Anne, Flores</strong></p>
-                        <p>Skills: Node.js, UI/UX</p>
-                    </div>
-                </div>
-            </div>
+             <div class="row">
+                 <div class="col-md-6">
+                     <div class="card bg-light card-custom mb-2">
+                         <p><strong>Eilish, V Paseos</strong></p>
+                         <p>Skills: UI/UX, Photoshop</p>
+                     </div>
+                     <div class="card bg-light card-custom">
+                         <p><strong>Raiyan, Mohd Farid</strong></p>
+                         <p>Skills: Python, Docker</p>
+                     </div>
+                 </div>
+                 <div class="col-md-6">
+                     <div class="card bg-light card-custom mb-2">
+                         <p><strong>Alexandra, Bud</strong></p>
+                         <p>Skills: Figma, C++</p>
+                     </div>
+                     <div class="card bg-light card-custom">
+                         <p><strong>Mary Anne, Flores</strong></p>
+                         <p>Skills: Node.js, UI/UX</p>
+                     </div>
+                 </div>
+             </div>
+
+             
             <h4 class="mt-4">Hiring Stats</h4>
             <div class="row text-center">
                 <div class="col-md-4">
@@ -157,9 +103,8 @@
                         <h5>Hired Candidates</h5>
                         <h3>23 Hired</h3>
                     </div>
-                    </div>
-                    </div>
-            
+                </div>
+            </div>
         </div>
 
         <!-- Post a Job Section (Initially Hidden) -->
@@ -187,27 +132,68 @@
             <h4>Settings</h4>
             <button id="darkModeToggle" class="btn btn-dark">Toggle Dark Mode</button>
         </div>
+
+        <!-- Saved Applicants Section (Initially Hidden) -->
+        <div id="saved-applicants-section" class="mt-4 d-none">
+            <h4>Saved Applicants</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card bg-light card-custom mb-2">
+                        <p><strong>Eilish, V Paseos</strong></p>
+                        <p>Skills: UI/UX, Photoshop</p>
+                    </div>
+                    <div class="card bg-light card-custom">
+                        <p><strong>Raiyan, Mohd Farid</strong></p>
+                        <p>Skills: Python, Docker</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card bg-light card-custom mb-2">
+                        <p><strong>Alexandra, Bud</strong></p>
+                        <p>Skills: Figma, C++</p>
+                    </div>
+                    <div class="card bg-light card-custom">
+                        <p><strong>Mary Anne, Flores</strong></p>
+                        <p>Skills: Node.js, UI/UX</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
+        function hideAllSections() {
+            document.getElementById("dashboard-section").classList.add("d-none");
+            document.getElementById("post-job-form").classList.add("d-none");
+            document.getElementById("settings-section").classList.add("d-none");
+            document.getElementById("saved-applicants-section").classList.add("d-none");
+        }
+
         document.getElementById("togglePostJob").addEventListener("click", function(event) {
             event.preventDefault();
+            hideAllSections();
             document.getElementById("post-job-form").classList.remove("d-none");
-            document.getElementById("dashboard-section").classList.add("d-none");
-            document.getElementById("settings-section").classList.add("d-none");
         });
+
         document.getElementById("toggleDashboard").addEventListener("click", function(event) {
             event.preventDefault();
+            hideAllSections();
             document.getElementById("dashboard-section").classList.remove("d-none");
-            document.getElementById("post-job-form").classList.add("d-none");
-            document.getElementById("settings-section").classList.add("d-none");
         });
+
         document.getElementById("toggleSettings").addEventListener("click", function(event) {
             event.preventDefault();
+            hideAllSections();
             document.getElementById("settings-section").classList.remove("d-none");
-            document.getElementById("dashboard-section").classList.add("d-none");
-            document.getElementById("post-job-form").classList.add("d-none");
         });
+
+        document.getElementById("toggleSavedApplicants").addEventListener("click", function(event) {
+            event.preventDefault();
+            hideAllSections();
+            document.getElementById("saved-applicants-section").classList.remove("d-none");
+        });
+
         document.getElementById("darkModeToggle").addEventListener("click", function() {
             document.body.classList.toggle("dark-mode");
         });
