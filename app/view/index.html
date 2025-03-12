@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Search Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
@@ -57,15 +57,15 @@
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" placeholder="Enter username">
+                            <label for="loginEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Enter password">
+                            <input type="password" class="form-control" id="password" required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
-                    </form>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                      </form>
                 </div>
             </div>
         </div>
@@ -83,19 +83,27 @@
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
-                            <label for="registerUsername" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="registerUsername" placeholder="Enter username">
+                            <label for="registerFirstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="registerFirstName" placeholder="Enter first name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerLastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="registerLastName" placeholder="Enter last name">
                         </div>
                         <div class="mb-3">
                             <label for="registerEmail" class="form-label">Email</label>
                             <input type="email" class="form-control" id="registerEmail" placeholder="Enter email">
                         </div>
                         <div class="mb-3">
+                            <label for="registerDateOfBirth" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="registerDateOfBirth">
+                        </div>
+                        <div class="mb-3">
                             <label for="registerPassword" class="form-label">Password</label>
                             <input type="password" class="form-control" id="registerPassword" placeholder="Enter password">
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Register</button>
-                    </form>
+                    </form>                    
                 </div>
             </div>
         </div>
@@ -159,7 +167,8 @@
     </section>
     
     <footer class="text-center py-3">
-        <img src="../assets/logo_fant_5.png" alt="Fantastic 5 Logo" width="80">
+        <img src="assets/logo_fant_5.png" alt="Fantastic 5 Logo" width="80">
     </footer>
 </body>
+<script src="script.js"></script>
 </html>
