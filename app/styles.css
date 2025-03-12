@@ -18,3 +18,26 @@
     background-color: black;
     color: white;
 }
+
+
+.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+.dark-mode .card {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+.dark-mode .sidebar {
+    background-color: #333;
+}
+
+.dark-mode .sidebar a {
+    color: white;
+}
+
+.dark-mode .sidebar a:hover {
+    background-color: #555;
+}
