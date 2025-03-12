@@ -1,0 +1,20 @@
+.modal-content {
+    border-radius: 10px;
+    padding: 20px;
+}
+.modal-header {
+    border-bottom: none;
+}
+.modal-body {
+    text-align: center;
+}
+.login-btn {
+    border: 2px solid black;
+    color: black;
+    transition: 0.3s ease-in-out;
+}
+
+.login-btn:hover {
+    background-color: black;
+    color: white;
+}
