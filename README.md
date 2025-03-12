@@ -5,7 +5,7 @@ Team members:
 - Eilish Paseos     | C22408466          
 - Mary Anne Flores  | C20461582 
 - Stepan Chernobaev | D20124623
-- Raiyan Mohd Farid | C21385263 !!! Test
+- Raiyan Mohd Farid | C21385263
 
 # ProfileMe
 
