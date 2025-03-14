@@ -97,3 +97,31 @@
 .dark-mode .sidebar a:hover {
     background-color: #555;
 }
+
+
+.video-btn {
+    background-color: #28a745 !important; /* Green color */
+    color: blueviolet !important;
+    padding: 14px 28px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    border-radius: 50px !important;
+    border: 2px solid #1e7e34 !important;
+    transition: all 0.3s ease-in-out !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    display: inline-block !important; /* Ensures it's treated as a button */
+    text-align: center !important;
+    text-decoration: none !important; /* Removes underline */
+}
+
+.video-btn:hover {
+    background-color: #218838 !important;
+    border-color: #19692c !important;
+    transform: translateY(-2px) !important;
+}
+
+.video-btn:active {
+    background-color: #1e7e34 !important;
+    transform: translateY(2px) !important;
+}
