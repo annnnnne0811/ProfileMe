@@ -62,21 +62,12 @@
                 <div class="carousel-item text-center">
                     <h3 class="mb-3">Useful Links</h3>
                     <div class="d-flex justify-content-center">
-                        <ul class="list-unstyled w-50">
-                            <li class="mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center">
-                                <i class="bi bi-link-45deg me-2"></i>
-                                <a href="#" class="text-decoration-none text-dark fw-bold" data-editable="true">Your Portfolio</a>
-                            </li>
-                            <li class="mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center">
-                                <i class="bi bi-github me-2"></i>
-                                <a href="#" class="text-decoration-none text-dark fw-bold" data-editable="true">GitHub</a>
-                            </li>
-                            <li class="mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center">
-                                <i class="bi bi-linkedin me-2"></i>
-                                <a href="#" class="text-decoration-none text-dark fw-bold" data-editable="true">LinkedIn</a>
-                            </li>
+                        <ul id="usefulLinksList" class="list-unstyled w-50">
+                            <!-- Links will be dynamically added here -->
                         </ul>
                     </div>
+                    <button id="addLinkBtn" class="btn btn-outline-primary mt-3" style="display: none;">Add Link</button>
+                </div>
                 </div>
                 <div class="carousel-item">
                     <h3>Personal Statement</h3>
@@ -95,56 +86,118 @@
     </div>
 
     <script>
-        let isEditing = false;
-        let carousel = new bootstrap.Carousel(document.getElementById('profileCarousel'));
+    let isEditing = false;
+    let carousel = new bootstrap.Carousel(document.getElementById('profileCarousel'));
 
-        document.getElementById("toggleEditMode").addEventListener("click", function() {
-            isEditing = !isEditing;
-            toggleEditState(isEditing);
-        });
+    const socialIcons = {
+        "Portfolio": "bi bi-link-45deg",
+        "GitHub": "bi bi-github",
+        "LinkedIn": "bi bi-linkedin",
+        "Twitter": "bi bi-twitter",
+        "Facebook": "bi bi-facebook",
+        "Instagram": "bi bi-instagram",
+        "YouTube": "bi bi-youtube",
+        "TikTok": "bi bi-tiktok"
+    };
 
-        function toggleEditState(editMode) {
-            document.querySelectorAll("[data-editable]").forEach(element => {
-                element.contentEditable = editMode;
-                element.style.border = editMode ? "1px dashed gray" : "none";
-            });
+    document.getElementById("toggleEditMode").addEventListener("click", function() {
+        isEditing = !isEditing;
+        toggleEditState(isEditing);
+    });
 
-            document.getElementById("profilePicInput").style.display = editMode ? "block" : "none";
-            document.getElementById("videoUpload").style.display = editMode ? "block" : "none";
-            document.getElementById("addVideoBtn").style.display = editMode ? "block" : "none";
-            document.getElementById("toggleEditMode").textContent = editMode ? "Save Changes" : "Edit Profile";
+    function toggleEditState(editMode) {
+    document.querySelectorAll("[data-editable]").forEach(element => {
+        element.contentEditable = editMode;
+        element.style.border = editMode ? "1px dashed gray" : "none";
+    });
 
-            if (editMode) {
-                carousel.pause(); // Stop auto-swiping in edit mode
-            } else {
-                carousel.cycle(); // Resume auto-swiping when back in view mode
-            }
+    document.getElementById("profilePicInput").style.display = editMode ? "block" : "none";
+    document.getElementById("videoUpload").style.display = editMode ? "block" : "none";
+    document.getElementById("addVideoBtn").style.display = editMode ? "block" : "none";
+    document.getElementById("addLinkBtn").style.display = editMode ? "block" : "none";
+    document.querySelectorAll(".btn-danger").forEach(btn => btn.style.display = editMode ? "block" : "none"); // Update delete buttons
+
+    document.getElementById("toggleEditMode").textContent = editMode ? "Save Changes" : "Edit Profile";
+
+    if (editMode) {
+        carousel.pause();
+    } else {
+        carousel.cycle();
+    }
+}
+
+    document.getElementById("profilePic").addEventListener("click", function() {
+        if (isEditing) {
+            document.getElementById("profilePicInput").click();
+        }
+    });
+
+    document.getElementById("profilePicInput").addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            document.getElementById("profilePic").src = URL.createObjectURL(file);
+        }
+    });
+
+    document.getElementById("addVideoBtn").addEventListener("click", function() {
+        document.getElementById("videoUpload").click();
+    });
+
+    document.getElementById("videoUpload").addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            document.getElementById("videoSource").src = URL.createObjectURL(file);
+            document.querySelector("video").load();
+        }
+    });
+
+    document.getElementById("addLinkBtn").addEventListener("click", function() {
+        addNewLink();
+    });
+
+    function addNewLink(icon = "bi bi-link-45deg", text = "New Link", url = "#") {
+        const list = document.getElementById("usefulLinksList");
+
+        const li = document.createElement("li");
+        li.className = "mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center justify-content-between";
+
+        const iconPicker = document.createElement("select");
+        iconPicker.className = "form-select me-2";
+        for (let key in socialIcons) {
+            let option = document.createElement("option");
+            option.value = socialIcons[key];
+            option.innerText = key;
+            if (socialIcons[key] === icon) option.selected = true;
+            iconPicker.appendChild(option);
         }
 
-        document.getElementById("profilePic").addEventListener("click", function() {
+        const iconElement = document.createElement("i");
+        iconElement.className = icon + " me-2";
+        
+        const input = document.createElement("input");
+        input.type = "text";
+        input.className = "form-control me-2";
+        input.value = text;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "btn btn-danger btn-sm";
+        deleteBtn.innerHTML = "&#10006;";
+        deleteBtn.onclick = function() {
             if (isEditing) {
-                document.getElementById("profilePicInput").click();
+            li.remove();
             }
+        };
+
+        iconPicker.addEventListener("change", function() {
+            iconElement.className = this.value + " me-2";
         });
 
-        document.getElementById("profilePicInput").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                document.getElementById("profilePic").src = URL.createObjectURL(file);
-            }
-        });
-
-        document.getElementById("addVideoBtn").addEventListener("click", function() {
-            document.getElementById("videoUpload").click();
-        });
-
-        document.getElementById("videoUpload").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                document.getElementById("videoSource").src = URL.createObjectURL(file);
-                document.querySelector("video").load();
-            }
-        });
+        li.appendChild(iconPicker);
+        li.appendChild(iconElement);
+        li.appendChild(input);
+        li.appendChild(deleteBtn);
+        list.appendChild(li);
+    }
     </script>
 </body>
 </html>
