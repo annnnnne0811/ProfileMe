@@ -91,14 +91,14 @@ video {
 }
 
 @font-face {
-    font-family: 'Chetkiy';
-    src: url('assets/fonts/CHETKIYTYPEFACEITALIC.ttf') format('truetype');
+    font-family: 'ANKISH';
+    src: url('assets/fonts/ANKISH-V1-3.otf') format('truetype');
     font-weight: normal;
     font-style: italic;
 }
 
 h2 {
-    font-family: 'Chetkiy', sans-serif;
+    font-family: 'ANKISH', sans-serif;
     font-size: 60px !important; /* Ensure font size is applied */
 }
 
