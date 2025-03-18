@@ -89,11 +89,14 @@
                 <a href="vid.html" class="btn video-btn">Video testing</a>
 
 
-                <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#registerModal">
+                <button class="btn btn-outline-dark" id="registerBtn" data-bs-toggle="modal" data-bs-target="#registerModal">
                     Register
                 </button>
-                <button class="btn btn-outline-dark login-btn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                <button class="btn btn-outline-dark login-btn" id="loginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
                     Login
+                </button>
+                <button class="btn btn-danger d-none" id="logoutBtn">
+                    Logout
                 </button>
                 <a href="seeker-dashboard.html" class="btn btn-primary">Seeker Dashboard</a>
                 <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#loginModal">
@@ -142,7 +145,7 @@
     <footer class="text-center py-3">
         <img src="assets/logo_fant_5.png" alt="Fantastic 5 Logo" width="80">
     </footer>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const registerForm = document.querySelector('#registerModal form');
@@ -176,8 +179,62 @@
                     console.error('❗Error registering:', error);
                     alert('Registration failed.');
                 }
-            });
+                const loginForm = document.querySelector('#loginModal form');
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const Email = document.getElementById('loginEmail').value;
+            const Password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ Email, Password })
+                });
+
+                const result = await response.json();
+                console.log('✅ Login response:', result);
+
+                if (response.ok) {
+                    alert(result.message || 'Login successful!');
+                    
+                    // Hide login/register buttons and show logout
+                    document.getElementById('loginBtn').classList.add('d-none');
+                    document.getElementById('registerBtn').classList.add('d-none');
+                    document.getElementById('logoutBtn').classList.remove('d-none');
+
+                    // Close modal
+                    const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                    if (loginModal) loginModal.hide();
+                } else {
+                    alert(result.message || 'Login failed!');
+                }
+
+            } catch (error) {
+                console.error('❗Error logging in:', error);
+                alert('Login error occurred.');
+            }
         });
+
+        // Logout button logic
+        const logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn.addEventListener('click', () => {
+            // Reset UI
+            document.getElementById('loginBtn').classList.remove('d-none');
+            document.getElementById('registerBtn').classList.remove('d-none');
+            document.getElementById('logoutBtn').classList.add('d-none');
+            alert('You have been logged out.');
+        });
+    });
+
+            });
+
+            
+        
+
+        
+        
     </script>
 
 </body>
