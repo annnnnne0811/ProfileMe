@@ -49,7 +49,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id = "registerForm">
                         <div class="mb-3">
                             <label for="registerFirstName" class="form-label">First Name</label>
                             <input type="text" class="form-control" id="registerFirstName" placeholder="Enter first name">
@@ -142,5 +142,43 @@
     <footer class="text-center py-3">
         <img src="assets/logo_fant_5.png" alt="Fantastic 5 Logo" width="80">
     </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const registerForm = document.querySelector('#registerModal form');
+            registerForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+    
+                const FirstName = document.getElementById('registerFirstName').value;
+                const LastName = document.getElementById('registerLastName').value;
+                const Email = document.getElementById('registerEmail').value;
+                const DateOfBirth = document.getElementById('registerDateOfBirth').value;
+                const Password = document.getElementById('registerPassword').value;
+    
+                const userData = { FirstName, LastName, Email, Password, DateOfBirth };
+    
+                try {
+                    const response = await fetch('/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(userData)
+                    });
+    
+                    const result = await response.json();
+                    console.log('✅ Server response:', result);
+                    alert(result.message || 'Registered successfully!');
+    
+                    // Close modal after success
+                    const registerModal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
+                    if (registerModal) registerModal.hide();
+    
+                } catch (error) {
+                    console.error('❗Error registering:', error);
+                    alert('Registration failed.');
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>

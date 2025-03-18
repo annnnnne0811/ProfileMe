@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: 'root',
+    password: '270202',
     database: 'ProfileMe'
 };
 

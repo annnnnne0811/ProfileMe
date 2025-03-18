@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 
 // registers new user
 exports.register = async (req, res) => {
+    console.log('🔥 Register endpoint hit! Body:', req.body);
     const { FirstName, LastName, Email, Password, DateOfBirth } = req.body;
 
     try {
