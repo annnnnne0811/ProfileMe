@@ -25,7 +25,12 @@ exports.register = async (req, res) => {
             DateOfBirth
         });
 
-        res.status(201).json({ message: 'Account created successfully!', AccountID: newAccountID });
+        res.status(201).json({ 
+            message: 'Account created successfully!', 
+            AccountID: newAccountID,
+            FirstName,
+            LastName
+        });
     } catch (error) {
         console.error('Error during registration:', error);
         res.status(500).json({ message: 'Internal server error.' });
@@ -49,7 +54,12 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials.' });
         }
 
-        res.status(200).json({ message: 'Login successful!', AccountID: user.AccountID });
+        res.status(200).json({ 
+            message: 'Login successful!',
+            AccountID: user.AccountID,
+            FirstName: user.FirstName,
+            LastName: user.LastName
+        });
     } catch (error) {
         console.error('Error during login:', error);
         res.status(500).json({ message: 'Internal server error.' });
