@@ -65,3 +65,20 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: 'Internal server error.' });
     }
 };
+
+exports.postJob = async (req, res) => {
+    const { Title, Description, Location } = req.body;
+
+    try {
+        const connection = await authModel.createConnection();
+        await connection.execute(
+            'INSERT INTO jobs (Title, Description, Location) VALUES (?, ?, ?)',
+            [Title, Description, Location]
+        );
+        await connection.end();
+        res.status(201).json({ message: 'Job posted successfully!' });
+    } catch (error) {
+        console.error('Error posting job:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+};

@@ -32,6 +32,31 @@
 </head>
 
 <body>
+
+    <nav class="navbar navbar-light bg-light p-3">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img src="/assets/logo_fant_5.png" alt="Logo" width="50">
+          </a>
+          <button class="btn btn-outline-dark m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+            ☰ Menu
+          </button>
+      
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="sidebarMenuLabel">Menu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body d-flex flex-column gap-2">
+              <a href="vid.html" class="btn btn-success">My Profile</a>
+              <a href="search.html" class="btn btn-secondary">Search Tab</a>
+              <a href="seeker-dashboard.html" class="btn btn-primary">Dashboard</a>
+              <a href="post-job.html" class = "btn btn-primary">Post a job</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
     <div class="container mt-4">
         <button id="toggleEditMode" class="btn btn-outline-primary">Edit Profile</button>
     </div>
