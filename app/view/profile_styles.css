@@ -1,107 +1,120 @@
 body {
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #f0f4ff, #ffffff);
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #333;
 }
 
 .profile-header {
     text-align: center;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    padding: 30px;
 }
 
 .profile-img {
-    width: 120px;
-    height: 120px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
+    border: 3px solid #6c63ff;
+    box-shadow: 0 10px 30px rgba(108, 99, 255, 0.3);
     object-fit: cover;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ddd; /* Light grey background */
-    border: 2px solid #ccc;
-    position: relative;
-    font-size: 14px;
-    font-weight: bold;
-    color: #666;
-    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-img span {
-    position: absolute;
-    z-index: 1;
-    pointer-events: none;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+.profile-img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 40px rgba(108, 99, 255, 0.4);
 }
 
-.profile-img[contenteditable="true"] span {
-    pointer-events: auto;
-    user-select: text;
+h2.profile-name {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #6c63ff, #00c6ff);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: fadeSlideDown 1s ease forwards;
+}
+
+@keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .carousel-container {
-    max-width: 800px;
-    margin: 30px auto;
-    position: relative;
+    backdrop-filter: blur(25px);
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    padding: 35px;
+    margin-top: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.carousel-container:hover {
+    transform: translateY(-5px);
 }
 
 .carousel-item {
-    background: white;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    position: relative;
+    border-radius: 15px;
+    transition: transform 0.4s;
 }
 
-/* Make sure video controls are clickable */
+.carousel-item:hover {
+    transform: scale(1.02);
+}
+
 video {
-    pointer-events: auto;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.add-video-btn, #toggleEditMode, .btn-outline-primary, .btn-primary, .btn-danger {
+    background: linear-gradient(135deg, #6c63ff, #00c6ff);
+    border: none;
+    color: #fff;
+    transition: all 0.3s;
+    border-radius: 50px;
+    padding: 10px 20px;
+}
+
+.add-video-btn:hover, #toggleEditMode:hover, .btn-outline-primary:hover, .btn-primary:hover, .btn-danger:hover {
+    background: linear-gradient(135deg, #00c6ff, #6c63ff);
+    box-shadow: 0 0 20px #00c6ff88;
+}
+
+.list-unstyled li {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.list-unstyled li:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .carousel-control-prev, .carousel-control-next {
-    width: 50px; /* Adjust size */
+    background-color: rgba(108, 99, 255, 0.8) !important;
+    border-radius: 50%;
+    width: 50px;
     height: 50px;
-    background-color: red !important; /* Solid red color */
-    border-radius: 50%; /* Make circular */
-    top: 50%; /* Center vertically */
+    top: 50%;
     transform: translateY(-50%);
-    opacity: 1; /* Ensure visibility */
+    opacity: 1 !important;
 }
 
 .carousel-control-prev-icon, .carousel-control-next-icon {
-    filter: invert(100%); /* Make sure icons are visible */
+    filter: invert(1);
     width: 20px;
     height: 20px;
 }
 
-.carousel-control-prev {
-    left: 20px; /* Adjust positioning */
+.carousel-control-prev { left: 20px; }
+.carousel-control-next { right: 20px; }
+
+@keyframes glowPulse {
+    0% { box-shadow: 0 0 5px #6c63ff88; }
+    50% { box-shadow: 0 0 20px #6c63ff; }
+    100% { box-shadow: 0 0 5px #6c63ff88; }
 }
 
-.carousel-control-next {
-    right: 20px;
-}
-
-@font-face {
-    font-family: 'ANKISH';
-    src: url('assets/fonts/ANKISH-V1-3.otf') format('truetype');
-    font-weight: normal;
-    font-style: italic;
-}
-
-h2 {
-    font-family: 'ANKISH', sans-serif;
-    font-size: 60px !important; /* Ensure font size is applied */
-}
-
-* {
-    font-size: inherit;
+.profile-img-container img:hover {
+    animation: glowPulse 2s infinite;
 }
