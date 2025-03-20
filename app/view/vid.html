@@ -86,6 +86,20 @@
     </div>
 
     <script>
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const storedFirstName = localStorage.getItem('FirstName');
+    const storedLastName = localStorage.getItem('LastName');
+
+    if (storedFirstName && storedLastName) {
+      const profileName = document.querySelector('.profile-name');
+      if (profileName.textContent.trim() === 'Your Name') {
+        profileName.textContent = `${storedFirstName} ${storedLastName}`;
+      }
+    }
+     });
+
     let isEditing = false;
     let carousel = new bootstrap.Carousel(document.getElementById('profileCarousel'));
 
