@@ -179,11 +179,10 @@
         
             const links = [];
             document.querySelectorAll('#usefulLinksList li').forEach(linkEl => {
-                const iconClass = linkEl.querySelector('i')?.className.trim();
-                const linkName = linkEl.querySelector('input')?.value.trim();
-                const linkUrl = linkEl.querySelector('input')?.getAttribute('data-url') || '#';
-                links.push({ iconClass, linkName, linkUrl });
-            });
+            const iconClass = linkEl.querySelector('select')?.value;
+            const linkUrl = linkEl.querySelector('input')?.value.trim();
+            links.push({ iconClass, linkName: '', linkUrl });
+                });
         
             try {
                 const response = await fetch('/save-full-profile', {
@@ -258,50 +257,42 @@
             addNewLink();
         });
         
-        function addNewLink(icon = "bi bi-link-45deg", text = "New Link", url = "#") {
-            const list = document.getElementById("usefulLinksList");
-        
-            const li = document.createElement("li");
-            li.className = "mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center justify-content-between";
-        
-            const iconPicker = document.createElement("select");
-            iconPicker.className = "form-select me-2";
-            for (let key in socialIcons) {
-                let option = document.createElement("option");
-                option.value = socialIcons[key];
-                option.innerText = key;
-                if (socialIcons[key] === icon) option.selected = true;
-                iconPicker.appendChild(option);
-            }
-        
-            const iconElement = document.createElement("i");
-            iconElement.className = icon + " me-2";
-        
-            const input = document.createElement("input");
-            input.type = "text";
-            input.className = "form-control me-2";
-            input.value = text;
-            input.setAttribute('data-url', url); // store url alongside the name
-        
-            const deleteBtn = document.createElement("button");
-            deleteBtn.className = "btn btn-danger btn-sm";
-            deleteBtn.innerHTML = "&#10006;";
-            deleteBtn.onclick = function () {
-                if (isEditing) {
-                    li.remove();
-                }
-            };
-        
-            iconPicker.addEventListener("change", function () {
-                iconElement.className = this.value + " me-2";
-            });
-        
-            li.appendChild(iconPicker);
-            li.appendChild(iconElement);
-            li.appendChild(input);
-            li.appendChild(deleteBtn);
-            list.appendChild(li);
+        function addNewLink(icon = "bi bi-link-45deg", url = "#") {
+    const list = document.getElementById("usefulLinksList");
+
+    const li = document.createElement("li");
+    li.className = "mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center justify-content-between";
+
+    const iconPicker = document.createElement("select");
+    iconPicker.className = "form-select me-2";
+    for (let key in socialIcons) {
+        let option = document.createElement("option");
+        option.value = socialIcons[key];
+        option.innerText = key;
+        if (socialIcons[key] === icon) option.selected = true;
+        iconPicker.appendChild(option);
+    }
+
+    const urlInput = document.createElement("input");
+    urlInput.type = "text";
+    urlInput.className = "form-control me-2";
+    urlInput.placeholder = "Enter URL";
+    urlInput.value = url;
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "btn btn-danger btn-sm";
+    deleteBtn.innerHTML = "&#10006;";
+    deleteBtn.onclick = function () {
+        if (isEditing) {
+            li.remove();
         }
+    };
+
+    li.appendChild(iconPicker);
+    li.appendChild(urlInput);
+    li.appendChild(deleteBtn);
+    list.appendChild(li);
+}
         </script>
 </body>
 </html>
