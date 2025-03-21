@@ -113,132 +113,195 @@
     </div>
 
     <script>
-
-
-    document.addEventListener('DOMContentLoaded', () => {
-    const storedFirstName = localStorage.getItem('FirstName');
-    const storedLastName = localStorage.getItem('LastName');
-
-    if (storedFirstName && storedLastName) {
-      const profileName = document.querySelector('.profile-name');
-      if (profileName.textContent.trim() === 'Your Name') {
-        profileName.textContent = `${storedFirstName} ${storedLastName}`;
-      }
-    }
-     });
-
-    let isEditing = false;
-    let carousel = new bootstrap.Carousel(document.getElementById('profileCarousel'));
-
-    const socialIcons = {
-        "Portfolio": "bi bi-link-45deg",
-        "GitHub": "bi bi-github",
-        "LinkedIn": "bi bi-linkedin",
-        "Twitter": "bi bi-twitter",
-        "Facebook": "bi bi-facebook",
-        "Instagram": "bi bi-instagram",
-        "YouTube": "bi bi-youtube",
-        "TikTok": "bi bi-tiktok"
-    };
-
-    document.getElementById("toggleEditMode").addEventListener("click", function() {
-        isEditing = !isEditing;
-        toggleEditState(isEditing);
-    });
-
-    function toggleEditState(editMode) {
-    document.querySelectorAll("[data-editable]").forEach(element => {
-        element.contentEditable = editMode;
-        element.style.border = editMode ? "1px dashed gray" : "none";
-    });
-
-    document.getElementById("profilePicInput").style.display = editMode ? "block" : "none";
-    document.getElementById("videoUpload").style.display = editMode ? "block" : "none";
-    document.getElementById("addVideoBtn").style.display = editMode ? "block" : "none";
-    document.getElementById("addLinkBtn").style.display = editMode ? "block" : "none";
-    document.querySelectorAll(".btn-danger").forEach(btn => btn.style.display = editMode ? "block" : "none"); // Update delete buttons
-
-    document.getElementById("toggleEditMode").textContent = editMode ? "Save Changes" : "Edit Profile";
-
-    if (editMode) {
-        carousel.pause();
-    } else {
-        carousel.cycle();
-    }
-}
-
-    document.getElementById("profilePic").addEventListener("click", function() {
-        if (isEditing) {
-            document.getElementById("profilePicInput").click();
-        }
-    });
-
-    document.getElementById("profilePicInput").addEventListener("change", function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            document.getElementById("profilePic").src = URL.createObjectURL(file);
-        }
-    });
-
-    document.getElementById("addVideoBtn").addEventListener("click", function() {
-        document.getElementById("videoUpload").click();
-    });
-
-    document.getElementById("videoUpload").addEventListener("change", function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            document.getElementById("videoSource").src = URL.createObjectURL(file);
-            document.querySelector("video").load();
-        }
-    });
-
-    document.getElementById("addLinkBtn").addEventListener("click", function() {
-        addNewLink();
-    });
-
-    function addNewLink(icon = "bi bi-link-45deg", text = "New Link", url = "#") {
-        const list = document.getElementById("usefulLinksList");
-
-        const li = document.createElement("li");
-        li.className = "mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center justify-content-between";
-
-        const iconPicker = document.createElement("select");
-        iconPicker.className = "form-select me-2";
-        for (let key in socialIcons) {
-            let option = document.createElement("option");
-            option.value = socialIcons[key];
-            option.innerText = key;
-            if (socialIcons[key] === icon) option.selected = true;
-            iconPicker.appendChild(option);
-        }
-
-        const iconElement = document.createElement("i");
-        iconElement.className = icon + " me-2";
+        async function loadUserProfile() {
+            const AccountID = 1; // Replace with dynamic value if needed
+            try {
+                const response = await fetch(`/get-user-profile/${AccountID}`);
+                const data = await response.json();
+                console.log('Loaded profile data:', data);
         
-        const input = document.createElement("input");
-        input.type = "text";
-        input.className = "form-control me-2";
-        input.value = text;
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "btn btn-danger btn-sm";
-        deleteBtn.innerHTML = "&#10006;";
-        deleteBtn.onclick = function() {
-            if (isEditing) {
-            li.remove();
+                if (data.profile) {
+                    document.getElementById('profilePic').src = data.profile.ProfileImage || '';
+                    document.getElementById('videoSource').src = data.profile.ProfileVideo || '';
+                    document.querySelector('video').load();
+                    document.querySelector('.profile-name').innerText = `${localStorage.getItem('FirstName')} ${localStorage.getItem('LastName')}`;
+                    document.querySelector('.carousel-item p[data-editable="true"]').innerText = data.profile.BioText || '';
+                    document.querySelector('.displayed-location').innerText = data.profile.DisplayLocation || '';
+                }
+        
+                if (data.links) {
+                    document.getElementById('usefulLinksList').innerHTML = ''; // clear old ones
+                    data.links.forEach(link => {
+                        addNewLink(link.IconClass, link.LinkName, link.LinkURL);
+                    });
+                }
+            } catch (err) {
+                console.error('❗Error loading profile data:', err);
             }
-        };
-
-        iconPicker.addEventListener("change", function() {
-            iconElement.className = this.value + " me-2";
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+        
+            const storedFirstName = localStorage.getItem('FirstName');
+            const storedLastName = localStorage.getItem('LastName');
+            if (storedFirstName && storedLastName) {
+                const profileName = document.querySelector('.profile-name');
+                if (profileName.textContent.trim() === 'Your Name') {
+                    profileName.textContent = `${storedFirstName} ${storedLastName}`;
+                }
+            }
         });
-
-        li.appendChild(iconPicker);
-        li.appendChild(iconElement);
-        li.appendChild(input);
-        li.appendChild(deleteBtn);
-        list.appendChild(li);
-    }
-    </script>
+        
+        let isEditing = false;
+        let carousel = new bootstrap.Carousel(document.getElementById('profileCarousel'));
+        
+        const socialIcons = {
+            "Portfolio": "bi bi-link-45deg",
+            "GitHub": "bi bi-github",
+            "LinkedIn": "bi bi-linkedin",
+            "Twitter": "bi bi-twitter",
+            "Facebook": "bi bi-facebook",
+            "Instagram": "bi bi-instagram",
+            "YouTube": "bi bi-youtube",
+            "TikTok": "bi bi-tiktok"
+        };
+        
+        async function saveFullProfileToDatabase() {
+            const AccountID = 1; // Replace with dynamic retrieval if needed!
+        
+            const profileData = {
+                description: document.querySelector('.carousel-item p[data-editable="true"]')?.innerText || '',
+                displayed_location: document.querySelector('.displayed-location')?.innerText || '',
+                profile_picture_url: document.getElementById('profilePic').src,
+                profile_video_url: document.getElementById('videoSource').src
+            };
+        
+            const links = [];
+            document.querySelectorAll('#usefulLinksList li').forEach(linkEl => {
+                const iconClass = linkEl.querySelector('i')?.className.trim();
+                const linkName = linkEl.querySelector('input')?.value.trim();
+                const linkUrl = linkEl.querySelector('input')?.getAttribute('data-url') || '#';
+                links.push({ iconClass, linkName, linkUrl });
+            });
+        
+            try {
+                const response = await fetch('/save-full-profile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ AccountID, profileData, links })
+                });
+                const result = await response.json();
+                alert(result.message || 'Profile saved!');
+            } catch (err) {
+                console.error('❗Error saving full profile:', err);
+                alert('Save failed.');
+            }
+        }
+        
+        document.getElementById("toggleEditMode").addEventListener("click", async function () {
+            if (isEditing) {
+                // Save before leaving edit mode
+                await saveFullProfileToDatabase();
+            }
+            isEditing = !isEditing;
+            toggleEditState(isEditing);
+        });
+        
+        function toggleEditState(editMode) {
+            document.querySelectorAll("[data-editable]").forEach(element => {
+                element.contentEditable = editMode;
+                element.style.border = editMode ? "1px dashed gray" : "none";
+            });
+        
+            document.getElementById("profilePicInput").style.display = editMode ? "block" : "none";
+            document.getElementById("videoUpload").style.display = editMode ? "block" : "none";
+            document.getElementById("addVideoBtn").style.display = editMode ? "block" : "none";
+            document.getElementById("addLinkBtn").style.display = editMode ? "block" : "none";
+            document.querySelectorAll(".btn-danger").forEach(btn => btn.style.display = editMode ? "block" : "none");
+        
+            document.getElementById("toggleEditMode").textContent = editMode ? "Save Changes" : "Edit Profile";
+        
+            if (editMode) {
+                carousel.pause();
+            } else {
+                carousel.cycle();
+            }
+        }
+        
+        document.getElementById("profilePic").addEventListener("click", function () {
+            if (isEditing) {
+                document.getElementById("profilePicInput").click();
+            }
+        });
+        
+        document.getElementById("profilePicInput").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById("profilePic").src = URL.createObjectURL(file);
+            }
+        });
+        
+        document.getElementById("addVideoBtn").addEventListener("click", function () {
+            document.getElementById("videoUpload").click();
+        });
+        
+        document.getElementById("videoUpload").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById("videoSource").src = URL.createObjectURL(file);
+                document.querySelector("video").load();
+            }
+        });
+        
+        document.getElementById("addLinkBtn").addEventListener("click", function () {
+            addNewLink();
+        });
+        
+        function addNewLink(icon = "bi bi-link-45deg", text = "New Link", url = "#") {
+            const list = document.getElementById("usefulLinksList");
+        
+            const li = document.createElement("li");
+            li.className = "mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center justify-content-between";
+        
+            const iconPicker = document.createElement("select");
+            iconPicker.className = "form-select me-2";
+            for (let key in socialIcons) {
+                let option = document.createElement("option");
+                option.value = socialIcons[key];
+                option.innerText = key;
+                if (socialIcons[key] === icon) option.selected = true;
+                iconPicker.appendChild(option);
+            }
+        
+            const iconElement = document.createElement("i");
+            iconElement.className = icon + " me-2";
+        
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "form-control me-2";
+            input.value = text;
+            input.setAttribute('data-url', url); // store url alongside the name
+        
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "btn btn-danger btn-sm";
+            deleteBtn.innerHTML = "&#10006;";
+            deleteBtn.onclick = function () {
+                if (isEditing) {
+                    li.remove();
+                }
+            };
+        
+            iconPicker.addEventListener("change", function () {
+                iconElement.className = this.value + " me-2";
+            });
+        
+            li.appendChild(iconPicker);
+            li.appendChild(iconElement);
+            li.appendChild(input);
+            li.appendChild(deleteBtn);
+            list.appendChild(li);
+        }
+        </script>
 </body>
 </html>

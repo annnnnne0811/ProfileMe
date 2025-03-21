@@ -109,6 +109,30 @@ static async getUserProfileAndLinksByProfileID(ProfileID) {
     }
 }
 
+// Delete all links for a given ProfileID
+static async deleteLinksForProfile(ProfileID) {
+    const connection = await this.createConnection();
+    try {
+        await connection.execute(
+            'DELETE FROM user_links WHERE ProfileID = ?', 
+            [ProfileID]
+        );
+    } finally {
+        await connection.end();
+    }
+}
+
+static async getUserProfileAndLinks(AccountID) {
+    const connection = await this.createConnection();
+    try {
+        const [profile] = await connection.execute(
+            'SELECT * FROM user_profile WHERE AccountID = ?', [AccountID]
+        );
+        return { profile: profile[0] }; 
+    } finally {
+        await connection.end();
+    }
+}
 
 
 }

@@ -101,32 +101,20 @@ exports.saveUserProfile = async (req, res) => {
     }
 };
 
-// Add user link
-exports.addUserLink = async (req, res) => {
-    const { AccountID, link_name, link_url } = req.body;
+// Get user profile and links using the correct function
+exports.getUserProfileAndLinks = async (req, res) => {
+    const { accountId } = req.params;
 
     try {
-        await authModel.addUserLink(AccountID, link_name, link_url);
-        res.status(200).json({ message: 'Link added successfully!' });
-    } catch (error) {
-        console.error('Error adding link:', error);
-        res.status(500).json({ message: 'Internal server error.' });
-    }
-};
-
-// Get user profile and links
-exports.getUserProfile = async (req, res) => {
-    const { AccountID } = req.params;
-
-    try {
-        const data = await authModel.getUserProfileAndLinks(AccountID);
+        const data = await authModel.getUserProfileAndLinks(accountId);
         res.status(200).json(data);
     } catch (error) {
-        console.error('Error fetching profile:', error);
+        console.error('Error fetching user profile and links:', error);
         res.status(500).json({ message: 'Internal server error.' });
     }
 };
 
+// Add user link
 exports.addUserLink = async (req, res) => {
     const { ProfileID, iconClass, linkText, linkUrl } = req.body;
 
@@ -139,14 +127,40 @@ exports.addUserLink = async (req, res) => {
     }
 };
 
-exports.getUserProfileAndLinks = async (req, res) => {
-    const { profileId } = req.params;
+// Save full profile data and links using the correct function to fetch profile
+exports.saveFullProfile = async (req, res) => {
+    const { AccountID, profileData, links } = req.body;
 
     try {
-        const data = await authModel.getUserProfileAndLinksByProfileID(profileId);
-        res.status(200).json(data);
+        // Save or update profile data
+        await authModel.createOrUpdateUserProfile(AccountID, profileData);
+
+        // Get ProfileID from the user's profile using the correct function
+        const userProfile = await authModel.getUserProfileAndLinks(AccountID);
+        const ProfileID = userProfile.profile?.ProfileID;
+
+        if (ProfileID) {
+            // Delete old links and add new ones
+            await authModel.deleteLinksForProfile(ProfileID);
+            for (const link of links) {
+                await authModel.addUserLink(ProfileID, link.iconClass, link.linkName, link.linkUrl);
+            }
+        }
+
+        res.status(200).json({ message: 'Full profile and links saved successfully!' });
     } catch (error) {
-        console.error('Error fetching user profile and links:', error);
+        console.error('Error saving full profile:', error);
         res.status(500).json({ message: 'Internal server error.' });
+    }
+};
+
+exports.getUserProfileByAccountId = async (req, res) => {
+    const { accountId } = req.params;
+    try {
+        const data = await authModel.getUserProfileAndLinks(accountId);
+        res.json(data);
+    } catch (err) {
+        console.error('Error loading profile:', err);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
