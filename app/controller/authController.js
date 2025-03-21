@@ -126,3 +126,27 @@ exports.getUserProfile = async (req, res) => {
         res.status(500).json({ message: 'Internal server error.' });
     }
 };
+
+exports.addUserLink = async (req, res) => {
+    const { ProfileID, iconClass, linkText, linkUrl } = req.body;
+
+    try {
+        await authModel.addUserLink(ProfileID, iconClass, linkText, linkUrl);
+        res.status(201).json({ message: 'Link added successfully!' });
+    } catch (error) {
+        console.error('Error adding user link:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+};
+
+exports.getUserProfileAndLinks = async (req, res) => {
+    const { profileId } = req.params;
+
+    try {
+        const data = await authModel.getUserProfileAndLinksByProfileID(profileId);
+        res.status(200).json(data);
+    } catch (error) {
+        console.error('Error fetching user profile and links:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+};

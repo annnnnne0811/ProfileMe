@@ -66,34 +66,51 @@ class AuthModel {
         }
     }
 
-// Add a new user link
-static async addUserLink(AccountID, link_name, link_url) {
+// Add a new user link (using ProfileID and correct fields)
+static async addUserLink(ProfileID, iconClass, linkText, linkUrl) {
     const connection = await this.createConnection();
     try {
         await connection.execute(
-            'INSERT INTO user_links (AccountID, link_name, link_url) VALUES (?, ?, ?)',
-            [AccountID, link_name, link_url]
-        );
+            'INSERT INTO user_links (ProfileID, IconClass, LinkName, LinkURL) VALUES (?, ?, ?, ?)',
+            [ProfileID, iconClass, linkText, linkUrl]
+          );
     } finally {
         await connection.end();
     }
 }
 
-// Fetch user profile and their links
-static async getUserProfileAndLinks(AccountID) {
+// Fetch all links for a given profile
+static async getUserLinks(ProfileID) {
+    const connection = await this.createConnection();
+    try {
+        const [rows] = await connection.execute(
+            'SELECT LinkID, IconClass, LinkName, LinkURL FROM user_links WHERE ProfileID = ?',
+            [ProfileID]
+        );
+        return rows;
+    } finally {
+        await connection.end();
+    }
+}
+
+// Fetch profile by ProfileID (safer if linking by profiles)
+static async getUserProfileAndLinksByProfileID(ProfileID) {
     const connection = await this.createConnection();
     try {
         const [profile] = await connection.execute(
-            'SELECT * FROM user_profile WHERE AccountID = ?', [AccountID]
+            'SELECT * FROM user_profile WHERE ProfileID = ?', [ProfileID]
         );
         const [links] = await connection.execute(
-            'SELECT link_name, link_url FROM user_links WHERE AccountID = ?', [AccountID]
+            'SELECT IconClass, LinkName, LinkURL FROM user_links WHERE ProfileID = ?', [ProfileID]
         );
         return { profile: profile[0], links };
     } finally {
         await connection.end();
     }
 }
+
+
+
 }
 
 

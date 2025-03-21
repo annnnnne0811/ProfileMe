@@ -53,6 +53,9 @@ app.post('/save-profile', authController.saveUserProfile);
 app.post('/add-link', authController.addUserLink);
 app.get('/user-profile/:AccountID', authController.getUserProfile);
 
+app.post('/add-link', authController.addUserLink);
+app.get('/profile/:profileId', authController.getUserProfileAndLinks);
+
 
 // Catch-all for unknown routes
 app.use((req, res) => {
