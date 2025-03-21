@@ -149,3 +149,25 @@ CREATE TABLE `jobs` (
   `DatePosted` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`JobID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE IF NOT EXISTS user_profile (
+    ProfileID INT AUTO_INCREMENT PRIMARY KEY,
+    AccountID INT NOT NULL,
+    ProfileImage VARCHAR(500),
+    ProfileVideo VARCHAR(500),
+    BioText TEXT,
+    DisplayLocation VARCHAR(255),
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (AccountID) REFERENCES account(AccountID) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS user_links (
+    LinkID INT AUTO_INCREMENT PRIMARY KEY,
+    ProfileID INT NOT NULL,
+    LinkName VARCHAR(255),
+    LinkURL VARCHAR(500),
+    IconClass VARCHAR(100), 
+    FOREIGN KEY (ProfileID) REFERENCES user_profile(ProfileID) ON DELETE CASCADE
+);

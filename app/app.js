@@ -49,6 +49,11 @@ app.get('/get-jobs', async (req, res) => {
 
 
 
+app.post('/save-profile', authController.saveUserProfile);
+app.post('/add-link', authController.addUserLink);
+app.get('/user-profile/:AccountID', authController.getUserProfile);
+
+
 // Catch-all for unknown routes
 app.use((req, res) => {
     console.log(`❓ Unhandled route: ${req.method} ${req.url}`);

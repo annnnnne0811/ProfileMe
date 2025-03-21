@@ -41,7 +41,61 @@ class AuthModel {
             await connection.end(); 
         }
     }
+    // Save or update user profile in DB
+    static async createOrUpdateUserProfile(AccountID, profileData) {
+        const connection = await this.createConnection();
+        const { description, displayed_location, profile_picture_url, profile_video_url } = profileData;
+        try {
+            await connection.execute(
+                `
+                INSERT INTO user_profile (AccountID, ProfileImage, ProfileVideo, BioText, DisplayLocation)
+                VALUES (?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                    ProfileImage = COALESCE(VALUES(ProfileImage), ProfileImage),
+                    ProfileVideo = COALESCE(VALUES(ProfileVideo), ProfileVideo),
+                    BioText = COALESCE(VALUES(BioText), BioText),
+                    DisplayLocation = COALESCE(VALUES(DisplayLocation), DisplayLocation)
+                `,
+                [AccountID, profile_picture_url, profile_video_url, description, displayed_location]
+            );
+        } catch (error) {
+            console.error("Error saving user profile:", error.sqlMessage || error);
+            throw error;
+        } finally {
+            await connection.end();
+        }
+    }
+
+// Add a new user link
+static async addUserLink(AccountID, link_name, link_url) {
+    const connection = await this.createConnection();
+    try {
+        await connection.execute(
+            'INSERT INTO user_links (AccountID, link_name, link_url) VALUES (?, ?, ?)',
+            [AccountID, link_name, link_url]
+        );
+    } finally {
+        await connection.end();
+    }
 }
+
+// Fetch user profile and their links
+static async getUserProfileAndLinks(AccountID) {
+    const connection = await this.createConnection();
+    try {
+        const [profile] = await connection.execute(
+            'SELECT * FROM user_profile WHERE AccountID = ?', [AccountID]
+        );
+        const [links] = await connection.execute(
+            'SELECT link_name, link_url FROM user_links WHERE AccountID = ?', [AccountID]
+        );
+        return { profile: profile[0], links };
+    } finally {
+        await connection.end();
+    }
+}
+}
+
 
 // export model
 module.exports = AuthModel;
