@@ -3,7 +3,7 @@ const mysql = require('mysql2/promise');
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: '270202',
+    password: 'root',
     database: 'ProfileMe'
 };
 
@@ -66,75 +66,73 @@ class AuthModel {
         }
     }
 
-// Add a new user link (using ProfileID and correct fields)
-static async addUserLink(ProfileID, iconClass, linkText, linkUrl) {
-    const connection = await this.createConnection();
-    try {
-        await connection.execute(
-            'INSERT INTO user_links (ProfileID, IconClass, LinkName, LinkURL) VALUES (?, ?, ?, ?)',
-            [ProfileID, iconClass, linkText, linkUrl]
-          );
-    } finally {
-        await connection.end();
+    // Add a new user link (using ProfileID and correct fields)
+    static async addUserLink(ProfileID, iconClass, linkText, linkUrl) {
+        const connection = await this.createConnection();
+        try {
+            await connection.execute(
+                'INSERT INTO user_links (ProfileID, IconClass, LinkName, LinkURL) VALUES (?, ?, ?, ?)',
+                [ProfileID, iconClass, linkText, linkUrl]
+            );
+        } finally {
+            await connection.end();
+        }
     }
-}
 
-// Fetch all links for a given profile
-static async getUserLinks(ProfileID) {
-    const connection = await this.createConnection();
-    try {
-        const [rows] = await connection.execute(
-            'SELECT LinkID, IconClass, LinkName, LinkURL FROM user_links WHERE ProfileID = ?',
-            [ProfileID]
-        );
-        return rows;
-    } finally {
-        await connection.end();
+    // Fetch all links for a given profile
+    static async getUserLinks(ProfileID) {
+        const connection = await this.createConnection();
+        try {
+            const [rows] = await connection.execute(
+                'SELECT LinkID, IconClass, LinkName, LinkURL FROM user_links WHERE ProfileID = ?',
+                [ProfileID]
+            );
+            return rows;
+        } finally {
+            await connection.end();
+        }
     }
-}
 
-// Fetch profile by ProfileID (safer if linking by profiles)
-static async getUserProfileAndLinksByProfileID(ProfileID) {
-    const connection = await this.createConnection();
-    try {
-        const [profile] = await connection.execute(
-            'SELECT * FROM user_profile WHERE ProfileID = ?', [ProfileID]
-        );
-        const [links] = await connection.execute(
-            'SELECT IconClass, LinkName, LinkURL FROM user_links WHERE ProfileID = ?', [ProfileID]
-        );
-        return { profile: profile[0], links };
-    } finally {
-        await connection.end();
+    // Fetch profile by ProfileID (safer if linking by profiles)
+    static async getUserProfileAndLinksByProfileID(ProfileID) {
+        const connection = await this.createConnection();
+        try {
+            const [profile] = await connection.execute(
+                'SELECT * FROM user_profile WHERE ProfileID = ?', [ProfileID]
+            );
+            const [links] = await connection.execute(
+                'SELECT IconClass, LinkName, LinkURL FROM user_links WHERE ProfileID = ?', [ProfileID]
+            );
+            return { profile: profile[0], links };
+        } finally {
+            await connection.end();
+        }
     }
-}
 
-// Delete all links for a given ProfileID
-static async deleteLinksForProfile(ProfileID) {
-    const connection = await this.createConnection();
-    try {
-        await connection.execute(
-            'DELETE FROM user_links WHERE ProfileID = ?', 
-            [ProfileID]
-        );
-    } finally {
-        await connection.end();
+    // Delete all links for a given ProfileID
+    static async deleteLinksForProfile(ProfileID) {
+        const connection = await this.createConnection();
+        try {
+            await connection.execute(
+                'DELETE FROM user_links WHERE ProfileID = ?', 
+                [ProfileID]
+            );
+        } finally {
+            await connection.end();
+        }
     }
-}
 
-static async getUserProfileAndLinks(AccountID) {
-    const connection = await this.createConnection();
-    try {
-        const [profile] = await connection.execute(
-            'SELECT * FROM user_profile WHERE AccountID = ?', [AccountID]
-        );
-        return { profile: profile[0] }; 
-    } finally {
-        await connection.end();
+    static async getUserProfileAndLinks(AccountID) {
+        const connection = await this.createConnection();
+        try {
+            const [profile] = await connection.execute(
+                'SELECT * FROM user_profile WHERE AccountID = ?', [AccountID]
+            );
+            return { profile: profile[0] }; 
+        } finally {
+            await connection.end();
+        }
     }
-}
-
-
 }
 
 

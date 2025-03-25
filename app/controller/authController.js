@@ -54,6 +54,13 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials.' });
         }
 
+        // user session 
+        req.session.user = {
+            AccountID: user.AccountID,
+            FirstName: user.FirstName,
+            LastName: user.LastName
+        };
+
         res.status(200).json({ 
             message: 'Login successful!',
             AccountID: user.AccountID,
@@ -64,6 +71,17 @@ exports.login = async (req, res) => {
         console.error('Error during login:', error);
         res.status(500).json({ message: 'Internal server error.' });
     }
+};
+
+// logout of user session
+exports.logout = (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json({ message: 'Logout failed.' });
+        }
+        res.clearCookie('connect.sid');
+        res.json({ message: 'Logged out successfully.' });
+    });
 };
 
 exports.postJob = async (req, res) => {

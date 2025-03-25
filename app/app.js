@@ -4,6 +4,10 @@ const authController = require('./controller/authController');
 const path = require('path'); 
 const mysql = require('mysql2/promise');
 
+// for user-session implementation and middleware
+const session = require('express-session');
+const requireLogin = require('./model/authMiddleware');
+
 const app = express(); 
 
 console.log('✅ app.js loaded — setting up middleware and routes...');
@@ -17,11 +21,28 @@ app.use((req, res, next) => {
     next();
 });
 
+// setting up session
+app.use(session({
+    secret: 'thisIsTheKey',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        httpOnly: true
+    }
+}));
+
 app.use(express.static(path.join(__dirname, 'view')));
 
 app.post('/register', authController.register); 
 app.post('/login', authController.login); 
+app.post('/logout', authController.logout);
 app.post('/post-job', authController.postJob);
+app.post('/post-job', requireLogin, authController.postJob);
+app.post('/save-profile', requireLogin, authController.saveUserProfile);
+app.post('/add-link', requireLogin, authController.addUserLink);
+app.post('/save-full-profile', requireLogin, authController.saveFullProfile);
+app.get('/get-user-profile/:accountId', requireLogin, authController.getUserProfileAndLinks);
 
 app.get('/', (req, res) => {
     console.log('➡️  Serving index.html');
@@ -32,7 +53,7 @@ app.get('/', (req, res) => {
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: '270202',
+    password: 'root',
     database: 'ProfileMe'
 };
 app.get('/get-jobs', async (req, res) => {
