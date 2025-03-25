@@ -114,11 +114,26 @@
 
     <script>
         async function loadUserProfile() {
-            const AccountID = 1; // Replace with dynamic value if needed
+
+            // const AccountID = 1; // Replace with dynamic value if needed
+
             try {
-                const response = await fetch(`/get-user-profile/${AccountID}`);
+                // checks if user is logged in to view page
+                const sessionRes = await fetch('/check-session', { credentials: 'include' });
+                if (!sessionRes.ok) {
+                    alert("You must be logged in to view this page.");
+                    window.location.href = '/index.html';
+                    return;
+                }
+
+                const session = await sessionRes.json();
+                const response = await fetch(`/get-user-profile/${session.AccountID}`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
                 const data = await response.json();
-                console.log('Loaded profile data:', data);
+                console.log('Loaded profile data:', data)
         
                 if (data.profile) {
                     document.getElementById('profilePic').src = data.profile.ProfileImage || '';
@@ -140,6 +155,8 @@
             }
         }
         
+        /* code not needed as data will be fetched from db
+
         document.addEventListener('DOMContentLoaded', () => {
             loadUserProfile();
         
@@ -152,7 +169,8 @@
                 }
             }
         });
-        
+
+        */
         let isEditing = false;
         let carousel = new bootstrap.Carousel(document.getElementById('profileCarousel'));
         
@@ -168,26 +186,34 @@
         };
         
         async function saveFullProfileToDatabase() {
-            const AccountID = 1; // Replace with dynamic retrieval if needed!
-        
-            const profileData = {
-                description: document.querySelector('.carousel-item p[data-editable="true"]')?.innerText || '',
-                displayed_location: document.querySelector('.displayed-location')?.innerText || '',
-                profile_picture_url: document.getElementById('profilePic').src,
-                profile_video_url: document.getElementById('videoSource').src
-            };
-        
-            const links = [];
-            document.querySelectorAll('#usefulLinksList li').forEach(linkEl => {
-            const iconClass = linkEl.querySelector('select')?.value;
-            const linkUrl = linkEl.querySelector('input')?.value.trim();
-            links.push({ iconClass, linkName: '', linkUrl });
-                });
-        
+
+            // const AccountID = 1; // Replace with dynamic retrieval if needed!
             try {
+                const sessionRes = await fetch('/check-session', { credentials: 'include' });
+                if (!sessionRes.ok) return alert("Session expired. Please log in again.");
+
+                const session = await sessionRes.json();
+                const AccountID = session.AccountID;
+
+                const profileData = {
+                    description: document.querySelector('.carousel-item p[data-editable="true"]')?.innerText || '',
+                    displayed_location: document.querySelector('.displayed-location')?.innerText || '',
+                    profile_picture_url: document.getElementById('profilePic').src,
+                    profile_video_url: document.getElementById('videoSource').src
+                };
+                
+                const links = [];
+                    document.querySelectorAll('#usefulLinksList li').forEach(linkEl => {
+                    const iconClass = linkEl.querySelector('select')?.value;
+                    const linkUrl = linkEl.querySelector('input')?.value.trim();
+                    links.push({ iconClass, linkName: '', linkUrl });
+                });
+                
+                    
                 const response = await fetch('/save-full-profile', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({ AccountID, profileData, links })
                 });
                 const result = await response.json();
@@ -197,6 +223,8 @@
                 alert('Save failed.');
             }
         }
+
+        document.addEventListener('DOMContentLoaded', loadUserProfile);
         
         document.getElementById("toggleEditMode").addEventListener("click", async function () {
             if (isEditing) {

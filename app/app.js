@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'view')));
 app.post('/register', authController.register); 
 app.post('/login', authController.login); 
 app.post('/logout', authController.logout);
-app.post('/post-job', authController.postJob);
+app.get('/check-session', authController.checkSession);
 app.post('/post-job', requireLogin, authController.postJob);
 app.post('/save-profile', requireLogin, authController.saveUserProfile);
 app.post('/add-link', requireLogin, authController.addUserLink);
