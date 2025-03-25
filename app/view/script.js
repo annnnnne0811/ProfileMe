@@ -1,76 +1,89 @@
-document.addEventListener('DOMContentLoaded', () => {
+/* 
 
-    // login form
-    const loginForm = document.querySelector('#loginModal form');
+can move reused script code for html files here and then link using 
+
+<script src="script.js"></script>
+
+in the necessary html files if we want
+*/
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+    
+    // checks session on load
+    try {
+        const sessionRes = await fetch('/check-session', { credentials: 'include' });
+        if (!sessionRes.ok) return;
+
+        const session = await sessionRes.json();
+
+        // updates sidebar/profile display
+        const sidebarTitle = document.getElementById('sidebarMenuLabel');
+        if (sidebarTitle) {
+            sidebarTitle.textContent = `${session.FirstName} ${session.LastName}`;
+        }
+
+        // logout button
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.classList.remove('d-none');
+        }
+    } catch (err) {
+        console.error('Session check failed:', err);
+    }
+
+    // login form (index.html)
+    const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); 
+            e.preventDefault();
+            const Email = document.getElementById('loginEmail').value;
+            const Password = document.getElementById('loginPassword').value;
 
-            const emailInput = document.getElementById('loginEmail');
-            const passwordInput = document.getElementById('password');
-
-            // checks if elements exist
-            if (!emailInput || !passwordInput) {
-                console.error('Login form elements not found');
-                return;
-            }
-
-            const email = emailInput.value;
-            const password = passwordInput.value;
-
-            // POST request to /register API
             try {
                 const response = await fetch('/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ Email: email, Password: password })
+                    credentials: 'include',
+                    body: JSON.stringify({ Email, Password })
                 });
 
                 const data = await response.json();
-                alert(data.message); 
-
-                if (response.ok) {
-                    window.location.href = '/'; // redirect to home
-                }
-            } catch (error) {
-                console.error('Error during login:', error);
+                alert(data.message);
+                if (response.ok) window.location.reload();
+            } catch (err) {
+                console.error('Login failed:', err);
+                alert('Login failed.');
             }
         });
     }
 
-    // register form
-    const registerForm = document.querySelector('#registerModal form');
+    // register form (index.html)
+    const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // gets values
-            const firstName = document.getElementById('registerFirstName').value;
-            const lastName = document.getElementById('registerLastName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const dateOfBirth = document.getElementById('registerDateOfBirth').value;
+            const FirstName = document.getElementById('registerFirstName').value;
+            const LastName = document.getElementById('registerLastName').value;
+            const Email = document.getElementById('registerEmail').value;
+            const Password = document.getElementById('registerPassword').value;
+            const DateOfBirth = document.getElementById('registerDOB').value;
 
-            // ensures all fields are filled
-            if (!firstName || !lastName || !email || !password || !dateOfBirth) {
-                alert('Please fill in all fields.');
-                return;
-            }
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ FirstName, LastName, Email, Password, DateOfBirth })
+                });
 
-            // POST request to /register API
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ FirstName: firstName, LastName: lastName, Email: email, Password: password, DateOfBirth: dateOfBirth })
-            });
-
-            const data = await response.json();
-            alert(data.message); 
-
-            if (response.ok) {
-                // closes modal on success
-                const modal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
-                modal.hide();
+                const data = await response.json();
+                alert(data.message);
+                if (response.ok) window.location.reload();
+            } catch (err) {
+                console.error('Registration failed:', err);
+                alert('Registration failed.');
             }
         });
     }
