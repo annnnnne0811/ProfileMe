@@ -97,3 +97,62 @@
 .dark-mode .sidebar a:hover {
     background-color: #555;
 }
+
+.hero {
+    background: url('assets/working_laptop.jpg') no-repeat center center/cover;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: black;
+    position: relative;
+}
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+}
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+.feature-box {
+    background-color: #e0e7ff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+
+.video-btn {
+    background-color: #28a745 !important; /* Green color */
+    color: blueviolet !important;
+    padding: 14px 28px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    border-radius: 50px !important;
+    border: 2px solid #1e7e34 !important;
+    transition: all 0.3s ease-in-out !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    display: inline-block !important; /* Ensures it's treated as a button */
+    text-align: center !important;
+    text-decoration: none !important; /* Removes underline */
+}
+
+.video-btn:hover {
+    background-color: #218838 !important;
+    border-color: #19692c !important;
+    transform: translateY(-2px) !important;
+}
+
+.video-btn:active {
+    background-color: #1e7e34 !important;
+    transform: translateY(2px) !important;
+}

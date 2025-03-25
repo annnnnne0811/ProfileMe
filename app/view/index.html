@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        
+    </style>
+</head>
+<body>
+    
+
+    <!-- modal for login logic -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm"> 
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- ref button -->
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- same modal thingy but with extra field for password added-->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id = "registerForm">
+                        <div class="mb-3">
+                            <label for="registerFirstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="registerFirstName" placeholder="Enter first name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerLastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="registerLastName" placeholder="Enter last name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="registerEmail" placeholder="Enter email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerDateOfBirth" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="registerDateOfBirth">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="registerPassword" placeholder="Enter password">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </form>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <nav class="navbar navbar-light bg-light p-3">
+        <div class="container">
+            <!-- Burger button to toggle sidebar -->
+<button class="btn btn-outline-dark m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+    ☰ Menu
+</button>
+            <a class="navbar-brand" href="#">
+                <img src="/assets/logo_fant_5.png" alt="FAQ Logo" width="50">
+            </a>
+           
+
+<!-- Sidebar (offcanvas) menu -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="sidebarMenuLabel">Menu</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column gap-2">
+    <a href="vid.html" class="btn btn-success">My UCV</a>
+    <a href="seeker-dashboard.html" class="btn btn-primary">My Dashboard</a>
+    <button class="btn btn-outline-dark" id="registerBtn" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+    <button class="btn btn-outline-dark login-btn" id="loginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+    <button class="btn btn-danger d-none" id="logoutBtn">Logout</button>
+  </div>
+</div>
+    </nav>
+    
+    <section class="hero">
+        <div class="hero-content container">
+            <h1>Your Dream Job is one click away!</h1>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Find your Ideal Job...">
+                <button class="btn btn-primary">Search!</button>
+            </div>
+            <p><strong>I’m searching for someone</strong></p>
+            <button class="btn btn-outline-dark">Get started</button>
+        </div>
+    </section>
+    
+    <section class="container text-center my-5">
+        <h2>Why choose PROFILEME</h2>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <h4>Easy Profile Creation</h4>
+                    <p>Create your professional profile in minutes</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <h4>Smart Matching</h4>
+                    <p>Get job recommendations based on your skills and experience.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <h4>Verified Recruiters</h4>
+                    <p>Connect with top recruiters and trusted companies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="text-center py-3">
+        <img src="assets/logo_fant_5.png" alt="Fantastic 5 Logo" width="80">
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            function updateSidebarGreeting() {
+            const firstName = localStorage.getItem('FirstName');
+            const lastName = localStorage.getItem('LastName');
+            const sidebarTitle = document.getElementById('sidebarMenuLabel');
+            if (firstName && lastName) {
+            sidebarTitle.textContent = `Welcome, ${firstName} ${lastName}!`;
+                } else {
+                sidebarTitle.textContent = 'Menu';
+            }
+        }
+            // Check for persistent login
+            if (localStorage.getItem('loggedIn') === 'true') {
+                document.getElementById('loginBtn').classList.add('d-none');
+                document.getElementById('registerBtn').classList.add('d-none');
+                document.getElementById('logoutBtn').classList.remove('d-none');
+                updateSidebarGreeting();
+            }
+    
+            // Registration handling
+            const registerForm = document.getElementById('registerForm');
+            registerForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+    
+                const FirstName = document.getElementById('registerFirstName').value;
+                const LastName = document.getElementById('registerLastName').value;
+                const Email = document.getElementById('registerEmail').value;
+                const DateOfBirth = document.getElementById('registerDateOfBirth').value;
+                const Password = document.getElementById('registerPassword').value;
+    
+                const userData = { FirstName, LastName, Email, Password, DateOfBirth };
+    
+                try {
+                    const response = await fetch('/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(userData)
+                    });
+    
+                    const result = await response.json();
+                    console.log('✅ Server response:', result);
+                    alert(result.message || 'Registered successfully!');
+    
+                    // Auto-login after registration
+                    document.getElementById('loginBtn').classList.add('d-none');
+                    document.getElementById('registerBtn').classList.add('d-none');
+                    document.getElementById('logoutBtn').classList.remove('d-none');
+    
+                    localStorage.setItem('loggedIn', 'true'); // Store login state
+
+                    localStorage.setItem('FirstName', result.FirstName);
+                    localStorage.setItem('LastName', result.LastName);
+                        updateSidebarGreeting();
+    
+                    // Close modal
+                    const registerModal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
+                    if (registerModal) registerModal.hide();
+    
+                } catch (error) {
+                    console.error('❗Error registering:', error);
+                    alert('Registration failed.');
+                }
+            });
+    
+            // Login handling
+            const loginForm = document.querySelector('#loginModal form');
+            loginForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+    
+                const Email = document.getElementById('loginEmail').value;
+                const Password = document.getElementById('password').value;
+    
+                try {
+                    const response = await fetch('/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ Email, Password })
+                    });
+    
+                    const result = await response.json();
+                    console.log('✅ Login response:', result);
+    
+                    if (response.ok) {
+                        alert(result.message || 'Login successful!');
+                        
+                        document.getElementById('loginBtn').classList.add('d-none');
+                        document.getElementById('registerBtn').classList.add('d-none');
+                        document.getElementById('logoutBtn').classList.remove('d-none');
+    
+                        localStorage.setItem('loggedIn', 'true'); // Store login state
+                        
+                        localStorage.setItem('FirstName', result.FirstName);
+                        localStorage.setItem('LastName', result.LastName);
+                        updateSidebarGreeting();
+    
+                        // Close modal
+                        const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                        if (loginModal) loginModal.hide();
+                    } else {
+                        alert(result.message || 'Login failed!');
+                    }
+    
+                } catch (error) {
+                    console.error('❗Error logging in:', error);
+                    alert('Login error occurred.');
+                }
+            });
+    
+            // Logout handling
+            const logoutBtn = document.getElementById('logoutBtn');
+            logoutBtn.addEventListener('click', () => {
+                document.getElementById('loginBtn').classList.remove('d-none');
+                document.getElementById('registerBtn').classList.remove('d-none');
+                document.getElementById('logoutBtn').classList.add('d-none');
+                localStorage.removeItem('loggedIn'); // Clear login state
+                localStorage.removeItem('FirstName');
+                localStorage.removeItem('LastName');
+                updateSidebarGreeting();
+                alert('You have been logged out.');
+            });
+        });
+    </script>
+
+</body>
+</html>

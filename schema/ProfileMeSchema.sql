@@ -135,3 +135,39 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2025-03-10 21:04:04
+
+--
+-- Table structure for table `jobs`
+--
+
+DROP TABLE IF EXISTS `jobs`;
+CREATE TABLE `jobs` (
+  `JobID` int NOT NULL AUTO_INCREMENT,
+  `Title` varchar(255) NOT NULL,
+  `Description` text,
+  `Location` varchar(255),
+  `DatePosted` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`JobID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE IF NOT EXISTS user_profile (
+    ProfileID INT AUTO_INCREMENT PRIMARY KEY,
+    AccountID INT NOT NULL,
+    ProfileImage VARCHAR(500),
+    ProfileVideo VARCHAR(500),
+    BioText TEXT,
+    DisplayLocation VARCHAR(255),
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (AccountID) REFERENCES account(AccountID) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS user_links (
+    LinkID INT AUTO_INCREMENT PRIMARY KEY,
+    ProfileID INT NOT NULL,
+    LinkName VARCHAR(255),
+    LinkURL VARCHAR(500),
+    IconClass VARCHAR(100), 
+    FOREIGN KEY (ProfileID) REFERENCES user_profile(ProfileID) ON DELETE CASCADE
+);
