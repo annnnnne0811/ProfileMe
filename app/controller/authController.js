@@ -25,6 +25,13 @@ exports.register = async (req, res) => {
             DateOfBirth
         });
 
+        // saves sesh after registration
+        req.session.user = {
+            AccountID: newAccountID,
+            FirstName,
+            LastName
+        };
+
         res.status(201).json({ 
             message: 'Account created successfully!', 
             AccountID: newAccountID,
@@ -82,6 +89,15 @@ exports.logout = (req, res) => {
         res.clearCookie('connect.sid');
         res.json({ message: 'Logged out successfully.' });
     });
+};
+
+// checks if user in session
+exports.checkSession = (req, res) => {
+    if (req.session.user) {
+        res.status(200).json(req.session.user);
+    } else {
+        res.status(401).json({ message: 'Not logged in' });
+    }
 };
 
 exports.postJob = async (req, res) => {
