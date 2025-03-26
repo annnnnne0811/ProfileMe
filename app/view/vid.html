@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Keep the head section exactly as you have it -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Profile - Modular CV</title>
@@ -74,7 +75,10 @@
           <input type="file" id="profilePicInput" accept="image/*" hidden>
         </div>
         <div>
-          <h2 class="profile-name" data-editable="true">Your Name</h2>
+          <h2 class="profile-name" data-editable="true">
+            <span id="firstName"><!-- First name will go here --></span>
+            <span id="lastName"><!-- Last name will go here --></span>
+          </h2>
         </div>
       </div>
       <button id="toggleEditMode" class="btn btn-edit-toggle">Edit</button>
@@ -133,190 +137,198 @@
   </div>
 
   <script>
+    // User Profile Loading System
     async function loadUserProfile() {
-      try {
-        const sessionRes = await fetch('/check-session', { credentials: 'include' });
-        if (!sessionRes.ok) {
-          alert("You must be logged in to view this page.");
-          window.location.href = '/index.html';
-          return;
-        }
+        try {
+            // Check user session
+            const sessionRes = await fetch('/check-session', { credentials: 'include' });
+            if (!sessionRes.ok) {
+                alert("You must be logged in to view this page.");
+                window.location.href = '/index.html';
+                return;
+            }
 
-        const session = await sessionRes.json();
-        const response = await fetch(`/get-user-profile/${session.AccountID}`, {
-          method: 'GET',
-          credentials: 'include'
-        });
+            // Get user data
+            const session = await sessionRes.json();
+            const response = await fetch(`/get-user-profile/${session.AccountID}`, {
+                method: 'GET',
+                credentials: 'include'
+            });
 
-        const data = await response.json();
-        console.log('Loaded profile data:', data)
-    
-        if (data.profile) {
-          document.getElementById('profilePic').src = data.profile.ProfileImage || '';
-          document.getElementById('videoSource').src = data.profile.ProfileVideo || '';
-          document.querySelector('video').load();
-          document.querySelector('.profile-name').innerText = `${localStorage.getItem('FirstName')} ${localStorage.getItem('LastName')}`;
-          document.querySelector('#bio p[data-editable="true"]').innerText = data.profile.BioText || '';
-          document.querySelector('.displayed-location').innerText = data.profile.DisplayLocation || '';
+            // Handle profile data
+            const data = await response.json();
+            console.log('Profile data:', data);
+
+            // Update profile section
+            if (data.profile) {
+                document.getElementById('profilePic').src = data.profile.ProfileImage || '';
+                document.getElementById('videoSource').src = data.profile.ProfileVideo || '';
+                document.querySelector('video').load();
+                
+                // Set names from session
+                const firstName = session.FirstName || 'User';
+                const lastName = session.LastName || '';
+                document.getElementById('firstName').textContent = firstName;
+                document.getElementById('lastName').textContent = lastName;
+                document.getElementById('welcomeName').textContent = `${firstName} ${lastName}`;
+            }
+
+            // Handle useful links
+            if (data.links) {
+                document.getElementById('usefulLinksList').innerHTML = '';
+                data.links.forEach(link => {
+                    addNewLink(link.IconClass, link.LinkName, link.LinkURL);
+                });
+            }
+        } catch (err) {
+            console.error('Profile load error:', err);
+            alert('Failed to load profile data');
         }
-    
-        if (data.links) {
-          document.getElementById('usefulLinksList').innerHTML = '';
-          data.links.forEach(link => {
-            addNewLink(link.IconClass, link.LinkName, link.LinkURL);
-          });
-        }
-      } catch (err) {
-        console.error('❗Error loading profile data:', err);
-      }
     }
-    
+
+    // Edit Mode System
     let isEditing = false;
-    let carousel = new bootstrap.Carousel(document.getElementById('profileCarousel'));
-    
-    const socialIcons = {
-      "Portfolio": "bi bi-link-45deg",
-      "GitHub": "bi bi-github",
-      "LinkedIn": "bi bi-linkedin",
-      "Twitter": "bi bi-twitter",
-      "Facebook": "bi bi-facebook",
-      "Instagram": "bi bi-instagram",
-      "YouTube": "bi bi-youtube",
-      "TikTok": "bi bi-tiktok"
-    };
-    
-    async function saveFullProfileToDatabase() {
-      try {
-        const sessionRes = await fetch('/check-session', { credentials: 'include' });
-        if (!sessionRes.ok) return alert("Session expired. Please log in again.");
-
-        const session = await sessionRes.json();
-        const AccountID = session.AccountID;
-
-        const profileData = {
-          description: document.querySelector('#bio p[data-editable="true"]')?.innerText || '',
-          displayed_location: document.querySelector('.displayed-location')?.innerText || '',
-          profile_picture_url: document.getElementById('profilePic').src,
-          profile_video_url: document.getElementById('videoSource').src
-        };
-        
-        const links = [];
-        document.querySelectorAll('#usefulLinksList li').forEach(linkEl => {
-          const iconClass = linkEl.querySelector('select')?.value;
-          const linkUrl = linkEl.querySelector('input')?.value.trim();
-          links.push({ iconClass, linkName: '', linkUrl });
-        });
-        
-        const response = await fetch('/save-full-profile', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ AccountID, profileData, links })
-        });
-        const result = await response.json();
-        alert(result.message || 'Profile saved!');
-      } catch (err) {
-        console.error('❗Error saving full profile:', err);
-        alert('Save failed.');
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', loadUserProfile);
-    
     document.getElementById("toggleEditMode").addEventListener("click", async function () {
-      if (isEditing) {
-        await saveFullProfileToDatabase();
-      }
-      isEditing = !isEditing;
-      toggleEditState(isEditing);
+        if (isEditing) {
+            await saveFullProfileToDatabase();
+        }
+        isEditing = !isEditing;
+        toggleEditState(isEditing);
     });
-    
+
     function toggleEditState(editMode) {
-      document.querySelectorAll("[data-editable]").forEach(element => {
-        element.contentEditable = editMode;
-        element.style.border = editMode ? "1px dashed gray" : "none";
-      });
-    
-      document.getElementById("profilePicInput").style.display = editMode ? "block" : "none";
-      document.getElementById("videoUpload").style.display = editMode ? "block" : "none";
-      document.getElementById("addVideoBtn").style.display = editMode ? "block" : "none";
-      document.getElementById("addLinkBtn").style.display = editMode ? "block" : "none";
-      document.querySelectorAll(".btn-danger").forEach(btn => btn.style.display = editMode ? "block" : "none");
-    
-      document.getElementById("toggleEditMode").textContent = editMode ? "Save Changes" : "Edit Profile";
-    
-      if (editMode) {
-        carousel.pause();
-      } else {
-        carousel.cycle();
-      }
+        // Toggle editable elements
+        document.querySelectorAll("[data-editable]").forEach(element => {
+            element.contentEditable = editMode;
+            element.style.border = editMode ? "1px dashed gray" : "none";
+        });
+
+        // Toggle form controls
+        document.getElementById("profilePicInput").style.display = editMode ? "block" : "none";
+        document.getElementById("videoUpload").style.display = editMode ? "block" : "none";
+        document.getElementById("addVideoBtn").style.display = editMode ? "block" : "none";
+        document.getElementById("addLinkBtn").style.display = editMode ? "block" : "none";
+        document.querySelectorAll(".btn-danger").forEach(btn => btn.style.display = editMode ? "block" : "none");
+
+        // Update button text
+        document.getElementById("toggleEditMode").textContent = editMode ? "Save Changes" : "Edit Profile";
     }
-    
+
+    // Profile Image Handler
     document.getElementById("profilePic").addEventListener("click", function () {
-      if (isEditing) {
-        document.getElementById("profilePicInput").click();
-      }
+        if (isEditing) document.getElementById("profilePicInput").click();
     });
-    
+
     document.getElementById("profilePicInput").addEventListener("change", function (event) {
-      const file = event.target.files[0];
-      if (file) {
-        document.getElementById("profilePic").src = URL.createObjectURL(file);
-      }
+        const file = event.target.files[0];
+        if (file) document.getElementById("profilePic").src = URL.createObjectURL(file);
     });
-    
-    document.getElementById("addVideoBtn").addEventListener("click", function () {
-      document.getElementById("videoUpload").click();
-    });
+
+    // Video Upload Handler
+    document.getElementById("addVideoBtn").addEventListener("click", () => document.getElementById("videoUpload").click());
     
     document.getElementById("videoUpload").addEventListener("change", function (event) {
-      const file = event.target.files[0];
-      if (file) {
-        document.getElementById("videoSource").src = URL.createObjectURL(file);
-        document.querySelector("video").load();
-      }
-    });
-    
-    document.getElementById("addLinkBtn").addEventListener("click", function () {
-      addNewLink();
-    });
-    
-    function addNewLink(icon = "bi bi-link-45deg", url = "#") {
-      const list = document.getElementById("usefulLinksList");
-
-      const li = document.createElement("li");
-      li.className = "mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center justify-content-between";
-
-      const iconPicker = document.createElement("select");
-      iconPicker.className = "form-select me-2";
-      for (let key in socialIcons) {
-        let option = document.createElement("option");
-        option.value = socialIcons[key];
-        option.innerText = key;
-        if (socialIcons[key] === icon) option.selected = true;
-        iconPicker.appendChild(option);
-      }
-
-      const urlInput = document.createElement("input");
-      urlInput.type = "text";
-      urlInput.className = "form-control me-2";
-      urlInput.placeholder = "Enter URL";
-      urlInput.value = url;
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.className = "btn btn-danger btn-sm";
-      deleteBtn.innerHTML = "&#10006;";
-      deleteBtn.onclick = function () {
-        if (isEditing) {
-          li.remove();
+        const file = event.target.files[0];
+        if (file) {
+            document.getElementById("videoSource").src = URL.createObjectURL(file);
+            document.querySelector("video").load();
         }
-      };
+    });
 
-      li.appendChild(iconPicker);
-      li.appendChild(urlInput);
-      li.appendChild(deleteBtn);
-      list.appendChild(li);
+    // Useful Links System
+    const socialIcons = {
+        "Portfolio": "bi bi-link-45deg",
+        "GitHub": "bi bi-github",
+        "LinkedIn": "bi bi-linkedin",
+        "Twitter": "bi bi-twitter",
+        "Facebook": "bi bi-facebook",
+        "Instagram": "bi bi-instagram",
+        "YouTube": "bi bi-youtube",
+        "TikTok": "bi bi-tiktok"
+    };
+
+    document.getElementById("addLinkBtn").addEventListener("click", () => addNewLink());
+
+    function addNewLink(icon = "bi bi-link-45deg", url = "#") {
+        const list = document.getElementById("usefulLinksList");
+        const li = document.createElement("li");
+        li.className = "mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center justify-content-between";
+
+        // Icon Selector
+        const iconPicker = document.createElement("select");
+        iconPicker.className = "form-select me-2";
+        Object.entries(socialIcons).forEach(([name, cls]) => {
+            const option = document.createElement("option");
+            option.value = cls;
+            option.textContent = name;
+            if (cls === icon) option.selected = true;
+            iconPicker.appendChild(option);
+        });
+
+        // URL Input
+        const urlInput = document.createElement("input");
+        urlInput.type = "text";
+        urlInput.className = "form-control me-2";
+        urlInput.placeholder = "Enter URL";
+        urlInput.value = url;
+
+        // Delete Button
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "btn btn-danger btn-sm";
+        deleteBtn.innerHTML = "&#10006;";
+        deleteBtn.onclick = () => isEditing && li.remove();
+
+        // Assemble components
+        li.append(iconPicker, urlInput, deleteBtn);
+        list.appendChild(li);
     }
-  </script>
+
+    // Save Profile Handler
+    async function saveFullProfileToDatabase() {
+        try {
+            const sessionRes = await fetch('/check-session', { credentials: 'include' });
+            if (!sessionRes.ok) return alert("Session expired. Please log in again.");
+
+            const session = await sessionRes.json();
+            // In saveFullProfileToDatabase function
+        const profileData = {
+            description: document.querySelector('#bio p[data-editable="true"]')?.innerText || '',
+            displayed_location: document.querySelector('.displayed-location')?.innerText || '',
+            profile_picture_url: document.getElementById('profilePic').src || '',
+            profile_video_url: document.getElementById('videoSource').src || ''
+                };
+
+            // Collect links
+            const links = [];
+            document.querySelectorAll('#usefulLinksList li').forEach(linkEl => {
+                links.push({
+                    iconClass: linkEl.querySelector('select').value,
+                    linkUrl: linkEl.querySelector('input').value.trim()
+                });
+            });
+
+            // Save to backend
+            const response = await fetch('/save-full-profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ 
+                    AccountID: session.AccountID, 
+                    profileData, 
+                    links 
+                })
+            });
+
+            const result = await response.json();
+            alert(result.message || 'Profile saved successfully!');
+        } catch (err) {
+            console.error('Save error:', err);
+            alert('Failed to save profile');
+        }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', loadUserProfile);
+</script>
 </body>
 </html>
