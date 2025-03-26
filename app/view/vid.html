@@ -1,117 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile - Modular CV</title>
-    <link rel="stylesheet" href="profile_styles.css"> 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        .add-video-btn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-        }
-        .add-video-btn:hover {
-            background-color: rgba(0, 0, 0, 0.9);
-        }
-        .video-container {
-            position: relative;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - Modular CV</title>
+  <link rel="stylesheet" href="profile_styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-
 <body>
+  <div class="sidebar">
+    <a href="vid.html"><i class="bi bi-house"></i></a>
+    <a href="search.html"><i class="bi bi-search"></i></a>
+    <a href="seeker-dashboard.html"><i class="bi bi-speedometer2"></i></a>
+    <a href="post-job.html"><i class="bi bi-briefcase"></i></a>
+  </div>
 
-    <nav class="navbar navbar-light bg-light p-3">
-        <div class="container">
-            <button class="btn btn-outline-dark m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
-                ☰ Menu
-              </button>
-
-          <a class="navbar-brand" href="#">
-            <img src="/assets/logo_fant_5.png" alt="Logo" width="50">
-          </a>
-          
-      
-          <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="sidebarMenuLabel">Menu</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body d-flex flex-column gap-2">
-              <a href="vid.html" class="btn btn-success">My Profile</a>
-              <a href="search.html" class="btn btn-secondary">Search Tab</a>
-              <a href="seeker-dashboard.html" class="btn btn-primary">Dashboard</a>
-              <a href="post-job.html" class = "btn btn-primary">Post a job</a>
-            </div>
-          </div>
+  <div class="header-bg">
+    <div class="header-content">
+      <div class="profile-info">
+        <img id="profilePic" class="profile-img" src="https://via.placeholder.com/120" alt="Profile Pic" onclick="isEditing && profilePicInput.click()">
+        <div>
+          <h2 class="profile-name" data-editable="true">Your Name</h2>
+          <p class="profile-bio" data-editable="true">Your tagline or bio goes here.</p>
+          <p class="displayed-location" data-editable="true">Your Location</p>
         </div>
-      </nav>
-
-    <div class="container mt-4">
-        <button id="toggleEditMode" class="btn btn-outline-primary">Edit Profile</button>
+      </div>
+      <div class="edit-toggle-container">
+        <button id="toggleEditMode" class="btn btn-edit-toggle">Edit Mode</button>
+      </div>
     </div>
+  </div>
 
-    <div class="container profile-header text-center mt-4">
-        <input type="file" id="profilePicInput" accept="image/*" hidden>
-        <div class="profile-img-container position-relative d-inline-block">
-            <img src="https://via.placeholder.com/120" alt="" class="profile-img" id="profilePic">
-            <span class="profile-text d-block" data-editable="true">Click to edit!</span>
+  <div class="container mt-4">
+    <ul class="nav nav-tabs" id="profileTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab">Profile Video</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="bio-tab" data-bs-toggle="tab" data-bs-target="#bio" type="button" role="tab">Bio & Statement</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="links-tab" data-bs-toggle="tab" data-bs-target="#links" type="button" role="tab">Useful Links</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="profileTabContent">
+      <div class="tab-pane fade show active p-4" id="video" role="tabpanel">
+        <div class="video-container position-relative">
+          <video controls class="w-100">
+            <source src="" id="videoSource" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <input type="file" id="videoUpload" accept="video/*" hidden>
+          <button id="addVideoBtn" class="add-video-btn">Add / Change Video</button>
         </div>
-        <h2 class="profile-name" data-editable="true">Your Name</h2>
-        <p data-editable="true">Your Tagline or Short Bio</p>
+      </div>
+      <div class="tab-pane fade p-4" id="bio" role="tabpanel">
+        <h3>Personal Statement</h3>
+        <p data-editable="true">Write something about yourself...</p>
+      </div>
+      <div class="tab-pane fade p-4" id="links" role="tabpanel">
+        <h3>Useful Links</h3>
+        <ul id="usefulLinksList" class="list-unstyled w-75 mx-auto"></ul>
+        <button id="addLinkBtn" class="btn btn-outline-primary mt-3" style="display: none;">Add Link</button>
+      </div>
     </div>
-    
-    <div class="container carousel-container mt-4">
-        <div id="profileCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="video-container">
-                        <video controls class="w-100">
-                            <source src="" id="videoSource" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <input type="file" id="videoUpload" accept="video/*" hidden>
-                        <button id="addVideoBtn" class="add-video-btn">Add Video</button>
-                    </div>
-                </div>
-                <div class="carousel-item text-center">
-                    <h3 class="mb-3">Useful Links</h3>
-                    <div class="d-flex justify-content-center">
-                        <ul id="usefulLinksList" class="list-unstyled w-50">
-                            <!-- Links will be dynamically added here -->
-                        </ul>
-                    </div>
-                    <button id="addLinkBtn" class="btn btn-outline-primary mt-3" style="display: none;">Add Link</button>
-                </div>
-                </div>
-                <div class="carousel-item">
-                    <h3>Personal Statement</h3>
-                    <p data-editable="true">Write something about yourself here...</p>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#profileCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#profileCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div>
+  </div>
 
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">Profile saved successfully!</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="profile_script.js"></script>
     <script>
         async function loadUserProfile() {
 
@@ -140,7 +106,7 @@
                     document.getElementById('videoSource').src = data.profile.ProfileVideo || '';
                     document.querySelector('video').load();
                     document.querySelector('.profile-name').innerText = `${localStorage.getItem('FirstName')} ${localStorage.getItem('LastName')}`;
-                    document.querySelector('.carousel-item p[data-editable="true"]').innerText = data.profile.BioText || '';
+                    document.querySelector('#bio p[data-editable="true"]').innerText = data.profile.BioText || '';
                     document.querySelector('.displayed-location').innerText = data.profile.DisplayLocation || '';
                 }
         
@@ -196,7 +162,7 @@
                 const AccountID = session.AccountID;
 
                 const profileData = {
-                    description: document.querySelector('.carousel-item p[data-editable="true"]')?.innerText || '',
+                    description: document.querySelector('#bio p[data-editable="true"]')?.innerText || '',
                     displayed_location: document.querySelector('.displayed-location')?.innerText || '',
                     profile_picture_url: document.getElementById('profilePic').src,
                     profile_video_url: document.getElementById('videoSource').src
