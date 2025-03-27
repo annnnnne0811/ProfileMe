@@ -1,55 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Keep the head section exactly as you have it -->
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>User Profile - Modular CV</title>
-  <link rel="stylesheet" href="profile_styles.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="profile_styles.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <style>
-    /* Additional inline styles for immediate fixes */
     .sidebar {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 80px;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 80px; height: 100vh;
       background: linear-gradient(180deg, #6c63ff, #00c6ff);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 30px;
-      gap: 30px;
+      display: flex; flex-direction: column; align-items: center;
+      padding-top: 30px; gap: 30px;
       box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
       z-index: 1000;
     }
-    
     .sidebar a {
-      color: white;
-      font-size: 28px;
+      color: white; font-size: 28px;
       transition: transform 0.3s, color 0.3s;
     }
-    
     .sidebar a:hover {
       transform: scale(1.2);
       color: #fffc;
     }
-    
     .main-content {
       margin-left: 80px;
       width: calc(100% - 80px);
       padding: 20px;
     }
-    
     .profile-img-container img:hover {
       transform: scale(1.05);
       box-shadow: 0 0 15px rgba(108, 99, 255, 0.5);
       animation: glowPulse 2s infinite;
     }
-    
     @keyframes glowPulse {
       0% { box-shadow: 0 0 5px rgba(108, 99, 255, 0.5); }
       50% { box-shadow: 0 0 20px rgba(108, 99, 255, 0.8); }
@@ -58,9 +45,7 @@
   </style>
 </head>
 <body>
-
-
-  <!-- Fixed Sidebar -->
+  <!-- Sidebar -->
   <div class="sidebar">
     <a href="vid.html"><i class="bi bi-house"></i></a>
     <a href="search.html"><i class="bi bi-search"></i></a>
@@ -68,250 +53,211 @@
     <a href="post-job.html"><i class="bi bi-briefcase"></i></a>
   </div>
 
-  <!-- Main Content Area -->
+  <!-- Main -->
   <div class="main-content">
-    <div class="top-bar">
-      <div class="d-flex align-items-center">
+    <div class="top-bar d-flex align-items-center justify-content-between mb-3">
+      <div class="d-flex align-items-center gap-3">
         <div class="profile-img-container" onclick="isEditing && document.getElementById('profilePicInput').click()">
           <img id="profilePic" src="https://via.placeholder.com/120" alt="Profile Pic">
           <input type="file" id="profilePicInput" accept="image/*" hidden>
         </div>
-        <div>
-          <h2 class="profile-name" data-editable="true">
-            <span id="firstName"><!-- First name will go here --></span>
-            <span id="lastName"><!-- Last name will go here --></span>
-          </h2>
-        </div>
+        <h2 class="profile-name" data-editable="true">
+          <span id="firstName"></span> <span id="lastName"></span>
+        </h2>
       </div>
-      <button id="toggleEditMode" class="btn btn-edit-toggle">Edit</button>
+      <button id="toggleEditMode" class="btn btn-primary">Edit</button>
     </div>
 
     <ul class="nav nav-tabs tab-bar" id="profileTab" role="tablist">
-      <li class="nav-item">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#feed" type="button">Feed</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#videoCV" type="button">VideoCV</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#usefulLinks" type="button">Useful Links</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aboutMe" type="button">About me</button>
-      </li>
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#feed">Feed</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#videoCV">VideoCV</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#usefulLinks">Useful Links</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#aboutMe">About Me</button></li>
     </ul>
 
     <div class="tab-content p-4">
-      <div class="tab-pane fade show active" id="feed" role="tabpanel">
-        <h4>Feed</h4>
-        <p>Feed content or future updates here...</p>
+      <div class="tab-pane fade show active" id="feed">
+        <h4>Feed</h4><p>Feed content or future updates here...</p>
       </div>
-      <div class="tab-pane fade" id="videoCV" role="tabpanel">
+      <div class="tab-pane fade" id="videoCV">
         <h4>Profile Video</h4>
         <div class="video-container position-relative">
           <video controls class="w-100">
-            <source src="" id="videoSource" type="video/mp4">
+            <source src="" id="videoSource" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <input type="file" id="videoUpload" accept="video/*" hidden>
-          <button id="addVideoBtn" class="add-video-btn">Add / Change Video</button>
+          <button id="addVideoBtn" class="btn btn-outline-primary mt-3">Add / Change Video</button>
         </div>
       </div>
-      <div class="tab-pane fade" id="usefulLinks" role="tabpanel">
+      <div class="tab-pane fade" id="usefulLinks">
         <h4>Useful Links</h4>
         <ul id="usefulLinksList" class="list-unstyled w-75 mx-auto"></ul>
         <button id="addLinkBtn" class="btn btn-outline-primary mt-3" style="display: none;">Add Link</button>
       </div>
-      <div class="tab-pane fade" id="aboutMe" role="tabpanel">
+      <div class="tab-pane fade" id="aboutMe">
         <h4>Personal Statement</h4>
         <p data-editable="true">Write something about yourself...</p>
-      </div>
-    </div>
-
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert">
-        <div class="d-flex">
-          <div class="toast-body">Profile saved successfully!</div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
       </div>
     </div>
   </div>
 
   <script>
-    // User Profile Loading System
-    async function loadUserProfile() {
-        try {
-            const accountId = localStorage.getItem('AccountID');
-            const firstName = localStorage.getItem('FirstName') || 'User';
-            const lastName = localStorage.getItem('LastName') || '';
+    const socialIcons = {
+      "Portfolio": "bi bi-link-45deg",
+      "GitHub": "bi bi-github",
+      "LinkedIn": "bi bi-linkedin",
+      "Twitter": "bi bi-twitter",
+      "Facebook": "bi bi-facebook",
+      "Instagram": "bi bi-instagram",
+      "YouTube": "bi bi-youtube",
+      "TikTok": "bi bi-tiktok"
+    };
 
-            if (!accountId) {
-                alert("You must be logged in to view this page.");
-                window.location.href = '/';
-                return;
-            }
+    let isEditing = false;
 
-            const response = await fetch(`/get-user-profile/${accountId}`);
-            const data = await response.json();
+    function addNewLink(icon = "bi bi-link-45deg", url = "#") {
+      const list = document.getElementById("usefulLinksList");
+      const li = document.createElement("li");
+      li.className = "mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center justify-content-between";
 
-            console.log('Profile data:', data);
+      const iconPicker = document.createElement("select");
+      iconPicker.className = "form-select me-2";
+      Object.entries(socialIcons).forEach(([name, cls]) => {
+        const option = document.createElement("option");
+        option.value = cls;
+        option.textContent = name;
+        if (cls === icon) option.selected = true;
+        iconPicker.appendChild(option);
+      });
 
-            // Update profile section
-            if (data.profile) {
-                document.getElementById('profilePic').src = data.profile.ProfileImage || '';
-                document.getElementById('videoSource').src = data.profile.ProfileVideo || '';
-                document.querySelector('video').load();
+      const urlInput = document.createElement("input");
+      urlInput.type = "text";
+      urlInput.className = "form-control me-2";
+      urlInput.placeholder = "Enter URL";
+      urlInput.value = url;
 
-                document.getElementById('firstName').textContent = firstName;
-                document.getElementById('lastName').textContent = lastName;
-                document.getElementById('welcomeName').textContent = `${firstName} ${lastName}`;
-            }
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "btn btn-danger btn-sm";
+      deleteBtn.innerHTML = "&#10006;";
+      deleteBtn.onclick = () => isEditing && li.remove();
 
-            // Handle useful links
-            if (data.links) {
-                document.getElementById('usefulLinksList').innerHTML = '';
-                data.links.forEach(link => {
-                    addNewLink(link.IconClass, link.LinkURL);
-                });
-            }
-        } catch (err) {
-            console.error('Profile load error:', err);
-            alert('Failed to load profile data : ${err.message}');
-        }
+      li.append(iconPicker, urlInput, deleteBtn);
+      list.appendChild(li);
     }
 
-    // Edit Mode System
-    let isEditing = false;
-    document.getElementById("toggleEditMode").addEventListener("click", async function () {
-        if (isEditing) await saveFullProfileToDatabase();
-        isEditing = !isEditing;
-        toggleEditState(isEditing);
-    });
+    async function loadUserProfile() {
+      try {
+        const accountId = localStorage.getItem("AccountID");
+        const firstName = localStorage.getItem("FirstName") || "User";
+        const lastName = localStorage.getItem("LastName") || "";
 
-    function toggleEditState(editMode) {
-        document.querySelectorAll("[data-editable]").forEach(el => {
-            el.contentEditable = editMode;
-            el.style.border = editMode ? "1px dashed gray" : "none";
+        if (!accountId) {
+          alert("You must be logged in to view this page.");
+          window.location.href = "/";
+          return;
+        }
+
+        const res = await fetch(`/get-user-profile/${accountId}`);
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message || "Failed to load profile");
+
+        document.getElementById("firstName").textContent = firstName;
+        document.getElementById("lastName").textContent = lastName;
+        document.getElementById("profilePic").src = data.profile?.ProfileImage || "";
+        document.getElementById("videoSource").src = data.profile?.ProfileVideo || "";
+        document.querySelector("video").load();
+
+        const links = data.links || [];
+        document.getElementById("usefulLinksList").innerHTML = "";
+        links.forEach(link => {
+          addNewLink(link.IconClass, link.LinkURL);
         });
 
-        document.getElementById("profilePicInput").style.display = editMode ? "block" : "none";
-        document.getElementById("videoUpload").style.display = editMode ? "block" : "none";
-        document.getElementById("addVideoBtn").style.display = editMode ? "block" : "none";
-        document.getElementById("addLinkBtn").style.display = editMode ? "block" : "none";
-        document.querySelectorAll(".btn-danger").forEach(btn => btn.style.display = editMode ? "block" : "none");
-
-        document.getElementById("toggleEditMode").textContent = editMode ? "Save Changes" : "Edit Profile";
+      } catch (err) {
+        console.error("Profile load error:", err);
+        alert("Failed to load profile data");
+      }
     }
 
-    document.getElementById("profilePic").addEventListener("click", () => {
-        if (isEditing) document.getElementById("profilePicInput").click();
+    function toggleEditState(editMode) {
+      document.querySelectorAll("[data-editable]").forEach(el => {
+        el.contentEditable = editMode;
+        el.style.border = editMode ? "1px dashed gray" : "none";
+      });
+      document.getElementById("profilePicInput").style.display = editMode ? "block" : "none";
+      document.getElementById("videoUpload").style.display = editMode ? "block" : "none";
+      document.getElementById("addVideoBtn").style.display = editMode ? "block" : "none";
+      document.getElementById("addLinkBtn").style.display = editMode ? "block" : "none";
+      document.querySelectorAll(".btn-danger").forEach(btn => btn.style.display = editMode ? "block" : "none");
+      document.getElementById("toggleEditMode").textContent = editMode ? "Save Changes" : "Edit Profile";
+    }
+
+    document.getElementById("toggleEditMode").addEventListener("click", async () => {
+      if (isEditing) await saveFullProfileToDatabase();
+      isEditing = !isEditing;
+      toggleEditState(isEditing);
     });
-
-    document.getElementById("profilePicInput").addEventListener("change", function (e) {
-        const file = e.target.files[0];
-        if (file) document.getElementById("profilePic").src = URL.createObjectURL(file);
-    });
-
-    document.getElementById("addVideoBtn").addEventListener("click", () => document.getElementById("videoUpload").click());
-
-    document.getElementById("videoUpload").addEventListener("change", function (e) {
-        const file = e.target.files[0];
-        if (file) {
-            document.getElementById("videoSource").src = URL.createObjectURL(file);
-            document.querySelector("video").load();
-        }
-    });
-
-    const socialIcons = {
-        "Portfolio": "bi bi-link-45deg",
-        "GitHub": "bi bi-github",
-        "LinkedIn": "bi bi-linkedin",
-        "Twitter": "bi bi-twitter",
-        "Facebook": "bi bi-facebook",
-        "Instagram": "bi bi-instagram",
-        "YouTube": "bi bi-youtube",
-        "TikTok": "bi bi-tiktok"
-    };
 
     document.getElementById("addLinkBtn").addEventListener("click", () => addNewLink());
 
-    function addNewLink(icon = "bi bi-link-45deg", url = "#") {
-        const list = document.getElementById("usefulLinksList");
-        const li = document.createElement("li");
-        li.className = "mb-2 p-2 border rounded bg-light shadow-sm d-flex align-items-center justify-content-between";
+    document.getElementById("profilePic").addEventListener("click", () => {
+      if (isEditing) document.getElementById("profilePicInput").click();
+    });
 
-        const iconPicker = document.createElement("select");
-        iconPicker.className = "form-select me-2";
-        Object.entries(socialIcons).forEach(([name, cls]) => {
-            const option = document.createElement("option");
-            option.value = cls;
-            option.textContent = name;
-            if (cls === icon) option.selected = true;
-            iconPicker.appendChild(option);
-        });
+    document.getElementById("profilePicInput").addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (file) document.getElementById("profilePic").src = URL.createObjectURL(file);
+    });
 
-        const urlInput = document.createElement("input");
-        urlInput.type = "text";
-        urlInput.className = "form-control me-2";
-        urlInput.placeholder = "Enter URL";
-        urlInput.value = url;
+    document.getElementById("addVideoBtn").addEventListener("click", () => {
+      document.getElementById("videoUpload").click();
+    });
 
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "btn btn-danger btn-sm";
-        deleteBtn.innerHTML = "&#10006;";
-        deleteBtn.onclick = () => isEditing && li.remove();
-
-        li.append(iconPicker, urlInput, deleteBtn);
-        list.appendChild(li);
-    }
+    document.getElementById("videoUpload").addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById("videoSource").src = URL.createObjectURL(file);
+        document.querySelector("video").load();
+      }
+    });
 
     async function saveFullProfileToDatabase() {
-        try {
-            const accountId = localStorage.getItem('AccountID');
-            if (!accountId) {
-                alert("You must be logged in.");
-                return;
-            }
+      try {
+        const accountId = localStorage.getItem("AccountID");
+        const profileData = {
+          description: document.querySelector("#aboutMe p[data-editable='true']")?.innerText || '',
+          displayed_location: '',
+          profile_picture_url: document.getElementById("profilePic").src || '',
+          profile_video_url: document.getElementById("videoSource").src || ''
+        };
 
-            const profileData = {
-                description: document.querySelector('#bio p[data-editable="true"]')?.innerText || '',
-                displayed_location: document.querySelector('.displayed-location')?.innerText || '',
-                profile_picture_url: document.getElementById('profilePic').src || '',
-                profile_video_url: document.getElementById('videoSource').src || ''
-            };
+        const links = [];
+        document.querySelectorAll("#usefulLinksList li").forEach(linkEl => {
+          links.push({
+            iconClass: linkEl.querySelector("select").value,
+            linkName: '', // optional, adjust as needed
+            linkUrl: linkEl.querySelector("input").value.trim()
+          });
+        });
 
-            const links = [];
-            document.querySelectorAll('#usefulLinksList li').forEach(linkEl => {
-                links.push({
-                    iconClass: linkEl.querySelector('select').value,
-                    linkUrl: linkEl.querySelector('input').value.trim()
-                });
-            });
+        const res = await fetch("/save-full-profile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ AccountID: accountId, profileData, links })
+        });
 
-            const response = await fetch('/save-full-profile', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    AccountID: accountId,
-                    profileData,
-                    links
-                })
-            });
-
-            const result = await response.json();
-            alert(result.message || 'Profile saved successfully!');
-        } catch (err) {
-            console.error('Save error:', err);
-            alert('Failed to save profile');
-        }
+        const result = await res.json();
+        alert(result.message || "Saved successfully!");
+      } catch (err) {
+        console.error("Save error:", err);
+        alert("Failed to save profile.");
+      }
     }
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-    // Wait a tiny bit for localStorage to populate
-    setTimeout(loadUserProfile, 100); 
-});
-</script>
+    // Kickoff
+    document.addEventListener("DOMContentLoaded", loadUserProfile);
+  </script>
 </body>
 </html>
