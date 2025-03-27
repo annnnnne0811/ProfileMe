@@ -113,14 +113,19 @@ static async createOrUpdateUserProfile(AccountID, profileData) {
                 'SELECT * FROM user_profile WHERE AccountID = ?', 
                 [AccountID]
             );
-            const [links] = await connection.execute(
-                'SELECT IconClass, LinkName, LinkURL FROM user_links WHERE ProfileID = ?', 
-                [profile[0]?.ProfileID]
-            );
-            return { 
-                profile: profile[0],
-                links: links || []
-            };
+    
+            const profileData = profile[0] || null;
+    
+            let links = [];
+            if (profileData && profileData.ProfileID) {
+                const [linkRows] = await connection.execute(
+                    'SELECT IconClass, LinkName, LinkURL FROM user_links WHERE ProfileID = ?', 
+                    [profileData.ProfileID]
+                );
+                links = linkRows;
+            }
+    
+            return { profile: profileData, links };
         } finally {
             await connection.end();
         }

@@ -643,6 +643,7 @@
         </div>
     </footer>
 
+    <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             function updateSidebarGreeting() {
@@ -653,96 +654,109 @@
                     ? `Welcome, ${firstName} ${lastName}!` 
                     : 'Menu';
             }
-
-            // Auth state management
+        
             function updateAuthUI() {
                 const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-                
-                // Navbar elements
+        
                 document.getElementById('headerLoginBtn').style.display = isLoggedIn ? 'none' : 'block';
                 document.getElementById('headerRegisterBtn').style.display = isLoggedIn ? 'none' : 'block';
                 document.getElementById('headerLogoutBtn').style.display = isLoggedIn ? 'block' : 'none';
-                
-                // Sidebar elements
+        
                 document.getElementById('loginBtn').style.display = isLoggedIn ? 'none' : 'block';
                 document.getElementById('registerBtn').style.display = isLoggedIn ? 'none' : 'block';
                 document.getElementById('logoutBtn').style.display = isLoggedIn ? 'block' : 'none';
-                
+        
                 updateSidebarGreeting();
             }
-
-            // Logout functionality
-            function logoutUser() {
-                localStorage.removeItem('loggedIn');
-                localStorage.removeItem('FirstName');
-                localStorage.removeItem('LastName');
+        
+            async function logoutUser() {
+                localStorage.clear();
                 updateAuthUI();
-                window.location.href = 'index.html';
+                window.location.href = '/';
             }
-
-            // Handle logout from both navbar and sidebar
+        
             document.getElementById('headerLogoutBtn').addEventListener('click', logoutUser);
             document.getElementById('logoutBtn').addEventListener('click', logoutUser);
-
-            // Login handling
+        
+            // 🔐 Login handling
             document.getElementById('loginForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
+        
                 try {
                     const email = document.getElementById('loginEmail').value;
-                    
-                    // Simulate login
+                    const password = document.getElementById('password').value;
+        
+                    const res = await fetch('/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ Email: email, Password: password })
+                    });
+        
+                    const data = await res.json();
+                    if (!res.ok) return alert(data.message);
+        
+                    // ✅ Save to localStorage
                     localStorage.setItem('loggedIn', 'true');
-                    
-                    // Use the email prefix as username
-                    const username = email.split('@')[0];
-                    localStorage.setItem('FirstName', username);
-                    localStorage.setItem('LastName', '');
-                    
+                    localStorage.setItem('AccountID', data.AccountID);
+                    localStorage.setItem('FirstName', data.FirstName);
+                    localStorage.setItem('LastName', data.LastName);
+        
                     updateAuthUI();
-                    
-                    // Hide the modal
+        
+                    // Hide modal and redirect
                     const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
                     modal.hide();
+                    window.location.href = 'vid.html';
                 } catch (error) {
                     console.error('Login failed:', error);
+                    alert('Login failed');
                 }
             });
-
-            // Registration handling
+        
+            // 📝 Registration
             document.getElementById('registerForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
+        
+                const FirstName = document.getElementById('registerFirstName').value;
+                const LastName = document.getElementById('registerLastName').value;
+                const Email = document.getElementById('registerEmail').value;
+                const Password = document.getElementById('registerPassword').value;
+                const DateOfBirth = document.getElementById('registerDateOfBirth').value;
+        
                 try {
-                    const firstName = document.getElementById('registerFirstName').value;
-                    const lastName = document.getElementById('registerLastName').value;
-                    
-                    // Simulate registration
+                    const res = await fetch('/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ FirstName, LastName, Email, Password, DateOfBirth })
+                    });
+        
+                    const data = await res.json();
+                    if (!res.ok) return alert(data.message || 'Registration failed.');
+        
+                    // ✅ Store new user info
                     localStorage.setItem('loggedIn', 'true');
-                    localStorage.setItem('FirstName', firstName);
-                    localStorage.setItem('LastName', lastName);
-                    
+                    localStorage.setItem('AccountID', data.AccountID);
+                    localStorage.setItem('FirstName', data.FirstName);
+                    localStorage.setItem('LastName', data.LastName);
+        
                     updateAuthUI();
-                    
-                    // Hide the modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
-                    modal.hide();
-                } catch (error) {
-                    console.error('Registration failed:', error);
+                    bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
+                } catch (err) {
+                    console.error('Registration failed:', err);
+                    alert('Registration error occurred.');
                 }
             });
-
-            // Initialize
+        
             updateAuthUI();
-
-            // Add smooth scrolling to all links
+        
+            // 🎯 Smooth scroll for internal anchors
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
                 });
             });
         });
-    </script>
+        </script>
 </body>
 </html>

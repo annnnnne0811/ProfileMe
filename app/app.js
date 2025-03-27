@@ -1,61 +1,60 @@
 // Import necessary modules
 const express = require('express');
-const authController = require('./controller/authController'); 
-const path = require('path'); 
+const authController = require('./controller/authController');
+const path = require('path');
 const mysql = require('mysql2/promise');
 
-// for user-session implementation and middleware
-const session = require('express-session');
-const requireLogin = require('./model/authMiddleware');
-
-const app = express(); 
+const app = express();
 
 console.log('✅ app.js loaded — setting up middleware and routes...');
 
-app.use(express.json()); 
+// Middleware
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'view')));
 
-// Log incoming requests
+// Log requests
 app.use((req, res, next) => {
-    console.log(`📥 Incoming request: ${req.method} ${req.url}`);
+    console.log(`📥 ${req.method} ${req.url}`);
     next();
 });
 
-// setting up session
-app.use(session({
-    secret: 'thisIsTheKey',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24, // 1 day
-        httpOnly: true
-    }
-}));
+// Auth + API routes (no session)
+app.post('/register', authController.register);
+app.post('/login', authController.login);
 
-app.use(express.static(path.join(__dirname, 'view')));
+// Profile data
+app.post('/save-profile', authController.saveUserProfile);
+app.post('/add-link', authController.addUserLink);
+app.post('/save-full-profile', authController.saveFullProfile);
+app.get('/get-user-profile/:accountId', authController.getUserProfileAndLinks);
 
-app.post('/register', authController.register); 
-app.post('/login', authController.login); 
-app.post('/logout', authController.logout);
-app.get('/check-session', authController.checkSession);
-app.post('/post-job', requireLogin, authController.postJob);
-app.post('/save-profile', requireLogin, authController.saveUserProfile);
-app.post('/add-link', requireLogin, authController.addUserLink);
-app.post('/save-full-profile', requireLogin, authController.saveFullProfile);
-app.get('/get-user-profile/:accountId', requireLogin, authController.getUserProfileAndLinks);
-
+// Serve HTML routes
 app.get('/', (req, res) => {
-    console.log('➡️  Serving index.html');
     res.sendFile(path.join(__dirname, 'view', 'index.html'));
 });
 
-// Get jobs for search
+app.get('/vid', (req, res) => {
+    res.sendFile(path.join(__dirname, 'view', 'vid.html'));
+});
+
+app.get('/post-job', (req, res) => {
+    res.sendFile(path.join(__dirname, 'view', 'post-job.html'));
+});
+
+app.get('/search', (req, res) => {
+    res.sendFile(path.join(__dirname, 'view', 'search.html'));
+});
+
+// Database config
 const dbConfig = {
     host: 'localhost',
     user: 'root',
     password: '270202',
     database: 'ProfileMe'
 };
+
+// Job search
 app.get('/get-jobs', async (req, res) => {
     try {
         const connection = await mysql.createConnection(dbConfig);
@@ -63,20 +62,18 @@ app.get('/get-jobs', async (req, res) => {
         await connection.end();
         res.json(jobs);
     } catch (error) {
-        console.error('Error fetching jobs:', error);
+        console.error('❗ Error fetching jobs:', error);
         res.status(500).json({ message: 'Internal server error.' });
     }
 });
 
-
-
-// Catch-all for unknown routes
+// 404 fallback
 app.use((req, res) => {
     console.log(`❓ Unhandled route: ${req.method} ${req.url}`);
     res.status(404).send('404 - Not Found');
 });
 
-// Connect to DB and start server
+// DB connection + server start
 async function connectToDB() {
     try {
         const connection = await mysql.createConnection(dbConfig);
@@ -87,7 +84,7 @@ async function connectToDB() {
             console.log(`🚀 Server running on http://localhost:${port}`);
         });
     } catch (error) {
-        console.error('❗ Error connecting to the database:', error);
+        console.error('❗ DB connection error:', error);
     }
 }
 
