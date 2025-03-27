@@ -53,7 +53,7 @@ app.get('/', (req, res) => {
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: 'root',
+    password: '270202',
     database: 'ProfileMe'
 };
 app.get('/get-jobs', async (req, res) => {
@@ -68,12 +68,7 @@ app.get('/get-jobs', async (req, res) => {
     }
 });
 
-// ✅ Profile and links endpoints — clean and correct
-app.post('/save-profile', authController.saveUserProfile);
-app.post('/add-link', authController.addUserLink);
-app.post('/save-full-profile', authController.saveFullProfile);
 
-app.get('/get-user-profile/:accountId', authController.getUserProfileAndLinks);
 
 // Catch-all for unknown routes
 app.use((req, res) => {

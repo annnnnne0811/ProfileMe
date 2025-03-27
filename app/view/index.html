@@ -8,23 +8,350 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
+        :root {
+            --primary-color: hsl(190, 35%, 44%);
+            --primary-dark: hsl(190, 35%, 40%);
+            --primary-light: #89CFF0;
+            --secondary-color: #6c757d;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }       
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-text);
+            background-color: white;
+            line-height: 1.6;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            padding: 1rem;
+            box-shadow: var(--shadow-sm);
+            background-color: white !important;
+        }
+
+        .navbar-brand img {
+            transition: var(--transition);
+        }
+
+        .navbar-brand img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-primary,
+        #headerRegisterBtn,
+        #registerBtn,
+        .modal .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover,
+        #headerRegisterBtn:hover,
+        #registerBtn:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:active,
+        #headerRegisterBtn:active,
+        #registerBtn:active {
+            background-color: var(--primary-light) !important;
+            transform: scale(0.98);
+        }
+
+        #headerLoginBtn,
+        #loginBtn {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background-color: transparent;
+        }
+
+        #headerLoginBtn:hover,
+        #loginBtn:hover {
+            background-color: hsla(190, 35%, 44%, 0.1);
+            transform: translateY(-2px);
+        }
+
+        #headerLoginBtn:active,
+        #loginBtn:active {
+            background-color: var(--primary-light) !important;
+            color: white;
+        }
+
+        /* Logout button styles */
+        #headerLogoutBtn,
+        #logoutBtn {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+        }
+
+        #headerLogoutBtn:hover,
+        #logoutBtn:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-outline-dark {
+            transition: var(--transition);
+        }
+
+        .btn-outline-dark:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Hero section */
+        .hero {
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin: 1.5rem 0;
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Search bar */
+        .hero .input-group {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto 2rem;
+            box-shadow: var(--shadow-md);
+            border-radius: 50px;
+            overflow: hidden;
+        }
+
+        .hero .form-control {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px 0 0 50px;
+        }
+
+        .hero .btn {
+            border-radius: 0 50px 50px 0;
+            padding: 12px 25px;
+        }
+
+        /* Feature boxes */
+        .feature-box.bubble {
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            margin-bottom: 30px;
+            height: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-box.bubble:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-box.bubble h4 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .feature-box.bubble i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .feature-box.bubble:nth-child(1) { border-top: 5px solid #e0f7fa; }
+        .feature-box.bubble:nth-child(2) { border-top: 5px solid #fff9c4; }
+        .feature-box.bubble:nth-child(3) { border-top: 5px solid #c8e6c9; }
+
+        /* Section headings */
+        h2 {
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background: var(--primary-color);
+            bottom: -10px;
+            left: 25%;
+            border-radius: 3px;
+        }
+
+        /* Modals */
+        .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .modal-body .form-control {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--light-bg);
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+
+        footer img {
+            transition: var(--transition);
+            margin-bottom: 1rem;
+        }
+
+        footer img:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        /* Employer CTA box */
+        .employer-cta-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid white;
+            text-align: center;
+        }
         
+        .employer-heading {
+            color: var(--primary-dark);
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .employer-btn {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            color: #000000;
+            font-weight: 600;
+            border: none;
+            padding: 0.6rem 1.8rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .employer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 3rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .feature-box.bubble {
+                padding: 20px;
+            }
+
+            .employer-cta-box {
+                padding: 1.2rem;
+                width: 90%;
+            }
+            
+            .employer-heading {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            #headerLoginBtn, 
+            #headerRegisterBtn,
+            #headerLogoutBtn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    
-
-    <!-- modal for login logic -->
+    <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm"> 
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <h5 class="modal-title" id="loginModalLabel">Login to Your Account</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <!-- ref button -->
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="loginForm">
                         <div class="mb-3">
                             <label for="loginEmail" class="form-label">Email</label>
                             <input type="email" class="form-control" id="loginEmail" required>
@@ -33,243 +360,389 @@
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="#" class="text-muted">Forgot password?</a>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- same modal thingy but with extra field for password added-->
+    <!-- Register Modal -->
     <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                    <h5 class="modal-title" id="registerModalLabel">Create Your Account</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id = "registerForm">
-                        <div class="mb-3">
-                            <label for="registerFirstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="registerFirstName" placeholder="Enter first name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="registerLastName" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="registerLastName" placeholder="Enter last name">
+                    <form id="registerForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="registerFirstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="registerFirstName" placeholder="Enter first name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="registerLastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="registerLastName" placeholder="Enter last name" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="registerEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="registerEmail" placeholder="Enter email">
+                            <input type="email" class="form-control" id="registerEmail" placeholder="Enter email" required>
                         </div>
                         <div class="mb-3">
                             <label for="registerDateOfBirth" class="form-label">Date of Birth</label>
-                            <input type="date" class="form-control" id="registerDateOfBirth">
+                            <input type="date" class="form-control" id="registerDateOfBirth" required>
                         </div>
                         <div class="mb-3">
                             <label for="registerPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="registerPassword" placeholder="Enter password">
+                            <input type="password" class="form-control" id="registerPassword" placeholder="Enter password" required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Register</button>
-                    </form>                    
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <small class="text-muted">By registering, you agree to our Terms of Service</small>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <nav class="navbar navbar-light bg-light p-3">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
         <div class="container">
-            <!-- Burger button to toggle sidebar -->
-<button class="btn btn-outline-dark m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
-    ☰ Menu
-</button>
             <a class="navbar-brand" href="#">
-                <img src="/assets/logo_fant_5.png" alt="FAQ Logo" width="50">
+                <img src="/assets/logo_fant_5.png" alt="Logo" width="50">
+                <span class="ms-2 fw-bold" style="color: var(--primary-color);">PROFILEME</span>
             </a>
-           
-
-<!-- Sidebar (offcanvas) menu -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="sidebarMenuLabel">Menu</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body d-flex flex-column gap-2">
-    <a href="vid.html" class="btn btn-success">My UCV</a>
-    <a href="seeker-dashboard.html" class="btn btn-primary">My Dashboard</a>
-    <button class="btn btn-outline-dark" id="registerBtn" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
-    <button class="btn btn-outline-dark login-btn" id="loginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-    <button class="btn btn-danger d-none" id="logoutBtn">Logout</button>
-  </div>
-</div>
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-outline-primary" id="headerLoginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </button>
+                <button class="btn btn-primary" id="headerRegisterBtn" data-bs-toggle="modal" data-bs-target="#registerModal">
+                    <i class="fas fa-user-plus me-2"></i>Register
+                </button>
+                <button class="btn btn-danger" id="headerLogoutBtn" style="display: none;">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </button>
+                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
     </nav>
-    
+
+    <!-- Sidebar Menu -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold" id="sidebarMenuLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="d-grid gap-3">
+                <a href="vid.html" class="btn btn-success">
+                    <i class="fas fa-file-alt me-2"></i>My UCV
+                </a>
+                <a href="seeker-dashboard.html" class="btn btn-primary">
+                    <i class="fas fa-tachometer-alt me-2"></i>My Dashboard
+                </a>
+                <button class="btn btn-outline-primary" id="loginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </button>
+                <button class="btn btn-primary" id="registerBtn" data-bs-toggle="modal" data-bs-target="#registerModal">
+                    <i class="fas fa-user-plus me-2"></i>Register
+                </button>
+                <button class="btn btn-danger d-none" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content container">
-            <h1>Your Dream Job is one click away!</h1>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Find your Ideal Job...">
-                <button class="btn btn-primary">Search!</button>
+            <h1>Your New Job Is One Click Away!</h1>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Job title, keywords, or company...">
+                <button class="btn btn-primary">
+                    <i class="fas fa-search me-2"></i>Search
+                </button>
             </div>
-            <p><strong>I’m searching for someone</strong></p>
-            <button class="btn btn-outline-dark">Get started</button>
+            
+            <!-- Employer CTA Section -->
+            <div class="employer-cta-box mt-4">
+                <h3 class="employer-heading">
+                    <i class="fas fa-briefcase me-2"></i> I'M AN EMPLOYER LOOKING FOR TALENT
+                </h3>
+                <button class="btn employer-btn">
+                    <i class="fas fa-user-tie me-2"></i> Post a Job Now
+                </button>
+            </div>
         </div>
     </section>
-    
-    <section class="container text-center my-5">
-        <h2>Why choose PROFILEME</h2>
-        <div class="row mt-4">
+
+    <!-- Features Section -->
+    <section class="container py-5 my-5">
+        <h2 class="text-center mb-5">Why Choose PROFILEME</h2>
+        <div class="row g-4">
             <div class="col-md-4">
-                <div class="feature-box">
+                <div class="feature-box bubble text-center">
+                    <i class="fas fa-user-edit"></i>
                     <h4>Easy Profile Creation</h4>
-                    <p>Create your professional profile in minutes</p>
+                    <p>Create your profile in minutes with our intuitive builder and stand out to employers.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature-box">
+                <div class="feature-box bubble text-center">
+                    <i class="fas fa-robot"></i>
                     <h4>Smart Matching</h4>
-                    <p>Get job recommendations based on your skills and experience.</p>
+                    <p>We will match you with the perfect jobs based on your skills, experience, and preferences.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature-box">
+                <div class="feature-box bubble text-center">
+                    <i class="fas fa-shield-alt"></i>
                     <h4>Verified Recruiters</h4>
-                    <p>Connect with top recruiters and trusted companies.</p>
+                    <p>Connect only with verified recruiters from trusted companies. No spam, just quality opportunities.</p>
                 </div>
             </div>
         </div>
     </section>
-    
-    <footer class="text-center py-3">
-        <img src="assets/logo_fant_5.png" alt="Fantastic 5 Logo" width="80">
+
+    <!-- Testimonials Section -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Real People, Real Jobs</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex mb-3">
+                                <img src="https://randomuser.me/api/portraits/women/55.jpg" class="rounded-circle me-3" width="60" height="60" alt="Maria">
+                                <div>
+                                    <h5 class="mb-1">Maria K.</h5>
+                                    <p class="text-muted mb-0">Retail Associate</p>
+                                </div>
+                            </div>
+                            <p class="card-text">"Never went to college but PROFILEME helped me land my first office job at 42! Now I'm learning admin work on the go."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex mb-3">
+                                <img src="https://randomuser.me/api/portraits/men/62.jpg" class="rounded-circle me-3" width="60" height="60" alt="John">
+                                <div>
+                                    <h5 class="mb-1">John T.</h5>
+                                    <p class="text-muted mb-0">Warehouse Worker</p>
+                                </div>
+                            </div>
+                            <p class="card-text">"Retired from construction but still wanted to work. Found the perfect part-time warehouse job through this app!"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex mb-3">
+                                <img src="https://randomuser.me/api/portraits/women/33.jpg" class="rounded-circle me-3" width="60" height="60" alt="Lisa">
+                                <div>
+                                    <h5 class="mb-1">Lisa M.</h5>
+                                    <p class="text-muted mb-0">Stay-at-home Mom</p>
+                                </div>
+                            </div>
+                            <p class="card-text">"No work history after raising kids. PROFILEME helped me explain my gap and get a fresh start as a cashier."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex mb-3">
+                                <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle me-3" width="60" height="60" alt="David">
+                                <div>
+                                    <h5 class="mb-1">David R.</h5>
+                                    <p class="text-muted mb-0">Forklift Operator</p>
+                                </div>
+                            </div>
+                            <p class="card-text">"Dropped out of high school but PROFILEME helped me get certified and start a real career."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex mb-3">
+                                <img src="https://randomuser.me/api/portraits/men/68.jpg" class="rounded-circle me-3" width="60" height="60" alt="James">
+                                <div>
+                                    <h5 class="mb-1">James P.</h5>
+                                    <p class="text-muted mb-0">School Guard</p>
+                                </div>
+                            </div>
+                            <p class="card-text">"Thought my age (58) would stop me from working. PROFILEME proved me wrong!"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex mb-3">
+                                <img src="https://randomuser.me/api/portraits/women/28.jpg" class="rounded-circle me-3" width="60" height="60" alt="Sophia">
+                                <div>
+                                    <h5 class="mb-1">Sophia L.</h5>
+                                    <p class="text-muted mb-0">Kitchen Helper</p>
+                                </div>
+                            </div>
+                            <p class="card-text">"New immigrant with limited English. Found a job through PROFILEME that's helping me build a life here."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5" style="background-color: var(--primary-color);">
+        <div class="container text-center text-white">
+            <h2 class="mb-4">Ready to take the next step in your career?</h2>
+            <p class="lead mb-4">Join thousands of people who found their perfect jobs through PROFILEME!</p>
+            <button class="btn btn-light btn-lg px-5" id="ctaRegisterBtn" data-bs-toggle="modal" data-bs-target="#registerModal">
+                Get Started - It's Free
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-5">
+        <div class="container">
+            <img src="assets/logo_fant_5.png" alt="Fantastic 5 Logo" width="80" class="mb-4">
+            <div class="d-flex justify-content-center gap-4 mb-4">
+                <a href="#" class="text-dark"><i class="fab fa-facebook-f fa-lg"></i></a>
+                <a href="#" class="text-dark"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="#" class="text-dark"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                <a href="#" class="text-dark"><i class="fab fa-instagram fa-lg"></i></a>
+            </div>
+            <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+                <a href="#" class="text-muted text-decoration-none">About Us</a>
+                <a href="#" class="text-muted text-decoration-none">Contact</a>
+                <a href="#" class="text-muted text-decoration-none">Privacy Policy</a>
+                <a href="#" class="text-muted text-decoration-none">Terms of Service</a>
+                <a href="#" class="text-muted text-decoration-none">FAQ</a>
+            </div>
+            <p class="text-muted mb-0">&copy; 2023 PROFILEME. All rights reserved.</p>
+        </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-
             function updateSidebarGreeting() {
-            const firstName = localStorage.getItem('FirstName');
-            const lastName = localStorage.getItem('LastName');
-            const sidebarTitle = document.getElementById('sidebarMenuLabel');
-            if (firstName && lastName) {
-            sidebarTitle.textContent = `Welcome, ${firstName} ${lastName}!`;
-                } else {
-                sidebarTitle.textContent = 'Menu';
+                const firstName = localStorage.getItem('FirstName');
+                const lastName = localStorage.getItem('LastName');
+                const sidebarTitle = document.getElementById('sidebarMenuLabel');
+                sidebarTitle.textContent = (firstName && lastName) 
+                    ? `Welcome, ${firstName} ${lastName}!` 
+                    : 'Menu';
             }
-        }
-            // Check for persistent login
-            if (localStorage.getItem('loggedIn') === 'true') {
-                document.getElementById('loginBtn').classList.add('d-none');
-                document.getElementById('registerBtn').classList.add('d-none');
-                document.getElementById('logoutBtn').classList.remove('d-none');
+
+            // Auth state management
+            function updateAuthUI() {
+                const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+                
+                // Navbar elements
+                document.getElementById('headerLoginBtn').style.display = isLoggedIn ? 'none' : 'block';
+                document.getElementById('headerRegisterBtn').style.display = isLoggedIn ? 'none' : 'block';
+                document.getElementById('headerLogoutBtn').style.display = isLoggedIn ? 'block' : 'none';
+                
+                // Sidebar elements
+                document.getElementById('loginBtn').style.display = isLoggedIn ? 'none' : 'block';
+                document.getElementById('registerBtn').style.display = isLoggedIn ? 'none' : 'block';
+                document.getElementById('logoutBtn').style.display = isLoggedIn ? 'block' : 'none';
+                
                 updateSidebarGreeting();
             }
-    
-            // Registration handling
-            const registerForm = document.getElementById('registerForm');
-            registerForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-    
-                const FirstName = document.getElementById('registerFirstName').value;
-                const LastName = document.getElementById('registerLastName').value;
-                const Email = document.getElementById('registerEmail').value;
-                const DateOfBirth = document.getElementById('registerDateOfBirth').value;
-                const Password = document.getElementById('registerPassword').value;
-    
-                const userData = { FirstName, LastName, Email, Password, DateOfBirth };
-    
-                try {
-                    const response = await fetch('/register', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(userData)
-                    });
-    
-                    const result = await response.json();
-                    console.log('✅ Server response:', result);
-                    alert(result.message || 'Registered successfully!');
-    
-                    // Auto-login after registration
-                    document.getElementById('loginBtn').classList.add('d-none');
-                    document.getElementById('registerBtn').classList.add('d-none');
-                    document.getElementById('logoutBtn').classList.remove('d-none');
-    
-                    localStorage.setItem('loggedIn', 'true'); // Store login state
 
-                    localStorage.setItem('FirstName', result.FirstName);
-                    localStorage.setItem('LastName', result.LastName);
-                        updateSidebarGreeting();
-    
-                    // Close modal
-                    const registerModal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
-                    if (registerModal) registerModal.hide();
-    
-                } catch (error) {
-                    console.error('❗Error registering:', error);
-                    alert('Registration failed.');
-                }
-            });
-    
-            // Login handling
-            const loginForm = document.querySelector('#loginModal form');
-            loginForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-    
-                const Email = document.getElementById('loginEmail').value;
-                const Password = document.getElementById('password').value;
-    
-                try {
-                    const response = await fetch('/login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ Email, Password })
-                    });
-    
-                    const result = await response.json();
-                    console.log('✅ Login response:', result);
-    
-                    if (response.ok) {
-                        alert(result.message || 'Login successful!');
-                        
-                        document.getElementById('loginBtn').classList.add('d-none');
-                        document.getElementById('registerBtn').classList.add('d-none');
-                        document.getElementById('logoutBtn').classList.remove('d-none');
-    
-                        localStorage.setItem('loggedIn', 'true'); // Store login state
-                        
-                        localStorage.setItem('FirstName', result.FirstName);
-                        localStorage.setItem('LastName', result.LastName);
-                        updateSidebarGreeting();
-    
-                        // Close modal
-                        const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
-                        if (loginModal) loginModal.hide();
-                    } else {
-                        alert(result.message || 'Login failed!');
-                    }
-    
-                } catch (error) {
-                    console.error('❗Error logging in:', error);
-                    alert('Login error occurred.');
-                }
-            });
-    
-            // Logout handling
-            const logoutBtn = document.getElementById('logoutBtn');
-            logoutBtn.addEventListener('click', () => {
-                document.getElementById('loginBtn').classList.remove('d-none');
-                document.getElementById('registerBtn').classList.remove('d-none');
-                document.getElementById('logoutBtn').classList.add('d-none');
-                localStorage.removeItem('loggedIn'); // Clear login state
+            // Logout functionality
+            function logoutUser() {
+                localStorage.removeItem('loggedIn');
                 localStorage.removeItem('FirstName');
                 localStorage.removeItem('LastName');
-                updateSidebarGreeting();
-                alert('You have been logged out.');
+                updateAuthUI();
+                window.location.href = 'index.html';
+            }
+
+            // Handle logout from both navbar and sidebar
+            document.getElementById('headerLogoutBtn').addEventListener('click', logoutUser);
+            document.getElementById('logoutBtn').addEventListener('click', logoutUser);
+
+            // Login handling
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                try {
+                    const email = document.getElementById('loginEmail').value;
+                    
+                    // Simulate login
+                    localStorage.setItem('loggedIn', 'true');
+                    
+                    // Use the email prefix as username
+                    const username = email.split('@')[0];
+                    localStorage.setItem('FirstName', username);
+                    localStorage.setItem('LastName', '');
+                    
+                    updateAuthUI();
+                    
+                    // Hide the modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                    modal.hide();
+                } catch (error) {
+                    console.error('Login failed:', error);
+                }
+            });
+
+            // Registration handling
+            document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                try {
+                    const firstName = document.getElementById('registerFirstName').value;
+                    const lastName = document.getElementById('registerLastName').value;
+                    
+                    // Simulate registration
+                    localStorage.setItem('loggedIn', 'true');
+                    localStorage.setItem('FirstName', firstName);
+                    localStorage.setItem('LastName', lastName);
+                    
+                    updateAuthUI();
+                    
+                    // Hide the modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
+                    modal.hide();
+                } catch (error) {
+                    console.error('Registration failed:', error);
+                }
+            });
+
+            // Initialize
+            updateAuthUI();
+
+            // Add smooth scrolling to all links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
             });
         });
     </script>
-
 </body>
 </html>
