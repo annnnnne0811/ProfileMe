@@ -75,48 +75,6 @@
         </form>
     </div>
 
-    <script>
-        document.getElementById('postJobForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                
-                // user session 
-                const sessionRes = await fetch('/check-session', { credentials: 'include' });
-                if (!sessionRes.ok) {
-                    alert('You must be logged in to post a job.');
-                    window.location.href = '/index.html';
-                    return;
-                }
-
-                const jobData = {
-                    Title: document.getElementById('jobTitle').value,
-                    Description: document.getElementById('jobDescription').value,
-                    Location: document.getElementById('jobLocation').value
-                };
-                
-                const response = await fetch('/post-job', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify(jobData)
-                    
-                });
-
-                const result = await response.json();
-
-                console.log('✅ Response status:', response.status);
-                console.log('✅ Full response JSON:', result);
-                
-                alert(result.message);
-
-                if(response.ok) {
-                    document.getElementById('postJobForm').reset();
-                }
-            } catch (error) {
-                console.error('Error posting job:', error);
-                alert('Something went wrong while posting the job.');
-            }
-        });
-    </script>
+    <script src="scripts/postJob.js"></script>
 </body>
 </html>
