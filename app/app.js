@@ -3,6 +3,7 @@ const express = require('express');
 const authController = require('./controller/authController');
 const path = require('path');
 const mysql = require('mysql2/promise');
+const session = require('express-session');
 
 const app = express();
 
@@ -13,6 +14,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'view')));
 
+app.use(session({
+    secret: 'secretkey',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+        sameSite: 'lax'
+    }
+}));
+
 // Log requests
 app.use((req, res, next) => {
     console.log(`📥 ${req.method} ${req.url}`);
@@ -22,6 +34,21 @@ app.use((req, res, next) => {
 // Auth + API routes (no session)
 app.post('/register', authController.register);
 app.post('/login', authController.login);
+app.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) return res.status(500).json({ message: 'Logout failed' });
+        res.clearCookie('connect.sid');
+        res.status(200).json({ message: 'Logged out successfully' });
+    });
+});
+
+app.get('/check-session', (req, res) => {
+    if (req.session.user) {
+        res.status(200).json(req.session.user);
+    } else {
+        res.status(401).json({ message: 'Not logged in' });
+    }
+});
 
 // Profile data
 app.post('/save-profile', authController.saveUserProfile);
@@ -50,7 +77,7 @@ app.get('/search', (req, res) => {
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: '270202',
+    password: 'root',
     database: 'ProfileMe'
 };
 
@@ -67,11 +94,30 @@ app.get('/get-jobs', async (req, res) => {
     }
 });
 
+app.post('/post-job', async (req, res) => {
+    try {
+        const { title, description, location } = req.body;
+
+        const connection = await mysql.createConnection(dbConfig);
+        await connection.execute(
+            'INSERT INTO jobs (Title, Description, Location, DatePosted) VALUES (?, ?, ?, NOW())',
+            [title, description, location]
+        );
+        await connection.end();
+
+        res.status(200).json({ message: 'Job posted successfully.' });
+    } catch (err) {
+        console.error('❌ Job post error:', err);
+        res.status(500).json({ message: 'Failed to post job.' });
+    }
+});
+
 // 404 fallback
 app.use((req, res) => {
     console.log(`❓ Unhandled route: ${req.method} ${req.url}`);
     res.status(404).send('404 - Not Found');
 });
+
 
 // DB connection + server start
 async function connectToDB() {
