@@ -477,6 +477,26 @@
                     <i class="fas fa-search me-2"></i>Search
                 </button>
             </div>
+
+            <!-- Search filter -->
+            <div class="row mb-3 justify-content-center">
+                <div class="col-md-3 col-sm-6">
+                    <select id="jobType" class="form-select">
+                        <option value="">All Job Types</option>
+                        <option value="Full Time">Full Time</option>
+                        <option value="Part Time">Part Time</option>
+                        <option value="Remote">Remote</option>
+                        <option value="Contract">Contract</option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <input type="text" id="location" class="form-select" placeholder="Enter location">
+                </div>
+            </div>            
+    
+            <ul class="list-group" id="jobList"></ul>
+        </div>
+    
             
             <!-- Employer CTA Section -->
             <div class="employer-cta-box mt-4">
