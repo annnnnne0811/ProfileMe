@@ -9,8 +9,8 @@
     <style>
         body {
             background-color: #f9f9f9;
-        }
-        .post-job-container {
+            }
+            .post-job-container {
             margin-top: 80px;
             max-width: 600px;
             margin-left: auto;
@@ -20,27 +20,85 @@
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
-        .btn-submit-job {
-            background-color: #28a745;
+
+            .btn-submit-job {
+            background: linear-gradient(135deg, hsl(190, 35%, 44%) 0%, #22c278 100%);
             color: white;
-            transition: background-color 0.3s, transform 0.2s;
+            border: none;
+            padding: 12px 24px;
+            font-weight: 500;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
-        .btn-submit-job:hover {
-            background-color: #218838;
-            transform: scale(1.05);
+
+            .btn-submit-job:hover {
+            background: linear-gradient(135deg, hsl(190, 35%, 44%) 0%, #22c278 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+            .form-control {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+            .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+
+            .form-label {
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+            .offcanvas-start {
+            width: 280px;
+            color: white;
+        }
+
+            .offcanvas-body .btn {
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            padding: 10px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+            .offcanvas-body .btn:hover {
+            transform: translateX(5px);
+        }
+
+            .navbar-nav .nav-link:hover {
+            text-shadow: 0 0 8px rgba(11, 0, 0, 0.6);
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-light bg-light p-3">
-        <div class="container">
-            <button class="btn btn-outline-dark m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
-                ☰ Menu
-              </button>
-          <a class="navbar-brand" href="#">
-            <img src="/assets/logo_fant_5.png" alt="Logo" width="50">
-          </a>
-          
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: hsl(190, 35%, 44%);">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="assets/logo_fant_5.png" alt="Logo" width="50" class="me-2">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link text-white" href="vid.html">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="search.html">Search</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="seeker-dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="post-job.html">Post a Job</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
       
           <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
             <div class="offcanvas-header">
@@ -76,5 +134,6 @@
     </div>
 
     <script src="scripts/postJob.js"></script>
+    
 </body>
 </html>
