@@ -99,7 +99,7 @@
 }
 
 .hero {
-    background: url('assets/working_laptop.jpg') no-repeat center center/cover;
+    background: url('../assets/working_laptop.jpg') no-repeat center center/cover;
     min-height: 80vh;
     display: flex;
     flex-direction: column;
