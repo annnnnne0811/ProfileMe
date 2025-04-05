@@ -363,61 +363,65 @@
           </button>
         </div>
         <div class="profile-name">
-          <div class="view-only" id="displayName"></div>
-          <input type="text" class="editable-field" id="nameInput" value="Your Name">
+          <span id="firstName"></span>&nbsp;<span id="lastName"></span>
         </div>
+        <button id="toggleEditMode" class="btn btn-info ms-auto">Edit Profile</button>
       </div>
-      <button id="toggleEditMode" class="btn btn-primary">Edit</button>
     </div>
 
-    <ul class="nav nav-tabs tab-bar" id="profileTab" role="tablist">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="profileTabs" role="tablist">
       <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#feed">Feed</button></li>
       <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#videoCV">VideoCV</button></li>
       <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#usefulLinks">Useful Links</button></li>
       <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#aboutMe">About Me</button></li>
     </ul>
-
-    <div class="tab-content p-4">
+    
+    <div class="tab-content p-4 bg-white border rounded shadow-sm mt-2">
+      
+      <!-- Feed -->
       <div class="tab-pane fade show active" id="feed">
-        <h4>Feed</h4>
-        <div class="edit-section">
-          <div class="view-only" id="displayFeedContent">Share your updates here...</div>
-          <textarea class="editable-field editable-textarea edit-only" id="feedContent"></textarea>
-          <div class="section-actions edit-only">
-            <button class="btn btn-outline-secondary btn-cancel-feed">Cancel</button>
-            <button class="btn btn-primary btn-save-feed">Save</button>
-          </div>
+        <h4 class="mb-3">Feed</h4>
+        <textarea class="form-control" rows="4" placeholder="Share your updates here..."></textarea>
+        <div class="mt-2 text-end">
+          <button class="btn btn-outline-secondary me-2">Cancel</button>
+          <button class="btn btn-primary">Save</button>
         </div>
       </div>
       
+      <!-- Video -->
       <div class="tab-pane fade" id="videoCV">
-        <h4>Profile Video</h4>
-        <div class="video-container position-relative">
-          <video controls class="w-100">
-            <source src="" id="videoSource" type="video/mp4" />
+        <h4 class="mb-3">Profile Video</h4>
+        <div class="video-container text-center">
+          <video controls class="w-100 rounded" style="max-height: 400px;">
+            <source id="videoSource" src="" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <input type="file" id="videoUpload" accept="video/*" hidden>
+          <input type="file" id="videoUpload" accept="video/*" hidden />
           <div class="video-actions mt-3">
             <button id="addVideoBtn" class="btn btn-outline-primary">Add Video</button>
-            <button id="changeVideoBtn" class="btn btn-outline-primary edit-only">Change Video</button>
-            <button id="removeVideoBtn" class="btn btn-outline-danger edit-only">Remove Video</button>
           </div>
         </div>
       </div>
       
+      <!-- Links -->
       <div class="tab-pane fade" id="usefulLinks">
         <h4>Useful Links</h4>
+        
+        <!-- for backend-->
+        <ul id="usefulLinksList" class="list-unstyled">
+        </ul>
+  
         <div id="linksContainer">
           <div class="view-only mb-2">
-            <a href="#" target="_blank" class="text-decoration-none">
-            </a>
+            <a href="#" target="_blank" class="text-decoration-none">Example Link</a>
           </div>
           <div class="d-flex mb-2 edit-only">
             <input type="text" class="editable-field me-2" placeholder="Link title" id="linkTitle0" value="Example Link">
             <input type="text" class="editable-field" placeholder="URL (https://...)" id="linkUrl0" value="#">
           </div>
         </div>
+      
         <button id="addLinkBtn" class="btn btn-outline-primary mt-3 edit-only">Add Another Link</button>
         <div class="section-actions edit-only">
           <button class="btn btn-outline-secondary btn-cancel-links">Cancel</button>
@@ -428,7 +432,9 @@
       <div class="tab-pane fade" id="aboutMe">
         <h4>Personal Statement</h4>
         <div class="edit-section">
-          <div class="view-only" id="displayAboutMe">Write something about yourself...</div>
+          <div id="aboutMe">
+            <p data-editable="true">Write something about yourself...</p>
+          </div>
           <textarea class="editable-field editable-textarea edit-only" id="aboutMeContent"></textarea>
           <div class="section-actions edit-only">
             <button class="btn btn-outline-secondary btn-cancel-about">Cancel</button>
@@ -440,211 +446,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Initialize variables
-    let isEditing = false;
-    let links = [{ title: "Example Link", url: "#" }];
-    
-    // DOM elements
-    const profilePicInput = document.getElementById('profilePicInput');
-    const profilePic = document.getElementById('profilePic');
-    const defaultIcon = document.querySelector('.default-icon');
-    const removeProfilePicBtn = document.getElementById('removeProfilePicBtn');
-    const nameInput = document.getElementById('nameInput');
-    const displayName = document.getElementById('displayName');
-    const feedContent = document.getElementById('feedContent');
-    const displayFeedContent = document.getElementById('displayFeedContent');
-    const aboutMeContent = document.getElementById('aboutMeContent');
-    const displayAboutMe = document.getElementById('displayAboutMe');
-    const addLinkBtn = document.getElementById('addLinkBtn');
-    const linksContainer = document.getElementById('linksContainer');
-    
-    // Toggle edit mode
-    function toggleEditMode() {
-      isEditing = !isEditing;
-      
-      if (isEditing) {
-        document.getElementById('toggleEditMode').textContent = 'Save';
-        document.body.classList.add('edit-mode');
-        
-        // Update name input with displayed value
-        nameInput.value = displayName.textContent;
-        nameInput.classList.add('edit-mode');
-        
-        // Show remove button if profile picture exists
-        if (profilePic.src && profilePic.src !== '') {
-          removeProfilePicBtn.style.display = 'block';
-        }
-        
-        // Show change/remove video buttons if video exists
-        if (document.getElementById('videoSource').src) {
-          document.getElementById('changeVideoBtn').style.display = 'inline-block';
-          document.getElementById('removeVideoBtn').style.display = 'inline-block';
-        }
-      } else {
-        document.getElementById('toggleEditMode').textContent = 'Edit';
-        document.body.classList.remove('edit-mode');
-        nameInput.classList.remove('edit-mode');
-        
-        // Update displayed name when exiting edit mode
-        displayName.textContent = nameInput.value;
-      }
-    }
-    
-    // Profile picture functionality
-    profilePicInput.addEventListener('change', function(e) {
-      if (e.target.files && e.target.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          profilePic.src = event.target.result;
-          profilePic.style.display = 'block';
-          defaultIcon.style.display = 'none';
-          if (isEditing) {
-            removeProfilePicBtn.style.display = 'block';
-          }
-        }
-        reader.readAsDataURL(e.target.files[0]);
-      }
-    });
-    
-    removeProfilePicBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      profilePic.src = '';
-      profilePic.style.display = 'none';
-      defaultIcon.style.display = 'block';
-      removeProfilePicBtn.style.display = 'none';
-      profilePicInput.value = '';
-    });
-    
-    // Video functionality
-    document.getElementById('addVideoBtn').addEventListener('click', function() {
-      document.getElementById('videoUpload').click();
-    });
-
-    document.getElementById('changeVideoBtn').addEventListener('click', function() {
-      document.getElementById('videoUpload').click();
-    });
-
-    document.getElementById('videoUpload').addEventListener('change', function(e) {
-      if (e.target.files && e.target.files[0]) {
-        const videoFile = e.target.files[0];
-        const videoURL = URL.createObjectURL(videoFile);
-        
-        const videoElement = document.querySelector('#videoCV video');
-        const sourceElement = document.getElementById('videoSource');
-        
-        sourceElement.src = videoURL;
-        videoElement.load();
-        
-        document.getElementById('addVideoBtn').style.display = 'none';
-        document.getElementById('changeVideoBtn').style.display = 'inline-block';
-        document.getElementById('removeVideoBtn').style.display = 'inline-block';
-      }
-    });
-
-    document.getElementById('removeVideoBtn').addEventListener('click', function() {
-      const videoElement = document.querySelector('#videoCV video');
-      const sourceElement = document.getElementById('videoSource');
-      
-      sourceElement.src = '';
-      videoElement.load();
-      document.getElementById('videoUpload').value = '';
-      
-      document.getElementById('addVideoBtn').style.display = 'inline-block';
-      document.getElementById('changeVideoBtn').style.display = 'none';
-      document.getElementById('removeVideoBtn').style.display = 'none';
-    });
-
-    // Add link button
-    addLinkBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      links.push({ title: '', url: '' });
-      
-      const newLink = document.createElement('div');
-      newLink.className = 'd-flex mb-2 edit-only';
-      newLink.innerHTML = `
-        <input type="text" class="editable-field me-2" placeholder="Link title" 
-               id="linkTitle${links.length - 1}" value="">
-        <input type="text" class="editable-field" placeholder="URL (https://...)" 
-               id="linkUrl${links.length - 1}" value="">
-        <button class="btn btn-outline-danger btn-sm ms-2 btn-remove-link" data-index="${links.length - 1}">
-          <i class="bi bi-trash"></i>
-        </button>
-      `;
-      linksContainer.appendChild(newLink);
-      
-      // Add event listener to remove button
-      newLink.querySelector('.btn-remove-link').addEventListener('click', function() {
-        const index = parseInt(this.getAttribute('data-index'));
-        links.splice(index, 1);
-        this.parentElement.remove();
-      });
-    });
-    
-    // Save buttons (just for UI, won't actually save permanently)
-    document.querySelector('.btn-save-feed').addEventListener('click', function() {
-      displayFeedContent.textContent = feedContent.value;
-    });
-    
-    document.querySelector('.btn-save-about').addEventListener('click', function() {
-      displayAboutMe.textContent = aboutMeContent.value;
-    });
-    
-    document.querySelector('.btn-save-links').addEventListener('click', function() {
-      // Update links array with current values
-      links = [];
-      document.querySelectorAll('[id^="linkTitle"]').forEach((input, index) => {
-        const title = input.value;
-        const url = document.getElementById(`linkUrl${index}`).value;
-        links.push({ title, url });
-      });
-      
-      // Update view mode display
-      const viewLinks = linksContainer.querySelectorAll('.view-only');
-      viewLinks.forEach(link => link.remove());
-      
-      links.forEach(link => {
-        if (link.title || link.url) {
-          const viewLink = document.createElement('div');
-          viewLink.className = 'view-only mb-2';
-          viewLink.innerHTML = `
-            <a href="${link.url || '#'}" target="_blank" class="text-decoration-none">
-              ${link.title || 'Untitled Link'} <i class="bi bi-box-arrow-up-right"></i>
-            </a>
-          `;
-          linksContainer.appendChild(viewLink);
-        }
-      });
-    });
-    
-    // Cancel buttons
-    document.querySelector('.btn-cancel-feed').addEventListener('click', function() {
-      feedContent.value = displayFeedContent.textContent;
-    });
-    
-    document.querySelector('.btn-cancel-about').addEventListener('click', function() {
-      aboutMeContent.value = displayAboutMe.textContent;
-    });
-    
-    document.querySelector('.btn-cancel-links').addEventListener('click', function() {
-      // Just toggle back to view mode - changes won't persist
-      toggleEditMode();
-      toggleEditMode();
-    });
-
-    // Edit mode toggle
-    document.getElementById('toggleEditMode').addEventListener('click', toggleEditMode);
-    
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-      // Video buttons
-      document.getElementById('addVideoBtn').style.display = 'inline-block';
-      document.getElementById('changeVideoBtn').style.display = 'none';
-      document.getElementById('removeVideoBtn').style.display = 'none';
-      
-      // Profile picture
-      profilePic.style.display = 'none';
-    });
-  </script>
+  <script src="/scripts/vid.js" defer></script>
 </body>
 </html>

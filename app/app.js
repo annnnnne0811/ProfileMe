@@ -1,6 +1,7 @@
 // Import necessary modules
 const express = require('express');
 const authController = require('./controller/authController');
+const upload = require('./controller/uploadController');
 const path = require('path');
 const mysql = require('mysql2/promise');
 const session = require('express-session');
@@ -50,6 +51,18 @@ app.get('/check-session', (req, res) => {
     }
 });
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Upload profile image
+app.post('/upload/profile-image', upload.single('profilePic'), (req, res) => {
+    res.json({ imageUrl: `/uploads/${req.file.filename}` });
+  });
+  
+  // Upload video
+  app.post('/upload/profile-video', upload.single('profileVideo'), (req, res) => {
+    res.json({ videoUrl: `/uploads/${req.file.filename}` });
+  });
+
 // Profile data
 app.post('/save-profile', authController.saveUserProfile);
 app.post('/add-link', authController.addUserLink);
@@ -77,7 +90,7 @@ app.get('/search', (req, res) => {
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: '270202',
+    password: 'root',
     database: 'ProfileMe'
 };
 

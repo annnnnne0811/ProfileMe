@@ -128,7 +128,16 @@ const socialIcons = {
       alert("Failed to save profile.");
     }
   }
-  
+
+  async function uploadFile(file, route) {
+    const formData = new FormData();
+    formData.append(route === "profile-image" ? "profilePic" : "profileVideo", file);
+    const res = await fetch(`/upload/${route}`, {
+      method: "POST",
+      body: formData
+    });
+    return await res.json();
+  }
   // Hook events
   
   document.addEventListener("DOMContentLoaded", loadUserProfile);
@@ -145,20 +154,23 @@ const socialIcons = {
     if (isEditing) document.getElementById("profilePicInput").click();
   });
   
-  document.getElementById("profilePicInput").addEventListener("change", e => {
+  document.getElementById("profilePicInput").addEventListener("change", async (e) => {
     const file = e.target.files[0];
-    if (file) document.getElementById("profilePic").src = URL.createObjectURL(file);
+    if (file) {
+      const result = await uploadFile(file, "profile-image");
+      document.getElementById("profilePic").src = result.imageUrl;
+    }
+  });
+  
+  document.getElementById("videoUpload").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const result = await uploadFile(file, "profile-video");
+      document.getElementById("videoSource").src = result.videoUrl;
+      document.querySelector("video").load();
+    }
   });
   
   document.getElementById("addVideoBtn").addEventListener("click", () => {
     document.getElementById("videoUpload").click();
   });
-  
-  document.getElementById("videoUpload").addEventListener("change", e => {
-    const file = e.target.files[0];
-    if (file) {
-      document.getElementById("videoSource").src = URL.createObjectURL(file);
-      document.querySelector("video").load();
-    }
-  });
-  
