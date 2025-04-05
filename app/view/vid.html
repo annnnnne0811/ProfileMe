@@ -4,66 +4,368 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>User Profile - Modular CV</title>
-  <link rel="stylesheet" href="/app/view/css/profile_styles.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <style>
-    .sidebar {
-      position: fixed;
-      top: 0; left: 0;
-      width: 80px; height: 100vh;
-      background: linear-gradient(180deg, #6c63ff, #00c6ff);
-      display: flex; flex-direction: column; align-items: center;
-      padding-top: 30px; gap: 30px;
-      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
+    :root {
+      --primary-color: hsl(190, 35%, 44%);
+      --primary-light: rgba(52, 152, 219, 0.1);
+      --danger-color: #dc3545;
     }
-    .sidebar a {
-      color: white; font-size: 28px;
-      transition: transform 0.3s, color 0.3s;
+    
+    body {
+      background-color: #f9f9f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    .sidebar a:hover {
-      transform: scale(1.2);
-      color: #fffc;
+    
+    .navbar {
+      background-color: var(--primary-color) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
+    
+    .navbar-nav .nav-link {
+      color: white !important;
+      font-weight: 500;
+    }
+    
+    .navbar-nav .nav-link:hover {
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    }
+    
     .main-content {
-      margin-left: 80px;
-      width: calc(100% - 80px);
+      margin-top: 80px;
       padding: 20px;
     }
-    .profile-img-container img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(108, 99, 255, 0.5);
-      animation: glowPulse 2s infinite;
+    
+    .profile-img-container {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 3px solid white;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      position: relative;
     }
-    @keyframes glowPulse {
-      0% { box-shadow: 0 0 5px rgba(108, 99, 255, 0.5); }
-      50% { box-shadow: 0 0 20px rgba(108, 99, 255, 0.8); }
-      100% { box-shadow: 0 0 5px rgba(108, 99, 255, 0.5); }
+    
+    .profile-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+    
+    .profile-img-container .default-icon {
+      font-size: 60px;
+      color: #999;
+    }
+    
+    .profile-img-container:hover img {
+      transform: scale(1.05);
+    }
+    
+    .profile-img-container:hover .default-icon {
+      color: #777;
+    }
+  
+    .profile-name {
+      font-size: 2rem;
+      font-weight: bold;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+    }
+    
+    #displayName {
+      padding: 5px 10px;
+    }
+    
+    #nameInput {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      transition: all 0.3s;
+      background: transparent;
+      border: none;
+      pointer-events: none;
+      padding: 0;
+      box-shadow: none;
+    }
+    
+    #nameInput.edit-mode {
+      background: white;
+      border: 1px solid #ddd;
+      pointer-events: auto;
+      padding: 10px 15px;
+      box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    }
+    
+    .editable-field {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      margin-bottom: 10px;
+    }
+    
+    .editable-field:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+      outline: none;
+    }
+    
+    .editable-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .edit-section {
+      margin-bottom: 30px;
+    }
+    
+    .section-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .nav-tabs {
+      border-bottom: 1px solid #dee2e6;
+      margin-bottom: 20px;
+    }
+    
+    .nav-tabs .nav-link {
+      color: #495057;
+      font-weight: 500;
+      border: none;
+      padding: 12px 20px;
+      transition: all 0.3s;
+    }
+    
+    .nav-tabs .nav-link.active {
+      color: var(--primary-color);
+      border-bottom: 3px solid var(--primary-color);
+      background: transparent;
+    }
+    
+    .nav-tabs .nav-link:hover:not(.active) {
+      color: var(--primary-color);
+      border-bottom: 3px solid rgba(52, 152, 219, 0.3);
+    }
+    
+    .video-container {
+      width: 70%;
+      margin: 0 auto;
+      text-align: center;
+      padding: 20px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .video-container video {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      background: #000;
+    }
+    
+    .video-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 25px;
+    }
+    
+    .btn-outline-primary, .btn-outline-danger {
+      padding: 10px 25px;
+      font-weight: 600;
+      border-width: 2px;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      border-radius: 8px;
+    }
+    
+    .btn-outline-primary {
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+      background-color: var(--primary-light);
+    }
+    
+    .btn-outline-primary:hover {
+      background-color: var(--primary-color);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+    }
+    
+    .btn-outline-danger {
+      color: var(--danger-color);
+      border-color: var(--danger-color);
+      background-color: rgba(220, 53, 69, 0.1);
+    }
+    
+    .btn-outline-danger:hover {
+      background-color: var(--danger-color);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+    
+    .btn-primary:hover {
+      background-color: hsl(190, 35%, 40%);
+      border-color: hsl(190, 35%, 40%);
+    }
+
+    #changeVideoBtn, #removeVideoBtn, #profilePicInput, #removeProfilePicBtn {
+      display: none;
+    }
+    
+    .edit-mode .edit-only {
+      display: block;
+    }
+    
+    .edit-mode .view-only {
+      display: none;
+    }
+  
+    .tab-content {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .tab-pane h4 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+   
+    .offcanvas-start {
+      width: 280px;
+      color: white;
+      background-color: var(--primary-color) !important;
+    }
+    
+    .offcanvas-body .btn {
+      width: 100%;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      padding: 10px;
+      font-weight: 500;
+      transition: all 0.3s;
+      color: white;
+      text-align: left;
+    }
+    
+    .offcanvas-body .btn:hover {
+      transform: translateX(5px);
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .offcanvas-header .btn-close {
+      filter: invert(1);
+    }
+ 
+    .feed-item {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      transition: all 0.3s;
+    }
+    
+    .feed-item:hover {
+      background-color: #f8f9fa;
+    }
+    
+    @media (max-width: 768px) {
+      .video-container {
+        width: 100%;
+      }
+      
+      .profile-img-container {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .profile-name {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <a href="vid.html"><i class="bi bi-house"></i></a>
-    <a href="search.html"><i class="bi bi-search"></i></a>
-    <a href="seeker-dashboard.html"><i class="bi bi-speedometer2"></i></a>
-    <a href="post-job.html"><i class="bi bi-briefcase"></i></a>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="assets/logo_fant_5.png" alt="Logo" width="50" class="me-2">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="vid.html">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="search.html">Search</a></li>
+          <li class="nav-item"><a class="nav-link" href="seeker-dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="post-job.html">Post a Job</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Offcanvas Sidebar Menu -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="sidebarMenuLabel">Menu</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column gap-2">
+      <a href="vid.html" class="btn btn-success">My Profile</a>
+      <a href="search.html" class="btn btn-secondary">Search Tab</a>
+      <a href="seeker-dashboard.html" class="btn btn-primary">Dashboard</a>
+      <a href="post-job.html" class="btn btn-primary">Post a job</a>
+    </div>
   </div>
 
-  <!-- Main -->
+  <!-- Main Content -->
   <div class="main-content">
-    <div class="top-bar d-flex align-items-center justify-content-between mb-3">
+    <div class="top-bar d-flex align-items-center justify-content-between mb-4">
       <div class="d-flex align-items-center gap-3">
-        <div class="profile-img-container" onclick="isEditing && document.getElementById('profilePicInput').click()">
-          <img id="profilePic" src="https://via.placeholder.com/120" alt="Profile Pic">
+        <div class="profile-img-container position-relative" onclick="if(isEditing) document.getElementById('profilePicInput').click()">
+          <div class="default-icon">
+            <i class="bi bi-person-fill"></i>
+          </div>
+          <img id="profilePic" src="" alt="Profile Pic">
           <input type="file" id="profilePicInput" accept="image/*" hidden>
+          <button id="removeProfilePicBtn" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 edit-only">
+            <i class="bi bi-x"></i>
+          </button>
         </div>
-        <h2 class="profile-name" data-editable="true">
-          <span id="firstName"></span> <span id="lastName"></span>
-        </h2>
+        <div class="profile-name">
+          <div class="view-only" id="displayName"></div>
+          <input type="text" class="editable-field" id="nameInput" value="Your Name">
+        </div>
       </div>
       <button id="toggleEditMode" class="btn btn-primary">Edit</button>
     </div>
@@ -77,8 +379,17 @@
 
     <div class="tab-content p-4">
       <div class="tab-pane fade show active" id="feed">
-        <h4>Feed</h4><p>Feed content or future updates here...</p>
+        <h4>Feed</h4>
+        <div class="edit-section">
+          <div class="view-only" id="displayFeedContent">Share your updates here...</div>
+          <textarea class="editable-field editable-textarea edit-only" id="feedContent"></textarea>
+          <div class="section-actions edit-only">
+            <button class="btn btn-outline-secondary btn-cancel-feed">Cancel</button>
+            <button class="btn btn-primary btn-save-feed">Save</button>
+          </div>
+        </div>
       </div>
+      
       <div class="tab-pane fade" id="videoCV">
         <h4>Profile Video</h4>
         <div class="video-container position-relative">
@@ -87,21 +398,253 @@
             Your browser does not support the video tag.
           </video>
           <input type="file" id="videoUpload" accept="video/*" hidden>
-          <button id="addVideoBtn" class="btn btn-outline-primary mt-3">Add / Change Video</button>
+          <div class="video-actions mt-3">
+            <button id="addVideoBtn" class="btn btn-outline-primary">Add Video</button>
+            <button id="changeVideoBtn" class="btn btn-outline-primary edit-only">Change Video</button>
+            <button id="removeVideoBtn" class="btn btn-outline-danger edit-only">Remove Video</button>
+          </div>
         </div>
       </div>
+      
       <div class="tab-pane fade" id="usefulLinks">
         <h4>Useful Links</h4>
-        <ul id="usefulLinksList" class="list-unstyled w-75 mx-auto"></ul>
-        <button id="addLinkBtn" class="btn btn-outline-primary mt-3" style="display: none;">Add Link</button>
+        <div id="linksContainer">
+          <div class="view-only mb-2">
+            <a href="#" target="_blank" class="text-decoration-none">
+            </a>
+          </div>
+          <div class="d-flex mb-2 edit-only">
+            <input type="text" class="editable-field me-2" placeholder="Link title" id="linkTitle0" value="Example Link">
+            <input type="text" class="editable-field" placeholder="URL (https://...)" id="linkUrl0" value="#">
+          </div>
+        </div>
+        <button id="addLinkBtn" class="btn btn-outline-primary mt-3 edit-only">Add Another Link</button>
+        <div class="section-actions edit-only">
+          <button class="btn btn-outline-secondary btn-cancel-links">Cancel</button>
+          <button class="btn btn-primary btn-save-links">Save Links</button>
+        </div>
       </div>
+      
       <div class="tab-pane fade" id="aboutMe">
         <h4>Personal Statement</h4>
-        <p data-editable="true">Write something about yourself...</p>
+        <div class="edit-section">
+          <div class="view-only" id="displayAboutMe">Write something about yourself...</div>
+          <textarea class="editable-field editable-textarea edit-only" id="aboutMeContent"></textarea>
+          <div class="section-actions edit-only">
+            <button class="btn btn-outline-secondary btn-cancel-about">Cancel</button>
+            <button class="btn btn-primary btn-save-about">Save</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <script src="scripts/vid.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Initialize variables
+    let isEditing = false;
+    let links = [{ title: "Example Link", url: "#" }];
+    
+    // DOM elements
+    const profilePicInput = document.getElementById('profilePicInput');
+    const profilePic = document.getElementById('profilePic');
+    const defaultIcon = document.querySelector('.default-icon');
+    const removeProfilePicBtn = document.getElementById('removeProfilePicBtn');
+    const nameInput = document.getElementById('nameInput');
+    const displayName = document.getElementById('displayName');
+    const feedContent = document.getElementById('feedContent');
+    const displayFeedContent = document.getElementById('displayFeedContent');
+    const aboutMeContent = document.getElementById('aboutMeContent');
+    const displayAboutMe = document.getElementById('displayAboutMe');
+    const addLinkBtn = document.getElementById('addLinkBtn');
+    const linksContainer = document.getElementById('linksContainer');
+    
+    // Toggle edit mode
+    function toggleEditMode() {
+      isEditing = !isEditing;
+      
+      if (isEditing) {
+        document.getElementById('toggleEditMode').textContent = 'Save';
+        document.body.classList.add('edit-mode');
+        
+        // Update name input with displayed value
+        nameInput.value = displayName.textContent;
+        nameInput.classList.add('edit-mode');
+        
+        // Show remove button if profile picture exists
+        if (profilePic.src && profilePic.src !== '') {
+          removeProfilePicBtn.style.display = 'block';
+        }
+        
+        // Show change/remove video buttons if video exists
+        if (document.getElementById('videoSource').src) {
+          document.getElementById('changeVideoBtn').style.display = 'inline-block';
+          document.getElementById('removeVideoBtn').style.display = 'inline-block';
+        }
+      } else {
+        document.getElementById('toggleEditMode').textContent = 'Edit';
+        document.body.classList.remove('edit-mode');
+        nameInput.classList.remove('edit-mode');
+        
+        // Update displayed name when exiting edit mode
+        displayName.textContent = nameInput.value;
+      }
+    }
+    
+    // Profile picture functionality
+    profilePicInput.addEventListener('change', function(e) {
+      if (e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          profilePic.src = event.target.result;
+          profilePic.style.display = 'block';
+          defaultIcon.style.display = 'none';
+          if (isEditing) {
+            removeProfilePicBtn.style.display = 'block';
+          }
+        }
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+    
+    removeProfilePicBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      profilePic.src = '';
+      profilePic.style.display = 'none';
+      defaultIcon.style.display = 'block';
+      removeProfilePicBtn.style.display = 'none';
+      profilePicInput.value = '';
+    });
+    
+    // Video functionality
+    document.getElementById('addVideoBtn').addEventListener('click', function() {
+      document.getElementById('videoUpload').click();
+    });
+
+    document.getElementById('changeVideoBtn').addEventListener('click', function() {
+      document.getElementById('videoUpload').click();
+    });
+
+    document.getElementById('videoUpload').addEventListener('change', function(e) {
+      if (e.target.files && e.target.files[0]) {
+        const videoFile = e.target.files[0];
+        const videoURL = URL.createObjectURL(videoFile);
+        
+        const videoElement = document.querySelector('#videoCV video');
+        const sourceElement = document.getElementById('videoSource');
+        
+        sourceElement.src = videoURL;
+        videoElement.load();
+        
+        document.getElementById('addVideoBtn').style.display = 'none';
+        document.getElementById('changeVideoBtn').style.display = 'inline-block';
+        document.getElementById('removeVideoBtn').style.display = 'inline-block';
+      }
+    });
+
+    document.getElementById('removeVideoBtn').addEventListener('click', function() {
+      const videoElement = document.querySelector('#videoCV video');
+      const sourceElement = document.getElementById('videoSource');
+      
+      sourceElement.src = '';
+      videoElement.load();
+      document.getElementById('videoUpload').value = '';
+      
+      document.getElementById('addVideoBtn').style.display = 'inline-block';
+      document.getElementById('changeVideoBtn').style.display = 'none';
+      document.getElementById('removeVideoBtn').style.display = 'none';
+    });
+
+    // Add link button
+    addLinkBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      links.push({ title: '', url: '' });
+      
+      const newLink = document.createElement('div');
+      newLink.className = 'd-flex mb-2 edit-only';
+      newLink.innerHTML = `
+        <input type="text" class="editable-field me-2" placeholder="Link title" 
+               id="linkTitle${links.length - 1}" value="">
+        <input type="text" class="editable-field" placeholder="URL (https://...)" 
+               id="linkUrl${links.length - 1}" value="">
+        <button class="btn btn-outline-danger btn-sm ms-2 btn-remove-link" data-index="${links.length - 1}">
+          <i class="bi bi-trash"></i>
+        </button>
+      `;
+      linksContainer.appendChild(newLink);
+      
+      // Add event listener to remove button
+      newLink.querySelector('.btn-remove-link').addEventListener('click', function() {
+        const index = parseInt(this.getAttribute('data-index'));
+        links.splice(index, 1);
+        this.parentElement.remove();
+      });
+    });
+    
+    // Save buttons (just for UI, won't actually save permanently)
+    document.querySelector('.btn-save-feed').addEventListener('click', function() {
+      displayFeedContent.textContent = feedContent.value;
+    });
+    
+    document.querySelector('.btn-save-about').addEventListener('click', function() {
+      displayAboutMe.textContent = aboutMeContent.value;
+    });
+    
+    document.querySelector('.btn-save-links').addEventListener('click', function() {
+      // Update links array with current values
+      links = [];
+      document.querySelectorAll('[id^="linkTitle"]').forEach((input, index) => {
+        const title = input.value;
+        const url = document.getElementById(`linkUrl${index}`).value;
+        links.push({ title, url });
+      });
+      
+      // Update view mode display
+      const viewLinks = linksContainer.querySelectorAll('.view-only');
+      viewLinks.forEach(link => link.remove());
+      
+      links.forEach(link => {
+        if (link.title || link.url) {
+          const viewLink = document.createElement('div');
+          viewLink.className = 'view-only mb-2';
+          viewLink.innerHTML = `
+            <a href="${link.url || '#'}" target="_blank" class="text-decoration-none">
+              ${link.title || 'Untitled Link'} <i class="bi bi-box-arrow-up-right"></i>
+            </a>
+          `;
+          linksContainer.appendChild(viewLink);
+        }
+      });
+    });
+    
+    // Cancel buttons
+    document.querySelector('.btn-cancel-feed').addEventListener('click', function() {
+      feedContent.value = displayFeedContent.textContent;
+    });
+    
+    document.querySelector('.btn-cancel-about').addEventListener('click', function() {
+      aboutMeContent.value = displayAboutMe.textContent;
+    });
+    
+    document.querySelector('.btn-cancel-links').addEventListener('click', function() {
+      // Just toggle back to view mode - changes won't persist
+      toggleEditMode();
+      toggleEditMode();
+    });
+
+    // Edit mode toggle
+    document.getElementById('toggleEditMode').addEventListener('click', toggleEditMode);
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      // Video buttons
+      document.getElementById('addVideoBtn').style.display = 'inline-block';
+      document.getElementById('changeVideoBtn').style.display = 'none';
+      document.getElementById('removeVideoBtn').style.display = 'none';
+      
+      // Profile picture
+      profilePic.style.display = 'none';
+    });
+  </script>
 </body>
 </html>
