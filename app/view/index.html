@@ -347,14 +347,13 @@
         function initAutocomplete() {
           const input = document.getElementById("locationInput");
           const autocomplete = new google.maps.places.Autocomplete(input, {
-            types: ['(cities)'], // You can change this to 'geocode' or 'regions'
-            componentRestrictions: { country: 'fi' } // Optional: restrict to Finland
+            types: ['(cities)'], 
+            componentRestrictions: { country: 'Ie' } 
           });
       
           autocomplete.addListener('place_changed', function () {
             const place = autocomplete.getPlace();
             console.log("Selected location:", place.formatted_address);
-            // You can now pass `place.formatted_address` to your job search
           });
         }
       
