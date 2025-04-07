@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Recruiter Dashboard</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -27,10 +26,28 @@
         .navbar-nav .nav-link {
           color: white !important;
           font-weight: 500;
+          padding: 8px 15px;
+          margin: 0 5px;
+          border-radius: 6px;
+          transition: all 0.3s;
         }
         
         .navbar-nav .nav-link:hover {
-          text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+          background-color: rgba(255, 255, 255, 0.15);
+        }
+ 
+        .nav-logout {
+          background-color: var(--danger-color) !important;
+          color: white !important;
+          font-weight: 500;
+          padding: 8px 15px;
+          margin: 0 5px;
+          border-radius: 6px;
+          transition: all 0.3s;
+        }
+        
+        .nav-logout:hover {
+          background-color: #c82333 !important;
         }
         
         .offcanvas-start {
@@ -63,6 +80,10 @@
         .offcanvas-body .btn-danger {
           background-color: var(--danger-color);
           color: white;
+        }
+        
+        .offcanvas-body .btn-danger:hover {
+          background-color: #c82333;
         }
         
         .offcanvas-header .btn-close {
@@ -104,7 +125,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
+
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand d-flex align-items-center" href="#">
@@ -115,17 +136,21 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link" href="#" id="toggleDashboard">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="post-job.html">Post a Job</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" id="toggleSettings">Settings</a></li>
                     <li class="nav-item"><a class="nav-link" href="vid.html"><i class="fas fa-user me-1"></i> Profile</a></li>
+                    <li class="nav-item">
+                        <a href="#" id="navLogoutBtn" class="nav-logout">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
-    
-    <!-- Offcanvas Sidebar Menu -->
+
     <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title text-dark" id="sidebarMenuLabel">Menu</h5>
@@ -138,8 +163,7 @@
             <a href="#" id="toggleSettings" class="btn btn-primary"><i class="fas fa-cog me-2"></i> Settings</a>
             <a href="#" id="toggleSavedApplicants" class="btn btn-primary"><i class="fas fa-users me-2"></i> Saved Applicants</a>
             <a href="#" class="btn btn-primary"><i class="fas fa-envelope me-2"></i> Messages</a>
-            <a href="index.html" id="logoutBtn" class="btn btn-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
-            
+            <a href="#" id="sidebarLogoutBtn" class="btn btn-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
     </div>
 
@@ -226,14 +250,10 @@
                 </div>
             </div>
         </div>
-
-        <!-- Settings Section (Initially Hidden) -->
         <div id="settings-section" class="dashboard-section card p-4 mt-4 d-none">
             <h4>Settings</h4>
             <button id="darkModeToggle" class="btn btn-dark">Toggle Dark Mode</button>
         </div>
-
-        <!-- Saved Applicants Section (Initially Hidden) -->
         <div id="saved-applicants-section" class="dashboard-section mt-4 d-none">
             <h4>Saved Applicants</h4>
             <div class="row">
@@ -260,8 +280,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
@@ -292,10 +310,13 @@
         document.getElementById("darkModeToggle").addEventListener("click", function() {
             document.body.classList.toggle("dark-mode");
         });
-        document.getElementById("logoutBtn").addEventListener("click", function(event) {
-            event.preventDefault();
+        function handleLogout(e) {
+            e.preventDefault();
             window.location.href = "index.html";
-        });
+        }
+
+        document.getElementById("navLogoutBtn").addEventListener("click", handleLogout);
+        document.getElementById("sidebarLogoutBtn").addEventListener("click", handleLogout);
     </script>
 </body>
 </html>
