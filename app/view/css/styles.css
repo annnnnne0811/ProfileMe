@@ -159,7 +159,7 @@
 
 
 
-
+  
 
 
 
@@ -351,6 +351,36 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
+
+
+
+
+
+/* location box thing */
+#locationInput {
+    height: 48px;
+    border-radius: 50px;
+    box-shadow: var(--shadow-md);
+    border: none;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+}
+  
+  .location-input-group {
+    border-radius: 50px;
+    overflow: visible; 
+    background: white;
+  }
+
+  .aligned-input {
+    height: 48px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: var(--shadow-md);
+    border: none;
+}
+
 
 
 
