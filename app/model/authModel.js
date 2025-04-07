@@ -3,7 +3,7 @@ const mysql = require('mysql2/promise');
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: '270202',
+    password: 'root',
     database: 'ProfileMe'
 };
 
@@ -41,43 +41,46 @@ class AuthModel {
             await connection.end(); 
         }
     }
+
     // Save or update user profile in DB
-    // In authModel.js
-static async createOrUpdateUserProfile(AccountID, profileData) {
+    static async createOrUpdateUserProfile(AccountID, profileData) {
     const connection = await this.createConnection();
     const { 
-      description = null, 
-      displayed_location = null,
-      profile_picture_url = null,
-      profile_video_url = null 
+        description = null, 
+        displayed_location = null,
+        profile_picture_url = null,
+        profile_video_url = null,
+        feed_text = null // Add feed_text to the destructuring
     } = profileData;
-  
+
     try {
-      await connection.execute(
-        `
-        INSERT INTO user_profile (AccountID, ProfileImage, ProfileVideo, BioText, DisplayLocation)
-        VALUES (?, ?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE
-            ProfileImage = COALESCE(VALUES(ProfileImage), ProfileImage),
-            ProfileVideo = COALESCE(VALUES(ProfileVideo), ProfileVideo),
-            BioText = COALESCE(VALUES(BioText), BioText),
-            DisplayLocation = COALESCE(VALUES(DisplayLocation), DisplayLocation)
-        `,
-        [
-          AccountID,
-          profile_picture_url,
-          profile_video_url,
-          description,
-          displayed_location
-        ].map(value => value === undefined ? null : value) // Ensure no undefined values
-      );
-    } catch (error) {
-      console.error("Error saving user profile:", error);
-      throw error;
-    } finally {
-      await connection.end();
+        await connection.execute(
+            `
+            INSERT INTO user_profile (AccountID, ProfileImage, ProfileVideo, BioText, DisplayLocation, FeedText)
+            VALUES (?, ?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+                ProfileImage = COALESCE(VALUES(ProfileImage), ProfileImage),
+                ProfileVideo = COALESCE(VALUES(ProfileVideo), ProfileVideo),
+                BioText = COALESCE(VALUES(BioText), BioText),
+                DisplayLocation = COALESCE(VALUES(DisplayLocation), DisplayLocation),
+                FeedText = COALESCE(VALUES(FeedText), FeedText)
+            `,
+            [
+                AccountID,
+                profile_picture_url,
+                profile_video_url,
+                description,
+                displayed_location,
+                feed_text // Add feed_text to the values
+            ].map(value => value === undefined ? null : value)
+        );
+        } catch (error) {
+            console.error("Error saving user profile:", error);
+            throw error;
+        } finally {
+            await connection.end();
+        }
     }
-  }
 
     // Add a new user link (using ProfileID and correct fields)
     static async addUserLink(ProfileID, iconClass, linkText, linkUrl) {
@@ -110,7 +113,7 @@ static async createOrUpdateUserProfile(AccountID, profileData) {
         const connection = await this.createConnection();
         try {
             const [profile] = await connection.execute(
-                'SELECT * FROM user_profile WHERE AccountID = ?', 
+                'SELECT ProfileID, ProfileImage, ProfileVideo, BioText, DisplayLocation, FeedText FROM user_profile WHERE AccountID = ?', 
                 [AccountID]
             );
     

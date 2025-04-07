@@ -66,8 +66,12 @@ app.post('/upload/profile-image', upload.single('profilePic'), (req, res) => {
 // Profile data
 app.post('/save-profile', authController.saveUserProfile);
 app.post('/add-link', authController.addUserLink);
-app.post('/save-full-profile', authController.saveFullProfile);
 app.get('/get-user-profile/:accountId', authController.getUserProfileAndLinks);
+// Add these routes under the existing routes in app.js
+app.post('/save-feed', authController.saveFeed);
+app.post('/save-about-me', authController.saveAboutMe);
+app.post('/save-profile-video', authController.saveProfileVideo);
+app.post('/save-useful-links', authController.saveUsefulLinks);
 
 // Serve HTML routes
 app.get('/', (req, res) => {
@@ -90,7 +94,7 @@ app.get('/search', (req, res) => {
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: '270202',
+    password: 'root',
     database: 'ProfileMe'
 };
 

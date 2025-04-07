@@ -116,13 +116,68 @@ exports.getUserProfileAndLinks = async (req, res) => {
     }
 };
 
-// Save full profile + links
-exports.saveFullProfile = async (req, res) => {
-    const { AccountID, profileData, links } = req.body;
+// Add single link (optional, used for inline editing)
+exports.addUserLink = async (req, res) => {
+    const { ProfileID, iconClass, linkText, linkUrl } = req.body;
 
     try {
-        await authModel.createOrUpdateUserProfile(AccountID, profileData);
+        await authModel.addUserLink(ProfileID, iconClass, linkText, linkUrl);
+        res.status(201).json({ message: 'Link added successfully!' });
+    } catch (error) {
+        console.error('❌ Error adding link:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+};
 
+exports.saveFeed = async (req, res) => {
+    const { AccountID, feedText } = req.body;
+    console.log('Received in saveFeed:', { AccountID, feedText }); // Debug
+
+    try {
+        await authModel.createOrUpdateUserProfile(AccountID, { feed_text: feedText });
+        // Verify the save
+        const { profile } = await authModel.getUserProfileAndLinks(AccountID);
+        if (profile.FeedText !== feedText) {
+            throw new Error('FeedText was not saved correctly');
+        }
+        res.status(200).json({ message: 'Feed saved successfully!' });
+    } catch (error) {
+        console.error('❌ Error saving feed:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+};
+
+// Save About Me (BioText)
+exports.saveAboutMe = async (req, res) => {
+    const { AccountID, description } = req.body;
+
+    try {
+        await authModel.createOrUpdateUserProfile(AccountID, { description });
+        res.status(200).json({ message: 'About Me saved successfully!' });
+    } catch (error) {
+        console.error('❌ Error saving About Me:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+};
+
+// Save Profile Video
+exports.saveProfileVideo = async (req, res) => {
+    const { AccountID, profile_video_url } = req.body;
+
+    try {
+        await authModel.createOrUpdateUserProfile(AccountID, { profile_video_url });
+        res.status(200).json({ message: 'Profile video saved successfully!' });
+    } catch (error) {
+        console.error('❌ Error saving profile video:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+};
+
+// Save Useful Links (already exists as saveFullProfile, but we can make it specific)
+exports.saveUsefulLinks = async (req, res) => {
+    const { AccountID, links } = req.body;
+
+    try {
         const userProfile = await authModel.getUserProfileAndLinks(AccountID);
         const ProfileID = userProfile.profile?.ProfileID;
 
@@ -133,22 +188,9 @@ exports.saveFullProfile = async (req, res) => {
             }
         }
 
-        res.status(200).json({ message: 'Full profile and links saved successfully!' });
+        res.status(200).json({ message: 'Useful links saved successfully!' });
     } catch (error) {
-        console.error('❌ Error saving full profile:', error);
-        res.status(500).json({ message: 'Internal server error.' });
-    }
-};
-
-// Add single link (optional, used for inline editing)
-exports.addUserLink = async (req, res) => {
-    const { ProfileID, iconClass, linkText, linkUrl } = req.body;
-
-    try {
-        await authModel.addUserLink(ProfileID, iconClass, linkText, linkUrl);
-        res.status(201).json({ message: 'Link added successfully!' });
-    } catch (error) {
-        console.error('❌ Error adding link:', error);
+        console.error('❌ Error saving useful links:', error);
         res.status(500).json({ message: 'Internal server error.' });
     }
 };
