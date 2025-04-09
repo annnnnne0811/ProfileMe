@@ -142,6 +142,20 @@ body {
     margin-bottom: 30px;
 }
 
+.edit-only {
+    display: none; /* Hidden by default */
+  }
+
+.edit-only-buttons {
+    display: none; /* Hidden by default */
+}
+
+textarea[readonly] {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    opacity: 0.7;
+ }
+
 .section-actions {
     display: flex;
     justify-content: flex-end;

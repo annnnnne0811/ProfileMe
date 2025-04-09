@@ -84,7 +84,7 @@
       <div class="tab-pane fade show active" id="feed">
         <h4 class="mb-3">Feed</h4>
         <textarea class="form-control" rows="4" placeholder="Share your updates here..."></textarea>
-        <div class="mt-2 text-end">
+        <div class="mt-2 text-end edit-only-buttons">
           <button class="btn btn-outline-secondary me-2">Cancel</button>
           <button class="btn btn-primary">Save</button>
         </div>
@@ -108,23 +108,15 @@
       <!-- Links -->
       <div class="tab-pane fade" id="usefulLinks">
         <h4>Useful Links</h4>
-        
-        <!-- for backend-->
+    
         <ul id="usefulLinksList" class="list-unstyled">
         </ul>
-  
-        <div id="linksContainer">
-          <div class="view-only mb-2">
-            <a href="#" target="_blank" class="text-decoration-none">Example Link</a>
-          </div>
-          <div class="d-flex mb-2 edit-only">
-            <input type="text" class="editable-field me-2" placeholder="Link title" id="linkTitle0" value="Example Link">
-            <input type="text" class="editable-field" placeholder="URL (https://...)" id="linkUrl0" value="#">
-          </div>
-        </div>
-      
+        
+        <!-- Placeholder for when no links are present -->
+        <p id="noLinksMessage" class="text-muted" style="display: none;">No links added yet.</p>
+
         <button id="addLinkBtn" class="btn btn-outline-primary mt-3 edit-only">Add Another Link</button>
-        <div class="section-actions edit-only">
+        <div class="section-actions edit-only-buttons">
           <button class="btn btn-outline-secondary btn-cancel-links">Cancel</button>
           <button class="btn btn-primary btn-save-links">Save Links</button>
         </div>
@@ -134,7 +126,7 @@
       <div class="tab-pane fade" id="aboutMe">
         <h4 class="mb-3">Personal Statement</h4>
         <textarea class="form-control" rows="4" id="aboutMeContent" placeholder="Write something about yourself..."></textarea>
-        <div class="mt-2 text-end about-me-actions">
+        <div class="mt-2 text-end about-me-actions edit-only-buttons">
           <button class="btn btn-outline-secondary me-2 btn-cancel-about">Cancel</button>
           <button class="btn btn-primary btn-save-about">Save</button>
         </div>
