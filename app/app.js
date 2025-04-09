@@ -94,7 +94,7 @@ app.get('/search', (req, res) => {
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: '270202',
+    password: 'root',
     database: 'ProfileMe'
 };
 
@@ -128,6 +128,21 @@ app.post('/post-job', async (req, res) => {
         res.status(500).json({ message: 'Failed to post job.' });
     }
 });
+
+
+
+// script for fetching all people from account table
+app.get('/get-people', async (req, res) => {
+    try {
+      const connection = await mysql.createConnection(dbConfig);
+      const [rows] = await connection.execute('SELECT FirstName, LastName, Email FROM account');
+      await connection.end();
+      res.json(rows);
+    } catch (error) {
+      console.error('❌ Error fetching people:', error);
+      res.status(500).json({ message: 'Failed to fetch people.' });
+    }
+  });
 
 // 404 fallback
 app.use((req, res) => {
