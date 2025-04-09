@@ -1,4 +1,6 @@
 const mysql = require('mysql2/promise');
+const path = require('path');
+const fs = require('fs');
 
 const dbConfig = {
     host: 'localhost',
@@ -118,6 +120,22 @@ class AuthModel {
             );
     
             const profileData = profile[0] || null;
+
+            // Verify that the files exist
+            if (profileData) {
+                if (profileData.ProfileImage) {
+                    const imagePath = path.join(__dirname, '..', profileData.ProfileImage);
+                    if (!fs.existsSync(imagePath)) {
+                        profileData.ProfileImage = null; // Clear the URL if the file doesn't exist
+                    }
+                }
+                if (profileData.ProfileVideo) {
+                    const videoPath = path.join(__dirname, '..', profileData.ProfileVideo);
+                    if (!fs.existsSync(videoPath)) {
+                        profileData.ProfileVideo = null; // Clear the URL if the file doesn't exist
+                    }
+                }
+            }
     
             let links = [];
             if (profileData && profileData.ProfileID) {

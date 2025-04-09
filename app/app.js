@@ -1,14 +1,22 @@
 // Import necessary modules
-const express = require('express');
+
 const authController = require('./controller/authController');
 const upload = require('./controller/uploadController');
+const express = require('express');
 const path = require('path');
 const mysql = require('mysql2/promise');
 const session = require('express-session');
+const fs = require('fs');
 
 const app = express();
 
 console.log('✅ app.js loaded — setting up middleware and routes...');
+
+// makes sure uploads folder exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 // Middleware
 app.use(express.json());
@@ -43,7 +51,9 @@ app.post('/logout', (req, res) => {
     });
 });
 
+// checks session
 app.get('/check-session', (req, res) => {
+    console.log('🔍 Checking session:', req.session);
     if (req.session.user) {
         res.status(200).json(req.session.user);
     } else {
@@ -51,17 +61,26 @@ app.get('/check-session', (req, res) => {
     }
 });
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', (req, res, next) => {
+    console.log(`📂 Serving file: ${req.url}`);
+    next();
+}, express.static(path.join(__dirname, 'uploads')));
 
 // Upload profile image
 app.post('/upload/profile-image', upload.single('profilePic'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
+    }
     res.json({ imageUrl: `/uploads/${req.file.filename}` });
-  });
+});
   
-  // Upload video
-  app.post('/upload/profile-video', upload.single('profileVideo'), (req, res) => {
+// Upload video
+app.post('/upload/profile-video', upload.single('profileVideo'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
+    }
     res.json({ videoUrl: `/uploads/${req.file.filename}` });
-  });
+});
 
 // Profile data
 app.post('/save-profile', authController.saveUserProfile);
