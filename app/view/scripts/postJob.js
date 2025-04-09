@@ -34,10 +34,11 @@ document.getElementById('postJobForm').addEventListener('submit', async (e) => {
     }
 });
 
-function handleLogout(e) {
+async function logoutUser(e) {
   e.preventDefault();
-  window.location.href = 'index.html';
+  await fetch('/logout', { method: 'POST', credentials: 'include' });
+  window.location.href = '/';
 }
 
-document.getElementById('navLogoutBtn').addEventListener('click', handleLogout);
-document.getElementById('sidebarLogoutBtn').addEventListener('click', handleLogout)
+document.getElementById('navLogoutBtn').addEventListener('click', logoutUser);
+document.getElementById('sidebarLogoutBtn').addEventListener('click', logoutUser);
