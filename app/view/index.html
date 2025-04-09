@@ -340,34 +340,5 @@
     </footer>
     <script src="scripts/login.js"></script>
     <script src="scripts/filterLocation.js"></script>
-
-
-
-    <!-- Location Api thing -->
-    <script>
-        function initAutocomplete() {
-          const input = document.getElementById("locationInput");
-          const autocomplete = new google.maps.places.Autocomplete(input, {
-            types: ['(cities)'], 
-            componentRestrictions: { country: 'Ie' } 
-          });
-      
-          autocomplete.addListener('place_changed', function () {
-            const place = autocomplete.getPlace();
-            console.log("Selected location:", place.formatted_address);
-          });
-        }
-      
-        // Wait for Google script to load
-        window.addEventListener("load", initAutocomplete);
-      </script>
-      
-
-
-
-
-
-
-    
 </body>
 </html>

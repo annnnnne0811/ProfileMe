@@ -1,12 +1,16 @@
-
 document.addEventListener('DOMContentLoaded', () => {
-  loadJobs();
+  loadJobs(); // Load jobs but keep them hidden initially
   getUserLocationAndSetInput();
 
-  document.getElementById('location').addEventListener('input', (e) => {
+  // Add event listener for the location input
+  const locationInput = document.getElementById('locationInput');
+  locationInput.addEventListener('input', (e) => {
     const locationFilter = e.target.value.toLowerCase();
     filterJobs(locationFilter);
   });
+
+  // Initially hide all jobs until a location is entered
+  filterJobs('');
 });
 
 async function loadJobs() {
@@ -26,6 +30,8 @@ async function loadJobs() {
         <small><strong>Location:</strong> ${job.Location}</small><br>
         <small class="text-muted">Posted: ${new Date(job.DatePosted).toLocaleDateString()}</small>
       `;
+      // Initially hide the job
+      li.style.display = 'none';
       jobList.appendChild(li);
     });
   } catch (err) {
@@ -35,6 +41,15 @@ async function loadJobs() {
 
 function filterJobs(location) {
   const jobs = document.querySelectorAll('#jobList li');
+  // If no location is entered, hide all jobs
+  if (!location) {
+    jobs.forEach(job => {
+      job.style.display = 'none';
+    });
+    return;
+  }
+
+  // Show jobs that match the location filter
   jobs.forEach(job => {
     const jobLocation = job.dataset.location || '';
     job.style.display = jobLocation.includes(location) ? 'block' : 'none';
@@ -51,7 +66,7 @@ async function getUserLocationAndSetInput() {
       const data = await res.json();
       const city = data.address.city || data.address.town || data.address.village || data.address.state || '';
       if (city) {
-        document.getElementById('location').value = city;
+        document.getElementById('locationInput').value = city;
         filterJobs(city.toLowerCase());
       }
     } catch (err) {
@@ -62,3 +77,18 @@ async function getUserLocationAndSetInput() {
   });
 }
 
+// location api
+function initAutocomplete() {
+  const input = document.getElementById("locationInput");
+  const autocomplete = new google.maps.places.Autocomplete(input, {
+    types: ['(cities)']
+    // Removed componentRestrictions to allow global suggestions
+  });
+
+  autocomplete.addListener('place_changed', function () {
+    const place = autocomplete.getPlace();
+    console.log("Selected location:", place.formatted_address);
+  });
+}
+
+window.addEventListener("load", initAutocomplete);
