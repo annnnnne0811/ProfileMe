@@ -387,6 +387,15 @@ document.getElementById("addVideoBtn").addEventListener("click", () => {
   document.getElementById("videoUpload").click();
 });
 
+// Logout handler
+function handleLogout(e) {
+    e.preventDefault();
+    window.location.href = 'index.html';
+}
+
+document.getElementById('sidebarLogoutBtn').addEventListener('click', handleLogout);
+document.getElementById('navLogoutBtn').addEventListener('click', handleLogout);
+
 // Add event listeners for each Save button
 document.querySelector("#feed .btn-primary").addEventListener("click", saveFeed);
 document.querySelector("#aboutMe .btn-save-about").addEventListener("click", saveAboutMe);

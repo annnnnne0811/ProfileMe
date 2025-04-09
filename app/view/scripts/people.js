@@ -37,3 +37,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       renderPeople(filtered);
     });
   });
+
+  function handleLogout(e) {
+    e.preventDefault();
+    window.location.href = 'index.html';
+  }
+
+document.getElementById('navLogoutBtn').addEventListener('click', handleLogout);
+document.getElementById('sidebarLogoutBtn').addEventListener('click', handleLogout)

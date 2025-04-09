@@ -33,3 +33,11 @@ document.getElementById('postJobForm').addEventListener('submit', async (e) => {
       alert('Something went wrong while posting the job.');
     }
 });
+
+function handleLogout(e) {
+  e.preventDefault();
+  window.location.href = 'index.html';
+}
+
+document.getElementById('navLogoutBtn').addEventListener('click', handleLogout);
+document.getElementById('sidebarLogoutBtn').addEventListener('click', handleLogout)
