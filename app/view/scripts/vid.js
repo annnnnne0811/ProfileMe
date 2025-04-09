@@ -15,17 +15,18 @@ const socialIcons = {
 
 // edit profile buttons
 function toggleEditState(editMode) {
-  document.querySelectorAll("[data-editable]").forEach(el => {
-    el.contentEditable = editMode;
-    el.style.border = editMode ? "1px dashed gray" : "none";
-  });
-  document.getElementById("profilePicInput").style.display = editMode ? "block" : "none";
-  document.getElementById("videoUpload").style.display = editMode ? "block" : "none";
-  document.getElementById("addVideoBtn").style.display = editMode ? "block" : "none";
-  document.getElementById("addLinkBtn").style.display = editMode ? "block" : "none";
-  document.querySelectorAll(".btn-danger").forEach(btn => btn.style.display = editMode ? "block" : "none");
-  document.getElementById("toggleEditMode").textContent = editMode ? "Save" : "Edit Profile";
-}
+    // Toggle readonly for Feed textarea (unchanged)
+    const feedTextarea = document.querySelector("#feed textarea");
+    feedTextarea.readOnly = !editMode;
+
+    // Keep other edit-mode toggles
+    document.getElementById("profilePicInput").style.display = editMode ? "block" : "none";
+    document.getElementById("videoUpload").style.display = editMode ? "block" : "none";
+    document.getElementById("addVideoBtn").style.display = editMode ? "block" : "none";
+    document.getElementById("addLinkBtn").style.display = editMode ? "block" : "none";
+    document.querySelectorAll(".btn-danger").forEach(btn => btn.style.display = editMode ? "block" : "none");
+    document.getElementById("toggleEditMode").textContent = editMode ? "Save" : "Edit Profile";
+  }
 
 // adding a new link
 function addNewLink(icon = "bi bi-link-45deg", url = "") {
@@ -115,26 +116,29 @@ async function saveFeed() {
 
 // saves about me data
 async function saveAboutMe() {
-  try {
-    const res = await fetch('/check-session', { credentials: 'include' });
-    const user = await res.json();
-    const accountId = user.AccountID;
-
-    const description = document.querySelector("#aboutMe p[data-editable='true']").innerText;
-
-    const saveRes = await fetch("/save-about-me", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: 'include',
-      body: JSON.stringify({ AccountID: accountId, description })
-    });
-
-    const result = await saveRes.json();
-    alert(result.message || "About Me saved successfully!");
-  } catch (err) {
-    console.error("Save About Me error:", err);
-    alert("Failed to save About Me.");
-  }
+    try {
+      const res = await fetch('/check-session', { credentials: 'include' });
+      const user = await res.json();
+      const accountId = user.AccountID;
+  
+      const description = document.querySelector("#aboutMeContent").value;
+  
+      const saveRes = await fetch("/save-about-me", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include',
+        body: JSON.stringify({ AccountID: accountId, description })
+      });
+  
+      const result = await saveRes.json();
+      alert(result.message || "About Me saved successfully!");
+  
+      // Reload the profile to ensure the UI reflects the latest data
+      await loadUserProfile();
+    } catch (err) {
+      console.error("Save About Me error:", err);
+      alert("Failed to save About Me.");
+    }
 }
 
 // saves profile video url
@@ -185,6 +189,7 @@ async function loadUserProfile() {
       
       const data = await res.json();
       console.log('📦 User profile + links:', data);
+      console.log('ProfileID:', data.profile?.ProfileID);
       console.log('FeedText:', data.profile?.FeedText);
       console.log('BioText:', data.profile?.BioText);
   
@@ -224,10 +229,11 @@ async function loadUserProfile() {
       feedTextarea.value = data.profile?.FeedText || "";
       console.log('Textarea value after setting:', feedTextarea.value);
       feedTextarea.dispatchEvent(new Event('change'));
-  
+
       // Load About Me
-      const aboutMeContent = document.querySelector("#aboutMe p[data-editable='true']");
-      aboutMeContent.innerText = data.profile?.BioText || "Write something about yourself...";
+      const aboutMeTextarea = document.querySelector("#aboutMeContent");
+      aboutMeTextarea.value = data.profile?.BioText || "";
+      aboutMeTextarea.dispatchEvent(new Event('change'));
   
       // Load Useful Links
       const links = data.links || [];

@@ -125,21 +125,16 @@
           <button class="btn btn-primary btn-save-links">Save Links</button>
         </div>
       </div>
-      
+
+      <!-- about me -->
       <div class="tab-pane fade" id="aboutMe">
-        <h4>Personal Statement</h4>
-        <div class="edit-section">
-          <div id="aboutMe">
-            <p data-editable="true">Write something about yourself...</p>
-          </div>
-          <textarea class="editable-field editable-textarea edit-only" id="aboutMeContent"></textarea>
-          <div class="section-actions edit-only">
-            <button class="btn btn-outline-secondary btn-cancel-about">Cancel</button>
-            <button class="btn btn-primary btn-save-about">Save</button>
-          </div>
+        <h4 class="mb-3">Personal Statement</h4>
+        <textarea class="form-control" rows="4" id="aboutMeContent" placeholder="Write something about yourself..."></textarea>
+        <div class="mt-2 text-end about-me-actions">
+          <button class="btn btn-outline-secondary me-2 btn-cancel-about">Cancel</button>
+          <button class="btn btn-primary btn-save-about">Save</button>
         </div>
       </div>
-    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
