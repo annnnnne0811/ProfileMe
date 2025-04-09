@@ -53,6 +53,11 @@
   .profile-img-container .default-icon {
     font-size: 60px;
     color: #999;
+    display: block;
+  }
+
+  .profile-img-container img:not([src=""]) + .default-icon {
+    display: none; /* Hide the default icon if the img has a src */
   }
   
   .profile-img-container:hover img {
