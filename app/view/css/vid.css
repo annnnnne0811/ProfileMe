@@ -325,6 +325,15 @@ textarea[readonly] {
     filter: none;
 }
 
+.offcanvas-body .btn-logout {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.offcanvas-body .btn-logout:hover {
+    background-color: #c82333;
+}
+
 .feed-item {
 padding: 15px;
 border-bottom: 1px solid #eee;

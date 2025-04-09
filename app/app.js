@@ -154,14 +154,18 @@ app.post('/post-job', async (req, res) => {
 app.get('/get-people', async (req, res) => {
     try {
       const connection = await mysql.createConnection(dbConfig);
-      const [rows] = await connection.execute('SELECT FirstName, LastName, Email FROM account');
+      const [rows] = await connection.execute(`
+        SELECT a.FirstName, a.LastName, a.Email, up.ProfileVideo 
+        FROM account a
+        LEFT JOIN user_profile up ON a.AccountID = up.AccountID
+      `);
       await connection.end();
       res.json(rows);
     } catch (error) {
       console.error('❌ Error fetching people:', error);
       res.status(500).json({ message: 'Failed to fetch people.' });
     }
-  });
+});
 
 // 404 fallback
 app.use((req, res) => {
