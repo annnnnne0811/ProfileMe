@@ -129,6 +129,21 @@ app.post('/post-job', async (req, res) => {
     }
 });
 
+
+
+// script for fetching all people from account table
+app.get('/get-people', async (req, res) => {
+    try {
+      const connection = await mysql.createConnection(dbConfig);
+      const [rows] = await connection.execute('SELECT FirstName, LastName, Email FROM account');
+      await connection.end();
+      res.json(rows);
+    } catch (error) {
+      console.error('❌ Error fetching people:', error);
+      res.status(500).json({ message: 'Failed to fetch people.' });
+    }
+  });
+
 // 404 fallback
 app.use((req, res) => {
     console.log(`❓ Unhandled route: ${req.method} ${req.url}`);
