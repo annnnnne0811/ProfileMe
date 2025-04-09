@@ -1,12 +1,16 @@
-
 document.addEventListener('DOMContentLoaded', () => {
   loadJobs();
   getUserLocationAndSetInput();
 
-  document.getElementById('location').addEventListener('input', (e) => {
-    const locationFilter = e.target.value.toLowerCase();
-    filterJobs(locationFilter);
-  });
+  const locationInput = document.getElementById('locationInput');
+  if (locationInput) {
+    locationInput.addEventListener('input', (e) => {
+      const locationFilter = e.target.value.toLowerCase();
+      filterJobs(locationFilter);
+    });
+  } else {
+    console.warn("❗ 'locationInput' element not found in DOM.");
+  }
 });
 
 async function loadJobs() {
@@ -51,8 +55,11 @@ async function getUserLocationAndSetInput() {
       const data = await res.json();
       const city = data.address.city || data.address.town || data.address.village || data.address.state || '';
       if (city) {
-        document.getElementById('location').value = city;
-        filterJobs(city.toLowerCase());
+        const locationInput = document.getElementById('locationInput');
+        if (locationInput) {
+          locationInput.value = city;
+          filterJobs(city.toLowerCase());
+        }
       }
     } catch (err) {
       console.warn('🌍 Failed to reverse geocode location:', err);
@@ -61,4 +68,3 @@ async function getUserLocationAndSetInput() {
     console.warn('❌ Geolocation error:', err);
   });
 }
-
