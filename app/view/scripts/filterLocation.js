@@ -2,15 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
   loadJobs(); // Load jobs but keep them hidden initially
   getUserLocationAndSetInput();
 
-  // Add event listener for the location input
   const locationInput = document.getElementById('locationInput');
-  locationInput.addEventListener('input', (e) => {
-    const locationFilter = e.target.value.toLowerCase();
-    filterJobs(locationFilter);
-  });
+  if (locationInput) {
+    locationInput.addEventListener('input', (e) => {
+      const locationFilter = e.target.value.toLowerCase();
+      filterJobs(locationFilter);
+    });
+  } else {
+    console.warn("❗ 'locationInput' element not found in DOM.");
+  }
 
-  // Initially hide all jobs until a location is entered
-  filterJobs('');
+   // Initially hide all jobs until a location is entered
+   filterJobs('');
 });
 
 async function loadJobs() {
@@ -68,6 +71,11 @@ async function getUserLocationAndSetInput() {
       if (city) {
         document.getElementById('locationInput').value = city;
         filterJobs(city.toLowerCase());
+        const locationInput = document.getElementById('locationInput');
+        if (locationInput) {
+          locationInput.value = city;
+          filterJobs(city.toLowerCase());
+        }
       }
     } catch (err) {
       console.warn('🌍 Failed to reverse geocode location:', err);
@@ -76,7 +84,6 @@ async function getUserLocationAndSetInput() {
     console.warn('❌ Geolocation error:', err);
   });
 }
-
 // location api
 function initAutocomplete() {
   const input = document.getElementById("locationInput");

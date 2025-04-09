@@ -5,7 +5,7 @@ const fs = require('fs');
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: 'root',
+    password: '270202',
     database: 'ProfileMe'
 };
 
