@@ -1,5 +1,3 @@
-// view/scripts/login.js
-
 document.addEventListener('DOMContentLoaded', () => {
     checkSession();
 
@@ -57,17 +55,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const Password = document.getElementById('registerPassword').value;
         const DateOfBirth = document.getElementById('registerDateOfBirth').value;
 
-        const res = await fetch('/register', {
+        // Register the user
+        const registerRes = await fetch('/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
             body: JSON.stringify({ FirstName, LastName, Email, Password, DateOfBirth })
         });
 
-        const data = await res.json();
-        if (!res.ok) return alert(data.message);
+        const registerData = await registerRes.json();
+        if (!registerRes.ok) return alert(registerData.message);
 
+        // Automatically log the user in
+        const loginRes = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ Email, Password })
+        });
+
+        const loginData = await loginRes.json();
+        if (!loginRes.ok) {
+            // If login fails, show an error but still close the modal
+            alert(loginData.message || 'Registration successful, but auto-login failed. Please log in manually.');
+            bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
+            checkSession();
+            return;
+        }
+
+        // Close the modal and redirect to the profile page
         bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
         checkSession();
+        window.location.href = '/vid'; // Redirect to the profile page
     });
 });
