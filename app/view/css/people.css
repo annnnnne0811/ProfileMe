@@ -145,3 +145,75 @@
     .search-bar:focus::placeholder {
       color: transparent;
     }
+
+    /* Fancy fade-in stagger effect */
+.fade-in-stagger {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.fade-in-stagger:nth-child(1) { animation-delay: 100ms; }
+.fade-in-stagger:nth-child(2) { animation-delay: 200ms; }
+.fade-in-stagger:nth-child(3) { animation-delay: 300ms; }
+/* Add more nth-child if needed */
+
+.btn-primary,
+.btn-secondary,
+.btn-primary.btn-sm,
+.btn-secondary.btn-sm {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-primary.btn-sm:hover,
+.btn-secondary.btn-sm:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 18px rgba(0, 123, 255, 0.3);
+}
+
+.person-card {
+  background: linear-gradient(145deg, #ffffff, #f0f4ff);
+  border: 1px solid rgba(0, 123, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.person-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, rgba(0, 123, 255, 0.05), transparent);
+  transform: rotate(25deg);
+  animation: shimmer 5s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: rotate(25deg) translateX(-100%); }
+  100% { transform: rotate(25deg) translateX(100%); }
+}
+
+/* Modal enhancements */
+#ucvModal {
+  backdrop-filter: blur(8px);
+  animation: fadeInModal 0.3s ease forwards;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
