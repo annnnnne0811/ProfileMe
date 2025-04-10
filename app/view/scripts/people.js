@@ -20,17 +20,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const card = document.createElement('div');
         card.className = 'col-md-4';
         card.innerHTML = `
-          <div class="person-card" style="animation-delay: ${index * 100}ms">
-            <h5><strong>${person.FirstName} ${person.LastName}</strong></h5>
-            <p><i class="fas fa-envelope"></i> ${person.Email}</p>
-            <div class="d-flex gap-2 mt-2">
-              <button class="btn btn-primary btn-sm"><i class="fas fa-user-plus me-1"></i> Add Friend</button>
-              <button class="btn btn-secondary btn-sm" onclick="openUCVModal('${person.ProfileVideo || ''}')">
-                <i class="fas fa-play-circle me-1"></i> Check UCV
-              </button>
-            </div>
-          </div>
-        `;
+  <div class="person-card" style="animation-delay: ${index * 100}ms">
+    <h5><strong>${person.FirstName} ${person.LastName}</strong></h5>
+    <p><i class="fas fa-envelope"></i> ${person.Email}</p>
+    <div class="d-flex gap-2 mt-2">
+      <button class="btn btn-primary btn-sm add-friend-btn"><i class="fas fa-user-plus me-1"></i> Add Friend</button>
+      <button class="btn btn-secondary btn-sm" onclick="openUCVModal('${person.ProfileVideo || ''}')">
+        <i class="fas fa-play-circle me-1"></i> Check UCV
+      </button>
+    </div>
+  </div>
+`;
         peopleContainer.appendChild(card);
       });
 
@@ -80,3 +80,18 @@ function closeUCVModal() {
   video.pause();
   video.src = '';
 }
+
+document.addEventListener("click", function (e) {
+  if (e.target && e.target.classList.contains("add-friend-btn")) {
+    e.preventDefault();
+
+    // Show toast
+    const toastEl = document.getElementById("friendToast");
+    const toast = new bootstrap.Toast(toastEl);
+    toast.show();
+
+    // Optional: disable button or change text
+    e.target.disabled = true;
+    e.target.textContent = "Requested";
+  }
+});
