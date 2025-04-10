@@ -1,5 +1,4 @@
-// Import necessary modules
-
+// Required external modules
 const authController = require('./controller/authController');
 const upload = require('./controller/uploadController');
 const express = require('express');
@@ -9,10 +8,9 @@ const session = require('express-session');
 const fs = require('fs');
 
 const app = express();
-
 console.log('✅ app.js loaded — setting up middleware and routes...');
 
-// makes sure uploads folder exists
+// Makes sure uploads folder exists
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir, { recursive: true });
@@ -23,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'view')));
 
+// Session configuration
 app.use(session({
     secret: 'secretkey',
     resave: false,
@@ -34,13 +33,13 @@ app.use(session({
     }
 }));
 
-// Log requests
+// Logs requests
 app.use((req, res, next) => {
     console.log(`📥 ${req.method} ${req.url}`);
     next();
 });
 
-// Auth + API routes (no session)
+// Authentication routes
 app.post('/register', authController.register);
 app.post('/login', authController.login);
 app.post('/logout', (req, res) => {
@@ -51,7 +50,7 @@ app.post('/logout', (req, res) => {
     });
 });
 
-// checks session
+// Session check endpoint
 app.get('/check-session', (req, res) => {
     console.log('🔍 Checking session:', req.session);
     if (req.session.user) {
@@ -61,12 +60,13 @@ app.get('/check-session', (req, res) => {
     }
 });
 
+// Static route for uploaded files
 app.use('/uploads', (req, res, next) => {
     console.log(`📂 Serving file: ${req.url}`);
     next();
 }, express.static(path.join(__dirname, 'uploads')));
 
-// Upload profile image
+// Profile image handler
 app.post('/upload/profile-image', upload.single('profilePic'), (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
@@ -74,7 +74,7 @@ app.post('/upload/profile-image', upload.single('profilePic'), (req, res) => {
     res.json({ imageUrl: `/uploads/${req.file.filename}` });
 });
   
-// Upload video
+// Profile video handler
 app.post('/upload/profile-video', upload.single('profileVideo'), (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
@@ -82,29 +82,25 @@ app.post('/upload/profile-video', upload.single('profileVideo'), (req, res) => {
     res.json({ videoUrl: `/uploads/${req.file.filename}` });
 });
 
-// Profile data
+// Profile content routes
 app.post('/save-profile', authController.saveUserProfile);
 app.post('/add-link', authController.addUserLink);
 app.get('/get-user-profile/:accountId', authController.getUserProfileAndLinks);
-// Add these routes under the existing routes in app.js
 app.post('/save-feed', authController.saveFeed);
 app.post('/save-about-me', authController.saveAboutMe);
 app.post('/save-profile-video', authController.saveProfileVideo);
 app.post('/save-useful-links', authController.saveUsefulLinks);
 
-// Serve HTML routes
+// HTML view routing
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'index.html'));
 });
-
 app.get('/vid', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'vid.html'));
 });
-
 app.get('/post-job', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'post-job.html'));
 });
-
 app.get('/search', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'search.html'));
 });
@@ -117,7 +113,7 @@ const dbConfig = {
     database: 'ProfileMe'
 };
 
-// Job search
+// Fetch all job postings
 app.get('/get-jobs', async (req, res) => {
     try {
         const connection = await mysql.createConnection(dbConfig);
@@ -130,6 +126,7 @@ app.get('/get-jobs', async (req, res) => {
     }
 });
 
+// Adds a new job posting
 app.post('/post-job', async (req, res) => {
     try {
         const { title, description, location } = req.body;
@@ -148,9 +145,7 @@ app.post('/post-job', async (req, res) => {
     }
 });
 
-
-
-// script for fetching all people from account table
+// Fetch all users and their profile videos
 app.get('/get-people', async (req, res) => {
     try {
       const connection = await mysql.createConnection(dbConfig);

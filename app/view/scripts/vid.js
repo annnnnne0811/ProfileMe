@@ -456,6 +456,39 @@ document.getElementById("addVideoBtn").addEventListener("click", () => {
   document.getElementById("videoUpload").click();
 });
 
+document.getElementById("removeVideoBtn").addEventListener("click", async () => {
+  const videoSource = document.getElementById("videoSource");
+  const videoElement = document.querySelector("video");
+  const originalSrc = videoSource.src; // Store the original src for rollback
+
+  // Reset the video
+  videoSource.src = ""; // Clear the video source
+  videoElement.load(); // Reload the video element to reflect the change
+
+  try {
+    const res = await fetch('/check-session', { credentials: 'include' });
+    const user = await res.json();
+    const accountId = user.AccountID;
+
+    const saveRes = await fetch("/save-profile-video", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: 'include',
+      body: JSON.stringify({ AccountID: accountId, profile_video_url: "" })
+    });
+
+    const saveResult = await saveRes.json();
+    if (!saveRes.ok) throw new Error("Failed to save profile video removal");
+    alert(saveResult.message || "Profile video removed successfully!");
+  } catch (err) {
+    console.error("Remove profile video error:", err);
+    // Rollback UI changes if the server request fails
+    videoSource.src = originalSrc;
+    videoElement.load();
+    alert("Failed to remove profile video.");
+  }
+});
+
 // Logout handler
 async function logoutUser(e) {
   e.preventDefault();
