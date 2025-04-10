@@ -18,16 +18,16 @@ This manual outlines the prerequisites, setup process, and steps to run the appl
 ## Requirements
 
 ### Software Prerequisites
-> Node.js: Version 14.x or higher (includes npm for package management).
-> MySQL: Version 8.0 or higher (for the database).
+- Node.js: Version 14.x or higher (includes npm for package management).
+- MySQL: Version 8.0 or higher (for the database).
 
 ### Dependencies
 The project uses the following Node.js packages:
-> express: Web framework for Node.js.
-> mysql2: MySQL client for Node.js with promise support.
-> express-session: Session management for user authentication.
-> multer: Middleware for handling file uploads.
-> bcrypt: Library for hashing passwords.
+- express: Web framework for Node.js.
+- mysql2: MySQL client for Node.js with promise support.
+- express-session: Session management for user authentication.
+- multer: Middleware for handling file uploads.
+- bcrypt: Library for hashing passwords.
 
 ## Setup
 
@@ -48,18 +48,18 @@ npm install express mysql2 express-session multer bcrypt
 ### Step 3: Setup database
 1. Install MySQL
 2. Create the Database:
-    > Open your MySQL client and log in as the root user
-    > Enter the password '270202' or your own custom password
-    > Create the ProfileMe database
+    - Open your MySQL client and log in as the root user
+    - Enter the password '270202' or your own custom password
+    - Create the ProfileMe database
     ```
     CREATE DATABASE ProfileMe;
     ```
 3. Import the schema file:
-    > Locate the ProfileMeSchema.sql file in the schema folder
-    > Import schema into the database
+    - Locate the ProfileMeSchema.sql file in the schema folder
+    - Import schema into the database
 4. Update Database Configuration (if needed):
-    > Open app.js and authModel.js.
-    > Update the dbConfig object if your MySQL credentials differ:
+    - Open app.js and authModel.js.
+    - Update the dbConfig object if your MySQL credentials differ:
     ```javascript
         const dbConfig = {
         host: 'localhost',
@@ -81,19 +81,19 @@ node app.js
 ## Using the application
 ### Key Features
 1. Registration:
-    > Click "Register" in the navbar or sidebar.
-    > Fill out the form (First Name, Last Name, Email, Password, Date of Birth) and submit.
+    - Click "Register" in the navbar or sidebar.
+    - Fill out the form (First Name, Last Name, Email, Password, Date of Birth) and submit.
 2. Login:
-    > Click "Login" and enter your email and password.
-    > Upon success, the UI updates to show logout options.
+    - Click "Login" and enter your email and password.
+    - Upon success, the UI updates to show logout options.
 3. Profile Management:
-    > Upload a profile image or video via /upload/profile-image or /upload/profile-video endpoints (requires login).
-    > Save profile details (bio, location, feed) using the respective endpoints.
+    - Upload a profile image or video via /upload/profile-image or /upload/profile-video endpoints (requires login).
+    - Save profile details (bio, location, feed) using the respective endpoints.
 4. Job Posting and Search:
-    > Employers can post jobs via /post-job.
-    > Users can view available jobs at /get-jobs.
+    - Employers can post jobs via /post-job.
+    - Users can view available jobs at /get-jobs.
 5. Logout:
-    > Click "Logout" to end the session.
+    - Click "Logout" to end the session.
 
 # How it works
 
