@@ -56,6 +56,8 @@ body {
     transition: all 0.3s;
     text-align: left;
     border: none;
+    position: relative;
+    overflow: hidden;
 }
 
 .offcanvas-body .btn-primary {
@@ -96,12 +98,13 @@ body {
     margin-bottom: 15px;
     background: linear-gradient(to bottom right, #ffffff, #f2fafa);
     border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-custom:hover {
     transform: scale(1.02);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
 
 .dashboard-section {
@@ -115,6 +118,12 @@ body {
 .table th {
     background-color: var(--primary-color);
     color: white;
+}
+
+.table tbody tr:hover {
+    background-color: var(--primary-light);
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .card.bg-success {
@@ -132,6 +141,12 @@ body {
     color: white !important;
 }
 
+h2, h4, h5 {
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: #333;
+}
+
 .btn {
     transition: all 0.2s ease-in-out;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -141,43 +156,49 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+.scroll-animate {
+    opacity: 0;
 }
 
 .animate-slide-in {
-    animation: slideInLeft 0.5s ease;
-}
-h2, h4, h5 {
-    letter-spacing: 0.5px;
-    font-weight: 600;
-    color: #333;
+    animation: slideInLeft 0.5s ease forwards;
 }
 
-.table tbody tr:hover {
-    background-color: var(--primary-light);
-    cursor: pointer;
-    transition: background-color 0.2s;
+/* Keyframes */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Ripple effect */
+.ripple-effect {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
 }
