@@ -503,3 +503,28 @@ document.getElementById('sidebarLogoutBtn').addEventListener('click', logoutUser
 document.querySelector("#feed .btn-primary").addEventListener("click", saveFeed);
 document.querySelector("#aboutMe .btn-save-about").addEventListener("click", saveAboutMe);
 document.querySelector("#usefulLinks .btn-save-links").addEventListener("click", saveUsefulLinks);
+
+//trying to work with darkmode
+const toggleBtn = document.getElementById("darkModeToggle");
+
+const updateModeText = (isDark) => {
+  toggleBtn.innerHTML = isDark
+    ? '<i class="fa-regular fa-sun me-1"></i> Switch to Bright Mode'
+    : '<i class="fa-regular fa-moon me-1"></i> Switch to Dark Mode';
+};
+
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+if (localStorage.getItem("mode") === "dark" || (prefersDark && !localStorage.getItem("mode"))) {
+  document.body.classList.add("dark-mode");
+  updateModeText(true);
+} else {
+  updateModeText(false);
+}
+
+toggleBtn.addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+  const isDark = document.body.classList.contains("dark-mode");
+  updateModeText(isDark);
+  localStorage.setItem("mode", isDark ? "dark" : "light");
+});
