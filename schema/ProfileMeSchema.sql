@@ -31,7 +31,7 @@ CREATE TABLE `account` (
   `DateOfBirth` date NOT NULL,
   PRIMARY KEY (`AccountID`),
   UNIQUE KEY `Email` (`Email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'jane','doe','janedoe@email.com','$2b$10$cqlmDxdBKaAJX6WDhFK6bO6BSPs3CfQaOlrs6aSRpHnVRIaHRAFm2','2001-01-01'),(2,'jam','jam','jamjam@email.com','$2b$10$q29wVKnDdJ1iQQWCAQFht.APjN/ppOCepuxRGO0TtpWuhDr5evnO6','1111-01-11'),(3,'test','test','test@email.com','$2b$10$FyDqauqj9xtlOgo8Tp5B2e.Pb7hb.6AqJE8yuNwNdRJSCyLGRR47G','2222-01-01'),(4,'eilish','potato','eilish@email.com','$2b$10$j82I/HCh6xkJs2bVXdvPIOpnZ4QkyAaQUXhq9L151beRRkpXeUCWq','2222-12-12'),(5,'John','Doe','johndoe@email.com','$2b$10$A7CNU2AfDcC8KfMSH/N/F.RpDQxgKDRKzRnMzlryECyNnw6ZQTnIq','2001-03-12');
+INSERT INTO `account` VALUES (1,'Jane','Doe','janedoe@email.com','$2b$10$SG2ceiDB.6Z79Hw.mlR74OuhewznPwb1CAp.snoIwAPmnL7OBKSte','1996-01-01'),(2,'John','Doe','johndoe@email.com','$2b$10$4BT3dkEV9rBD6nwzp1iNEuMDfW65g8C6gk74QAnQ5IQcJ2NXHr2i.','1994-03-27'),(3,'Eilish ','Paseos','eilishpaseos@email.com','$2b$10$6XF7BIyBRg07WqOpy/yS3uoOjk.vmmV4OJkjHwvYrODAujivT8n7u','2004-02-17'),(4,'Alexandra','Bud','alexandrabud@email.com','$2b$10$JEMdXQGgpw2pWpQQp0lAxObSNkET2A9IhUOtLIv0s/a4cdt4PjhWS','2003-02-01'),(5,'Mary Anne','Flores','maryanne@email.com','$2b$10$4damWnlXLbuB9oYLKBFhdOiedZRtxMVa8MCEB7tUrAmkBClLMcfTS','2005-04-03'),(6,'Stepan','Chernobaev','stepanchernobaev@email.com','$2b$10$zB.LbZy.hvstoqA78SvbceFwPI8A3LmeDWki4Diw4kgXO9PiGTe8m','2003-12-01'),(7,'Raiyan','Mohd Farid','raiyanmohdfarid@email.com','$2b$10$LwfIlDmsHcMvEdDaEHG.leauPjasuKJTBZpu01SNbVIAcEjvQQWNC','2004-01-02');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +58,7 @@ CREATE TABLE `jobs` (
   `Location` varchar(255) DEFAULT NULL,
   `DatePosted` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`JobID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,90 +67,8 @@ CREATE TABLE `jobs` (
 
 LOCK TABLES `jobs` WRITE;
 /*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-INSERT INTO `jobs` VALUES (1,'job','job desc','Dublin','2025-03-26 02:50:44'),(2,'job1','job1','Korea','2025-03-28 22:04:36'),(3,'test job','testing job','seoul','2025-03-28 22:29:36'),(4,'Computer Engineer','fixes computers','sligo','2025-04-07 19:53:30'),(5,'Computer Engineer','Fixes laptops','seoul','2025-04-07 19:57:53'),(6,'Chef','For hire private cook','seoul','2025-04-07 19:58:24'),(7,'Accountant','Accountant for hire','dublin','2025-04-07 19:59:26'),(8,'Accountant','part time accountant','dublin','2025-04-07 20:00:00'),(9,'plumber','plumbing for hire','seoul','2025-04-07 20:07:50');
+INSERT INTO `jobs` VALUES (1,'Software Developer','Develop and maintain web applications for a fintech startup.','San Francisco, USA','2025-04-01 09:00:00'),(2,'Graphic Designer','Create visual content for marketing campaigns and social media.','London, UK','2025-04-02 14:30:00'),(3,'Data Analyst','Analyze sales data to provide actionable insights for a retail chain.','Toronto, Canada','2025-04-03 11:15:00'),(4,'Mechanical Engineer','Design and test machinery for a manufacturing company.','Munich, Germany','2025-04-04 08:45:00'),(5,'Marketing Manager','Lead a team to develop marketing strategies for a new product launch.','Sydney, Australia','2025-04-05 16:20:00'),(6,'Nurse Practitioner','Provide patient care in a busy urban hospital.','New York, USA','2025-04-06 10:00:00'),(7,'Civil Engineer','Oversee infrastructure projects, including bridges and roads.','Dublin, Ireland','2025-04-07 13:00:00'),(8,'Content Writer','Write blog posts and articles for a tech website.','Seoul, Korea','2025-04-08 09:30:00'),(9,'Electrician','Install and maintain electrical systems in residential buildings.','Tokyo, Japan','2025-04-09 07:00:00'),(10,'Teacher','Teach mathematics to high school students in a public school.','Cape Town, South Africa','2025-04-09 12:00:00'),(11,'AI Research Scientist','Conduct research on machine learning models for a tech company.','Seoul, Korea','2025-04-10 09:00:00'),(12,'Web Developer','Build and maintain e-commerce websites for a retail company.','Busan, Korea','2025-04-10 10:30:00'),(13,'Automotive Engineer','Design electric vehicle components for a leading car manufacturer.','Frankfurt, Germany','2025-04-11 08:45:00'),(14,'Product Manager','Oversee the development of a new software product.','Hamburg, Germany','2025-04-11 14:00:00'),(15,'Software Tester','Test mobile applications for bugs and performance issues.','Dublin, Ireland','2025-04-12 11:00:00'),(16,'HR Specialist','Manage recruitment and employee relations for a tech firm.','Cork, Ireland','2025-04-12 15:20:00'),(17,'Game Developer','Develop mobile games for a gaming studio.','Helsinki, Finland','2025-04-13 09:30:00'),(18,'Environmental Scientist','Research sustainable practices for a government agency.','Tampere, Finland','2025-04-13 13:00:00'),(19,'Logistics Coordinator','Manage supply chain operations for a manufacturing company.','Ljubljana, Slovenia','2025-04-14 08:00:00'),(20,'UI/UX Designer','Design user interfaces for a new mobile app.','Maribor, Slovenia','2025-04-14 12:15:00');
 /*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `messages`
---
-
-DROP TABLE IF EXISTS `messages`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `messages` (
-  `MessageID` int NOT NULL AUTO_INCREMENT,
-  `ProfileUserID` int DEFAULT NULL,
-  `MessageText` text,
-  PRIMARY KEY (`MessageID`),
-  KEY `ProfileUserID` (`ProfileUserID`),
-  CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`ProfileUserID`) REFERENCES `profile` (`UserID`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `messages`
---
-
-LOCK TABLES `messages` WRITE;
-/*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-/*!40000 ALTER TABLE `messages` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `profile`
---
-
-DROP TABLE IF EXISTS `profile`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `profile` (
-  `UserID` int NOT NULL,
-  `ProfileDescription` varchar(1000) DEFAULT NULL,
-  `ProfileVideo` mediumblob,
-  `ProfileIcon` mediumblob,
-  `DisplayedLocation` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`UserID`),
-  CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `profile`
---
-
-LOCK TABLES `profile` WRITE;
-/*!40000 ALTER TABLE `profile` DISABLE KEYS */;
-/*!40000 ALTER TABLE `profile` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-  `UserID` int NOT NULL AUTO_INCREMENT,
-  `Username` varchar(255) NOT NULL,
-  `UserAge` int DEFAULT NULL,
-  `UserGender` varchar(50) DEFAULT NULL,
-  `Location` varchar(255) DEFAULT NULL,
-  `AccountID` int DEFAULT NULL,
-  PRIMARY KEY (`UserID`),
-  KEY `AccountID` (`AccountID`),
-  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`AccountID`) REFERENCES `account` (`AccountID`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -169,7 +87,7 @@ CREATE TABLE `user_links` (
   PRIMARY KEY (`LinkID`),
   KEY `ProfileID` (`ProfileID`),
   CONSTRAINT `user_links_ibfk_1` FOREIGN KEY (`ProfileID`) REFERENCES `user_profile` (`ProfileID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +96,6 @@ CREATE TABLE `user_links` (
 
 LOCK TABLES `user_links` WRITE;
 /*!40000 ALTER TABLE `user_links` DISABLE KEYS */;
-INSERT INTO `user_links` VALUES (15,1,'','github.com','bi bi-github');
 /*!40000 ALTER TABLE `user_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -201,7 +118,7 @@ CREATE TABLE `user_profile` (
   PRIMARY KEY (`ProfileID`),
   UNIQUE KEY `unique_account_id` (`AccountID`),
   CONSTRAINT `user_profile_ibfk_1` FOREIGN KEY (`AccountID`) REFERENCES `account` (`AccountID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,7 +127,7 @@ CREATE TABLE `user_profile` (
 
 LOCK TABLES `user_profile` WRITE;
 /*!40000 ALTER TABLE `user_profile` DISABLE KEYS */;
-INSERT INTO `user_profile` VALUES (1,1,'http://localhost:3000/uploads/1-profilePic.jpg','http://localhost:3000/uploads/1-profileVideo.mp4','trying to update biotext','','2025-04-07 19:38:36','This should persist after refresh'),(23,5,NULL,'http://localhost:3000/uploads/5-profileVideo.mp4','this is my personal statement',NULL,'2025-04-07 20:05:57','updating feed');
+INSERT INTO `user_profile` VALUES (1,3,NULL,'/uploads/3-profileVideo.mp4',NULL,NULL,'2025-04-10 17:23:38',NULL),(2,4,NULL,'/uploads/4-profileVideo.mp4',NULL,NULL,'2025-04-10 17:36:37',NULL),(5,7,NULL,'/uploads/7-profileVideo.mp4',NULL,NULL,'2025-04-10 20:03:28',NULL),(6,5,NULL,'/uploads/5-profileVideo.mp4',NULL,NULL,'2025-04-10 20:56:06',NULL),(7,6,NULL,'/uploads/6-profileVideo.mp4',NULL,NULL,'2025-04-10 22:01:46',NULL);
 /*!40000 ALTER TABLE `user_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -223,4 +140,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-07 20:22:47
+-- Dump completed on 2025-04-10 22:26:19
